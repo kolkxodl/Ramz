@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>لطلب تصميم موقع الكتروني</title>
+  <!-- خط IBM Plex Sans Arabic -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
+  <!-- مكتبة أيقونات Boxicons -->
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    /* تدرج لوني جميل لخلفية الصفحة مع مسافة كافية من الهيدر */
+    body {
+      background: linear-gradient(135deg, #FAF3E0, #F2E8D5);
+      color: #5C4033;
+      direction: rtl;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+      text-align: center;
+      padding-top: 120px; /* لضمان ظهور المحتوى بعد الهيدر الثابت */
+      transition: opacity 0.5s ease;
+    }
+    body.fade-out {
+      opacity: 0;
+    }
+    /* القواعد العامة */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      color: #3E2723;
+    }
+    /* الهيدر الثابت مع تأثير زجاجي */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      background: rgba(139, 69, 19, 0.8);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row-reverse;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    .logo {
+      height: 50px;
+      filter: brightness(0) invert(1);
+    }
+    .hamburger {
+      font-size: 24px;
+      cursor: pointer;
+      color: #fff;
+      padding: 8px;
+      border-radius: 6px;
+      transition: background-color 0.3s;
+    }
+    .hamburger.active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+    /* القائمة الجانبية مع تأثير زجاجي */
+    #sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+      width: 250px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      color: #5C4033;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+      padding: 20px;
+      z-index: 20;
+    }
+    #sidebar.active {
+      transform: translateX(0);
+    }
+    #sidebar .close-btn {
+      font-size: 22px;
+      cursor: pointer;
+      text-align: right;
+      margin-bottom: 15px;
+      color: #5C4033;
+    }
+    #sidebar .sidebar-logo {
+      margin-bottom: 15px;
+    }
+    #sidebar .sidebar-logo img {
+      height: 45px;
+      width: auto;
+      filter: brightness(0);
+    }
+    #sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 16px;
+      text-align: center;
+    }
+    #sidebar ul li {
+      margin: 12px 0;
+      border-bottom: 1px solid #EFE8DC;
+      padding-bottom: 8px;
+    }
+    #sidebar ul li:last-child {
+      border-bottom: none;
+    }
+    #sidebar ul li a {
+      color: #5C4033;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    /* صندوق الأيقونات داخل القائمة الجانبية لتواصل معنا */
+    #socialContainer {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease, opacity 0.5s ease;
+    }
+    #socialContainer.active {
+      max-height: 50px;
+      opacity: 1;
+      margin-top: 10px; 
+    }
+    #socialContainer a {
+      margin: 0 8px;
+      font-size: 20px;
+      color: #D2B48C;
+      transition: color 0.3s;
+    }
+    #socialContainer a:hover {
+      color: #CD853F;
+    }
+    /* الحاوية الرئيسية مع تأثير زجاجي */
+    .container {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      margin: 60px auto 30px;
+      max-width: 800px;
+      width: 90%;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .container h2 {
+      margin-bottom: 25px;
+      font-size: 26px;
+      color: #3E2723;
+    }
+    /* قسم "حول" النصي */
+    .about-section {
+      margin-bottom: 25px;
+      font-size: 16px;
+      color: #3E2723;
+      line-height: 1.8;
+      text-align: center;
+    }
+    /* صندوق إخلاء المسؤولية */
+    .disclaimer {
+      background: rgba(253, 248, 240, 0.8);
+      backdrop-filter: blur(5px);
+      border: 1px solid #D2B48C;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 15px;
+      color: #3E2723;
+      line-height: 1.8;
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    .back-btn {
+       padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(90deg, #CD853F, #D2B48C);
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .back-btn:hover {
+      background: linear-gradient(90deg, #D2B48C, #CD853F);
+    }
+    /* الفوتر مع تأثير زجاجي */
+    footer {
+      background: rgba(139, 69, 19, 0.8);
+      backdrop-filter: blur(10px);
+      color: #F5F5DC;
+      padding: 15px;
+      text-align: center;
+      font-size: 14px;
+      margin-top: auto;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
+    }
+    footer p {
+      margin-bottom: 5px;
+    }
+    footer .extra {
+      font-size: 12px;
+      color: #F5F5DC;
+    }
+    footer a {
+
+    } 
+    /* الشاشات الصغيرة */
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px auto;
+        padding: 20px;
+      }
+      .container h2 {
+        font-size: 22px;
+      }
+      .back-btn {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+      
+    }
+  </style>
+</head>
+<body>
+  <!-- الهيدر الثابت -->
+  <header>
+    <div class="hamburger" id="openSidebar">
+      <i class="bx bx-menu"></i>
+    </div>
+    <img src="https://www2.0zz0.com/2025/04/03/00/209652548.png" alt="الشعار" class="logo">
+  </header>
+
+  <!-- القائمة الجانبية الموحدة -->
+  <nav id="sidebar">
+    <div class="close-btn" id="closeSidebar">
+      <i class="bx bx-x"></i>
+    </div>
+    <div class="sidebar-logo">
+      <img src="https://www2.0zz0.com/2025/04/03/00/209652548.png" alt="الشعار">
+    </div>
+    <ul>
+      <li><a id="homeLink" href="#">الصفحة الرئيسية</a></li>
+      <li>
+        <a id="contactLink" href="#">تواصل معنا</a>
+        
+        <br>
+        <!-- ظهور الأيقونات تحت نص "تواصل معنا" -->
+        <div id="socialContainer">
+          <a href="https://www.tiktok.com/@designer_co?_r=1&_d=ed0h27ak1gi5h5&sec_uid=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&share_author_id=7411089680148710408&sharer_language=ar&source=h5_m&u_code=eg4363i2jmk0je&timestamp=1744307461&user_id=7411089680148710408&sec_user_id=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7489355090459346709&share_link_id=c5287d92-5f28-43a4-a565-c07bf819151f&share_app_id=1233&ugbiz_name=ACCOUNT&ug_btm=b8727%2Cb7360&social_share_type=5&enable_checksum=1" target="_blank"><i class="bx bxl-tiktok"></i></a>
+          <a href="https://youtube.com/@designer_co2?si=0UkuOB6YMiOg1rDY"><i class="bx bxl-youtube"></i></a>
+          <a href="https://wa.me/967738889982"><i class="bx bxl-whatsapp"></i></a>
+          <a href="https://www.facebook.com/share/151kE2vx5T/https://www.facebook.com/share/151kE2vx5T/"><i class="bx bxl-facebook"></i></a>
+          <a href="https://www.instagram.com/designer_co3?igsh=b3VucWs1cDhqc2c1"><i class="bx bxl-instagram"></i></a>
+        </div>
+      </li>
+      <li><a id="aboutLink" href="about.html">حول</a></li>
+      <li><a id="orderLink" href="order.html">لـ طلب تصميم موقع</a></li>    </ul>
+  </nav>
+
+  <!-- المحتوى الرئيسي لصفحة "حول" -->
+  <div class="container">
+    <h2>سهم لتصميم المواقع</h2>
+    <div class="about-section">
+      <p>
+        في عالم يتطور رقمياً بسرعة البرق، أصبح امتلاك موقع إلكتروني جذاب، او متجر إلكتروني فعّال، وحضور قوي على وسائل التواصل الاجتماعي ضرورة لا غنى عنها لأي عمل ناجح. في سهم، نقدم حلولاً متكاملة مصممة خصيصاً لتحويل رؤيتك إلى واقع ملموس، مع ضمان وصولك إلى جمهورك المستهدف بكل كفاءة واحترافية.  
+      </p>
+      <p>
+        
+      </p>
+      <p>
+        
+      </p>
+    </div>
+    <div class="disclaimer">
+      <p>
+        لماذا نحن ؟!<br><br>
+        ✅ تصميم مواقع وتطبيقات مذهلة
+        <br>
+        
+        – نبتكر تصاميم عصرية وسريعة الاستجابة، تلبي احتياجات عملك وتعكس هويتك البراندية باحترافية.  
+        <br>
+        <br>
+
+✅ متاجر إلكترونية تُحقق المبيعات 
+<br>
+– نطور متاجر إلكترونية متكاملة وسهلة الاستخدام، مدعومة بأفضل حلول الدفع الإلكتروني والتسويق لزيادة مبيعاتك.  
+<br>
+<br>
+✅ إدارة احترافية لوسائل التواصل الاجتماعي 
+<br>
+– نصنع محتوى جذاباً، ننمي تفاعل الجمهور، ونحرك حملات إعلانية دقيقة لتعزيز وجودك الرقمي.  
+<br>
+<br>
+✅ تحسين محركات البحث (SEO) 
+<br>
+– نضمن ظهور موقعك في الصفحات الأولى لمحركات البحث لجذب المزيد من الزوار والعملاء.  
+<br>
+<br>
+✅ استراتيجيات تسويقية مبتكرة
+<br>
+ – نخطط وننفذ حملات تسويقية ذكية لتعزيز علامتك التجارية وزيادة المبيعات.  
+<br><br>
+        
+      </p>
+    </div>
+        <button id="backbtn" class="back-btn">
+      <i class="bx bxl-whatsapp"></i>
+     <a href="https://wa.me/967738889982">للحجز تواصل معنا عبر الواتساب</a>
+    </button>
+    
+    <br>
+    <br>
+    <button class="back-btn" id="backBtn">العودة إلى الصفحة الرئيسية</button>
+  </div>
+
+  <!-- الفوتر -->
+  <footer>
+  			<p>تم تصميمه بواسطة المبرمج
+  	 <a href="https://wa.me/967738889982"> سهم الحميقاني </a>
+  			</p>
+    <p>&copy; حقوق النشر محفوظة</p>
+    <p class="extra">رمز | Ramz</p>
+  </footer>
+
+  <script>
+    // دالة الانتقال (Fade Out)
+    function fadeOutAndRedirect(url) {
+      document.body.classList.add('fade-out');
+      setTimeout(function() {
+        window.location.href = url;
+      }, 500);
+    }
+    // تفعيل القائمة الجانبية
+    const openSidebar = document.getElementById("openSidebar");
+    const closeSidebar = document.getElementById("closeSidebar");
+    const sidebar = document.getElementById("sidebar");
+    const hamburger = document.querySelector(".hamburger");
+    const homeLink = document.getElementById("homeLink");
+    const orderLink = document.getElementById("orderLink");
+    const aboutLink = document.getElementById("aboutLink");
+    const contactLink = document.getElementById("contactLink");
+    const socialContainer = document.getElementById("socialContainer");
+    const backBtn = document.getElementById("backBtn");
+
+    openSidebar.addEventListener("click", () => {
+      sidebar.classList.toggle("active");
+      hamburger.classList.toggle("active");
+    });
+    closeSidebar.addEventListener("click", () => {
+      sidebar.classList.remove("active");
+      hamburger.classList.remove("active");
+    });
+    // الانتقال بتأثير Fade Out عند الضغط على روابط القائمة
+    homeLink.addEventListener("click", function(event) {
+      event.preventDefault();
+      fadeOutAndRedirect("index.html");
+    });
+    aboutLink.addEventListener("click", function(event) {
+      event.preventDefault();
+      fadeOutAndRedirect("about.html");
+    });
+    backBtn.addEventListener("click", function(event) {
+      event.preventDefault();
+      fadeOutAndRedirect("index.html");
+    });
+    
+    // تفعيل ظهور أيقونات "تواصل معنا" عند الضغط
+    contactLink.addEventListener("click", () => {
+      socialContainer.classList.toggle("active");
+    });
+  </script>
+</body>
+</html>
