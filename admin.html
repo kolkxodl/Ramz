@@ -322,35 +322,7 @@
       document.getElementById("section-history").style.display = section === "history" ? "block" : "none";
     }
 
-    <script>
-  function addCode() {
-    const name = document.getElementById("tribeNameCode").value.trim();
-    const code = document.getElementById("tribeCode").value.trim().toUpperCase();
-
-    console.log("زر إضافة رمز تم الضغط عليه");
-
-    if (!name || !code) {
-      alert("يرجى ملء جميع الحقول");
-      return;
-    }
-
-    alert("جاري إرسال البيانات إلى Firebase...");
-
-    db.collection("tribes").add({
-      name: name,
-      code: code,
-      timestamp: new Date()
-    }).then(() => {
-      alert("تمت إضافة رمز القبيلة بنجاح");
-      document.getElementById("tribeNameCode").value = "";
-      document.getElementById("tribeCode").value = "";
-    }).catch((error) => {
-      console.error("خطأ أثناء الإضافة:", error);
-      alert("حدث خطأ: " + error.message);
-    });
-  }
-</script>
-
+    
 
 
       if (!name || !code) return alert("يرجى ملء جميع الحقول");
@@ -383,5 +355,34 @@
       });
     }
   </script>
+  <script>
+  function addCode() {
+    const name = document.getElementById("tribeNameCode").value.trim();
+    const code = document.getElementById("tribeCode").value.trim().toUpperCase();
+
+    console.log("زر إضافة رمز تم الضغط عليه");
+
+    if (!name || !code) {
+      alert("يرجى ملء جميع الحقول");
+      return;
+    }
+
+    alert("جاري إرسال البيانات إلى Firebase...");
+
+    db.collection("tribes").add({
+      name: name,
+      code: code,
+      timestamp: new Date()
+    }).then(() => {
+      alert("تمت إضافة رمز القبيلة بنجاح");
+      document.getElementById("tribeNameCode").value = "";
+      document.getElementById("tribeCode").value = "";
+    }).catch((error) => {
+      console.error("خطأ أثناء الإضافة:", error);
+      alert("حدث خطأ: " + error.message);
+    });
+  }
+</script>
+
 </body>
 </html>
