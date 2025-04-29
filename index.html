@@ -1176,5 +1176,36 @@
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   </script>
+  <script>
+  const tribes = {};
+  const tribeInfo = [];
+
+  window.addEventListener("DOMContentLoaded", async () => {
+    try {
+      const tribeSnap = await db.collection("tribes").get();
+      tribeSnap.forEach(doc => {
+        const data = doc.data();
+        const code = data.code;
+        const name = data.name;
+        if (!tribes[code]) tribes[code] = [];
+        tribes[code].push({ name });
+      });
+
+      const historySnap = await db.collection("histories").get();
+      historySnap.forEach(doc => {
+        const data = doc.data();
+        tribeInfo.push({
+          name: data.name,
+          history: data.history.replace(/\n/g, "<br>")
+        });
+      });
+
+      console.log("تم تحميل البيانات من Firebase");
+    } catch (error) {
+      console.error("فشل تحميل البيانات:", error);
+    }
+  });
+</script>
+
 </body>
 </html>
