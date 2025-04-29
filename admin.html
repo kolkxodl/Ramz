@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>لوحة التحكم</title>
+  <style>
+    body { font-family: Arial; background: #f1f1f1; padding: 20px; text-align: center; }
+    input, button { padding: 10px; margin: 10px; width: 80%; max-width: 300px; border-radius: 5px; border: 1px solid #ccc; }
+    button { background: orange; color: white; border: none; cursor: pointer; }
+    .section { background: white; margin: 20px auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 5px #ccc; max-width: 400px; }
+  </style>
+</head>
+<body>
+
+<h2>لوحة التحكم</h2>
+
+<div class="section">
+  <h3>إضافة رمز قبيلة</h3>
+  <input type="text" id="tribeNameCode" placeholder="اسم القبيلة">
+  <input type="text" id="tribeCode" placeholder="رمز القبيلة">
+  <button onclick="addCode()">إضافة</button>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyDGLwl69D9W5c03G5WsfU8pahvVHL4zKzs",
+    authDomain: "tribes-project-18d2b.firebaseapp.com",
+    projectId: "tribes-project-18d2b",
+    storageBucket: "tribes-project-18d2b.firebasestorage.app",
+    messagingSenderId: "375771927234",
+    appId: "1:375771927234:web:5fa0ec96fd9c80fce7615b"
+  };
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  function addCode() {
+    const name = document.getElementById("tribeNameCode").value.trim();
+    const code = document.getElementById("tribeCode").value.trim().toUpperCase();
+
+    if (!name || !code) {
+      alert("يرجى ملء جميع الحقول");
+      return;
+    }
+
+    alert("جاري إضافة القبيلة...");
+
+    db.collection("tribes").add({
+      name: name,
+      code: code,
+      timestamp: new Date()
+    }).then(() => {
+      alert("✅ تم إضافة القبيلة بنجاح");
+      document.getElementById("tribeNameCode").value = "";
+      document.getElementById("tribeCode").value = "";
+    }).catch((error) => {
+      console.error("خطأ:", error);
+      alert("❌ حدث خطأ: " + error.message);
+    });
+  }
+</script>
+</body>
+</html>
