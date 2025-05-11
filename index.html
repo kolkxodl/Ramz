@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>الباحث في رموز القبائل</title>
+  <title>الباحث  في رموز القبائل </title>
   <!-- خط IBM Plex Sans Arabic -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -11,7 +11,7 @@
   <!-- مكتبة أيقونات Boxicons -->
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
   <style>
-    /* تدرج لوني جميل لخلفية الصفحة */
+    /* ... (نفس الأنماط CSS كما في site_hybrid_data_v5.html) ... */
     body {
       background: linear-gradient(135deg, #FAF3E0, #F2E8D5);
       color: #5C4033;
@@ -21,14 +21,12 @@
       flex-direction: column;
       line-height: 1.6;
       text-align: center;
-      /* زيادة المسافة العليا لتفادي تغطية المحتوى بالهيدر الثابت */
       padding-top: 120px;
       transition: opacity 0.5s ease;
     }
     body.fade-out {
       opacity: 0;
     }
-    /* القواعد العامة */
     * {
       margin: 0;
       padding: 0;
@@ -42,7 +40,6 @@
     h1, h2, h3, h4, h5, h6 {
       color: #3E2723;
     }
-    /* الهيدر الثابت مع تأثير زجاجي */
     header {
       position: fixed;
       top: 0;
@@ -75,7 +72,6 @@
     .hamburger.active {
       background-color: rgba(255, 255, 255, 0.2);
     }
-    /* القائمة الجانبية مع تأثير زجاجي */
     #sidebar {
       position: fixed;
       top: 0;
@@ -130,7 +126,6 @@
       font-weight: bold;
       cursor: pointer;
     }
-    /* صندوق الأيقونات داخل القائمة الجانبية تحت "تواصل معنا" */
     #socialContainer {
       max-height: 0;
       opacity: 0;
@@ -147,14 +142,10 @@
       font-size: 20px;
       color: #D2B48C;
       transition: color 0.3s;
-      
     }
     #socialContainer a:hover {
       color: #CD853F;
     }
-   
-  
-    /* حاوية البحث الرئيسية مع تأثير زجاجي */
     .container {
       background: rgba(255, 255, 255, 0.7);
       -webkit-backdrop-filter: blur(10px);
@@ -166,12 +157,6 @@
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
-    h2 {
-      margin-bottom: 25px;
-      font-size: 26px;
-      color: #3E2723;
-    }
-    /* خانة الإدخال مع الأيقونات */
     .input-container {
       position: relative;
       margin-bottom: 20px;
@@ -212,7 +197,6 @@
       cursor: pointer;
       display: none;
     }
-    /* زر البحث */
     .search-button {
       width: 100%;
       padding: 14px;
@@ -233,13 +217,12 @@
     .search-button:hover {
       background: linear-gradient(90deg, #D2B48C, #CD853F);
     }
-    /* إعادة تصميم نتائج البحث إلى النمط السابق */
     .result {
       margin-top: 20px;
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
       font-size: 18px;
-      text-align: center;
+      text-align: right; /* Changed to right for history display */
       color: #3E2723;
     }
     .result.show {
@@ -254,8 +237,23 @@
       border-radius: 8px;
       margin-bottom: 12px;
       color: #3E2723;
+      text-align: center; /* Keep tribe box centered */
     }
-    /* تنسيق جدول النتائج في حال وجود أكثر من قبيلة مشتركة */
+    .result .history-box {
+      background: rgba(253, 248, 240, 0.9);
+      border: 1px solid #D2B48C;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      color: #3E2723;
+      text-align: right;
+      line-height: 1.8;
+    }
+    .result .history-box h4 {
+        margin-bottom: 10px;
+        color: #CD853F;
+        font-size: 20px;
+    }
     .result-table {
       width: 100%;
       border-collapse: separate;
@@ -291,7 +289,6 @@
     .result-table tbody tr:last-child td {
       border-bottom: none;
     }
-    /* حاوية الإعلانات بتصميم زجاجي أنيق */
     .ad-container {
       background: rgba(255, 255, 255, 0.7);
       -webkit-backdrop-filter: blur(10px);
@@ -330,7 +327,6 @@
     .ad-button:hover {
       background: linear-gradient(90deg, #D2B48C, #CD853F);
     }
-    /* حاوية الأسئلة الشائعة مع تأثير زجاجي */
     .faq-container {
       background: rgba(255, 255, 255, 0.7);
       -webkit-backdrop-filter: blur(10px);
@@ -387,7 +383,6 @@
       color: #3E2723;
       font-size: 15px;
     }
-    /* حاوية "تابعنا على" الخارجية مع تأثير زجاجي */
     .contact-container {
       background: rgba(255, 255, 255, 0.7);
       -webkit-backdrop-filter: blur(10px);
@@ -414,7 +409,6 @@
     .contact-container .social-icons a:hover {
       color: #CD853F;
     }
-    /* شاشة التحميل */
     .loading {
       display: flex;
       flex-direction: column;
@@ -438,7 +432,6 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-    /* الفوتر مع تأثير زجاجي */
     footer {
       background: rgba(139, 69, 19, 0.8);
       -webkit-backdrop-filter: blur(10px);
@@ -457,7 +450,6 @@
       font-size: 12px;
       color: #F5F5DC;
     }
-    /* الشاشات الصغيرة */
     @media (max-width: 600px) {
       .container,
       .faq-container,
@@ -477,7 +469,6 @@
         font-size: 20px;
       }
     }
-    /* تنسيق نافذة الرسالة المنبثقة مع تأثير زجاجي */
     .popup-modal {
       position: fixed;
       top: 0;
@@ -527,15 +518,12 @@
   </style>
 </head>
 <body>
-  <!-- الهيدر الثابت -->
   <header>
     <div class="hamburger" id="openSidebar">
       <i class="bx bx-menu"></i>
     </div>
     <img src="https://www2.0zz0.com/2025/04/03/00/209652548.png" alt="الشعار" class="logo" oncontextmenu="return false;" draggable="false" />
   </header>
-
-  <!-- القائمة الجانبية -->
   <nav id="sidebar">
     <div class="close-btn" id="closeSidebar">
       <i class="bx bx-x"></i>
@@ -547,9 +535,6 @@
       <li><a id="homeLink" href="#">الصفحة الرئيسية</a></li>
       <li>
         <a id="contactLink" href="#">تواصل معنا</a>
-        
-        <br>
-        <!-- ظهور الأيقونات تحت نص "تواصل معنا" -->
         <div id="socialContainer">
           <a href="https://www.tiktok.com/@designer_co?_r=1&_d=ed0h27ak1gi5h5&sec_uid=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&share_author_id=7411089680148710408&sharer_language=ar&source=h5_m&u_code=eg4363i2jmk0je&timestamp=1744307461&user_id=7411089680148710408&sec_user_id=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7489355090459346709&share_link_id=c5287d92-5f28-43a4-a565-c07bf819151f&share_app_id=1233&ugbiz_name=ACCOUNT&ug_btm=b8727%2Cb7360&social_share_type=5&enable_checksum=1" target="_blank"><i class="bx bxl-tiktok"></i></a>
           <a href="https://youtube.com/@designer_co2?si=0UkuOB6YMiOg1rDY"><i class="bx bxl-youtube"></i></a>
@@ -562,12 +547,10 @@
       <li><a id="orderLink" href="order.html">لـ طلب تصميم موقع</a></li>
     </ul>
   </nav>
-
-  <!-- حاوية البحث الرئيسية -->
   <div class="container">
     <h2>الباحث في رموز القبائل</h2>
     <div class="input-container">
-      <input type="text" id="searchInput" placeholder="أدخل رمز القبيلة أو اسمها" enterkeyhint="go" />
+      <input type="text" id="searchInput" placeholder="أدخل رمز القبيلة، اسمها، أو 'تاريخ [اسم القبيلة]'" enterkeyhint="go" />
       <i class="bx bx-search input-icon"></i>
       <i class="bx bx-x clear-icon" id="clearBtn"></i>
     </div>
@@ -581,86 +564,47 @@
       <div class="loading-text">جارٍ البحث…</div>
     </div>
   </div>
-
-  <!-- حاوية الإعلانات -->
   <div class="ad-container">
     <h3>اعلاناتنا</h3>
-    <p>هل تريد الإعلان على الموقع ؟
-    </br>
-    تواصل معنا عبر الواتساب للتفاصيل
-    <br> 
-     
-     </p>
+    <p>هل تريد الإعلان على الموقع ؟<br>تواصل معنا عبر الواتساب للتفاصيل</p>
     <button id="adTelegramBtn" class="ad-button">
       <i class="bx bxl-whatsapp"></i>
       تواصل عبر الواتساب 
     </button>
   </div>
-
-  <!-- حاوية الأسئلة الشائعة -->
   <div class="faq-container">
     <h3>الأسئلة الشائعة</h3>
     <div class="faq-item">
-      <div class="faq-question">
-        <span>1. وش المقصود برموز القبائل؟</span>
-        <i class="bx bx-chevron-down faq-icon"></i>
-      </div>
-      <div class="faq-answer">
-        رموز القبائل هي أرقام يختارها أفراد القبيلة لتمثيلها بشكل رمزي، غالبًا في مواقع التواصل، وتستخدم كنوع من الفخر بالانتماء.
-      </div>
+      <div class="faq-question"><span>1. وش المقصود برموز القبائل؟</span><i class="bx bx-chevron-down faq-icon"></i></div>
+      <div class="faq-answer">رموز القبائل هي أرقام يختارها أفراد القبيلة لتمثيلها بشكل رمزي، غالبًا في مواقع التواصل، وتستخدم كنوع من الفخر بالانتماء.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-question">
-        <span>2. هل رموز القبائل رسمية؟</span>
-        <i class="bx bx-chevron-down faq-icon"></i>
-      </div>
-      <div class="faq-answer">
-        لا. الرموز غير رسمية ولا معتمدة من أي جهة حكومية. هي رموز اجتهادية وشعبية يستخدمها الشباب بشكل غير رسمي.
-      </div>
+      <div class="faq-question"><span>2. هل رموز القبائل رسمية؟</span><i class="bx bx-chevron-down faq-icon"></i></div>
+      <div class="faq-answer">لا. الرموز غير رسمية ولا معتمدة من أي جهة حكومية. هي رموز اجتهادية وشعبية يستخدمها الشباب بشكل غير رسمي.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-question">
-        <span>3. من اللي يحدد رمز القبيلة؟</span>
-        <i class="bx bx-chevron-down faq-icon"></i>
-      </div>
-      <div class="faq-answer">
-        عادةً يتم تداول الرمز بين أفراد القبيلة حتى ينتشر ويصبح معروف، ولا توجد جهة رسمية تحدده.
-      </div>
+      <div class="faq-question"><span>3. من اللي يحدد رمز القبيلة؟</span><i class="bx bx-chevron-down faq-icon"></i></div>
+      <div class="faq-answer">عادةً يتم تداول الرمز بين أفراد القبيلة حتى ينتشر ويصبح معروف، ولا توجد جهة رسمية تحدده.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-question">
-        <span>4. هل ممكن أكثر من قبيلة تستخدم نفس الرقم؟</span>
-        <i class="bx bx-chevron-down faq-icon"></i>
-      </div>
-      <div class="faq-answer">
-        نعم، أحيانًا أكثر من قبيلة تستخدم نفس الرمز خاصةً إذا كان الرقم مميزًا أو ذو شعبية.
-      </div>
+      <div class="faq-question"><span>4. هل ممكن أكثر من قبيلة تستخدم نفس الرقم؟</span><i class="bx bx-chevron-down faq-icon"></i></div>
+      <div class="faq-answer">نعم، أحيانًا أكثر من قبيلة تستخدم نفس الرمز خاصةً إذا كان الرقم مميزًا أو ذو شعبية.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-question">
-        <span>5. هل كل القبائل لها رموز؟</span>
-        <i class="bx bx-chevron-down faq-icon"></i>
-      </div>
-      <div class="faq-answer">
-        لا، بعض القبائل لها رموز متداولة بينما لا تهتم البعض الآخر بتلك الرموز.
-      </div>
+      <div class="faq-question"><span>5. هل كل القبائل لها رموز؟</span><i class="bx bx-chevron-down faq-icon"></i></div>
+      <div class="faq-answer">لا، بعض القبائل لها رموز متداولة بينما لا تهتم البعض الآخر بتلك الرموز.</div>
     </div>
   </div>
-
-  <!-- حاوية "تابعنا على" الخارجية -->
   <div class="contact-container">
     <h3>تابعنا على</h3>
     <div class="social-icons">
       <a href="https://www.tiktok.com/@designer_co?_r=1&_d=ed0h27ak1gi5h5&sec_uid=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&share_author_id=7411089680148710408&sharer_language=ar&source=h5_m&u_code=eg4363i2jmk0je&timestamp=1744307461&user_id=7411089680148710408&sec_user_id=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7489355090459346709&share_link_id=c5287d92-5f28-43a4-a565-c07bf819151f&share_app_id=1233&ugbiz_name=ACCOUNT&ug_btm=b8727%2Cb7360&social_share_type=5&enable_checksum=1" target="_blank"><i class="bx bxl-tiktok"></i></a>
-       <a href="https://youtube.com/@designer_co2?si=0UkuOB6YMiOg1rDY" target="_blank"><i class="bx bxl-youtube"></i></a>
-        <a href="https://wa.me/967738889982" target="_blank"><i class="bx bxl-whatsapp"></i></a>
-         
-          <a href="https://www.facebook.com/share/151kE2vx5T/" target="_blank"><i class="bx bxl-facebook"></i></a>
+      <a href="https://youtube.com/@designer_co2?si=0UkuOB6YMiOg1rDY" target="_blank"><i class="bx bxl-youtube"></i></a>
+      <a href="https://wa.me/967738889982" target="_blank"><i class="bx bxl-whatsapp"></i></a>
+      <a href="https://www.facebook.com/share/151kE2vx5T/" target="_blank"><i class="bx bxl-facebook"></i></a>
       <a href="https://www.instagram.com/designer_co3?igsh=b3VucWs1cDhqc2c1" target="_blank"><i class="bx bxl-instagram"></i></a>
     </div>
   </div>
-
-  <!-- نافذة الرسالة المنبثقة -->
   <div id="popupModal" class="popup-modal">
     <div class="popup-content">
       <p id="popupMessage"></p>
@@ -670,35 +614,18 @@
       </div>
     </div>
   </div>
-
-  <!-- الفوتر -->
   <footer>
-  			<p>تم تصميمه بواسطة المبرمج 
-  			
-  			<a href="https://wa.me/967738889982">سهم الحميقاني</a>
-  			
-  			</p>
-  			                 
+    <p>تم تصميمه بواسطة المبرمج <a href="https://wa.me/967738889982">سهم الحميقاني</a></p>
     <p>&copy; حقوق النشر محفوظة</p>
     <p class="extra">رمز | Ramz</p>
-    
-   
   </footer>
-
-  <!-- كود تتبع Clicky بدون عرض الشارة -->
   <script async src="https://static.getclicky.com/101482035.js"></script>
-  <noscript>
-    <p>
-      <img alt="Clicky" width="1" height="1" src="https://in.getclicky.com/101482035ns.gif" />
-    </p>
-  </noscript>
+  <noscript><p><img alt="Clicky" width="1" height="1" src="https://in.getclicky.com/101482035ns.gif" /></p></noscript>
 
   <script type="module">
-    // Import Firebase modules
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyDGLwl69D9W5c03G5WsfU8pahvVHL4zKzs",
       authDomain: "tribes-project-18d2b.firebaseapp.com",
@@ -708,218 +635,60 @@
       appId: "1:375771927234:web:5fa0ec96fd9c80fce7615b"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    console.log("Firebase App initialized:", app);
-    console.log("Firestore DB instance:", db);
 
-    // --- قائمة القبائل الثابتة ---
     const hardcodedTribes = {
-      "715": [{ name: "لقموش" }],
-      "202": [{ name: "ردفان" }],
-      "917": [{ name: "العوالق" }],
-      "711": [
-        { name: "الحسين" },
-        { name: "الصيعر" },
-        { name: "وادعه" },
-        { name: "بني مالك" },
-        { name: "وايله" },
-        { name: "قيفة" },
-        { name: "دهم" },
-        { name: "مراد" },
-        { name: "كندة" },
-        { name: "الدين" },
-        { name: "آل سحاق" },
-        { name: "سحار" }
-      ],
-      "505": [{ name: "قحطان" }, { name: "عبيده" }],
-      "454": [{ name: "بلسمر" }],
-      "509": [
-        { name: "بلقرن" },
-        { name: "الشرارات" }
-      ],
-      "511": [{ name: "عتيبه" }, { name: "الحموم" }],
-      "507": [
-       { name: "شهران" },
-       { name: "بني هلال" }, 
-       { name: "العمودي" }
-      ], 
-      "606": [
-        { name: "اكلب" },
-        { name: "بني غانم" }
-      ],
-      "911": [
-        { name: "البقوم" },
-        { name: "بني خالد" },
-        { name: "يام" }
-      ],
-      "903": [{ name: "بارق" }],
-      "309": [
-        { name: "بني حمد" },
-        { name: "البلوش" }
-      ],
-      "601": [{ name: "بني الطمح" }],
-      "811": [{ name: "نهد" }],
-      "101": [{ name: "العجمان" }],
-      "504": [
-        { name: "آل غريّبني" },
-        { name: "همام" }
-      ],
-      "516": [
-        { name: "الجحادله" },
-        { name: "خولان" }, 
-        { name: "الجبره" }
-      ],
-      "909": [{ name: "بلحمر" }], // Note: 909 appears twice in original, will be overwritten by later one if keys are identical in JS object literal.
-      "305": [{ name: "مطير" }],
-      "518": [{ name: "جهينه" }, { name: "اللحوين" }], // Merged 518 from original list
-      "607": [
-        { name: "عليان" },
-        { name: "خثعم" }
-      ],
-      "717": [{ name: "السهول" }, { name: "بلعبيد" }],
-      "404": [{ name: "عبس" }, { name: "الرشايدة" }],
-      "311": [
-        { name: "رجال الحجر" },
-        { name: "بني مسروح" }
-      ],
-      "907": [
-        { name: "بني الحكم" },
-        { name: "بني ذبيان" }
-      ],
-      "515": [
-        { name: "قريش" },
-        { name: "الاشراف" },
-        { name: "بني هاشم" },
-        { name: "سليم" },
-        { name: "النعيم" } // Merged 515 from original list
-      ],
-      "808": [{ name: "تليد" }],
-      "A-10": [{ name: "العميرة" }],
-      "205": [{ name: "ظفير" }],
-      "503": [{ name: "سبيع" }],
-      "707": [
-        { name: "عسير" },
-        { name: "غامد" }
-      ],
-      "703": [{ name: "بني يزيد" }],
-      "779": [{ name: "الزيدي" }],
-      "709": [{ name: "النواشر" }],
-      "818": [{ name: "بلي" }],
-      "708": [{ name: "بني مروان" }],
-      "902": [{ name: "بني شبيب" }],
-      "912": [{ name: "العوامر" }],
-      "411": [{ name: "بني هاجر" }],
-      "906": [{ name: "العوازم" }],
-      "905": [{ name: "فيفاء" }],
-      "107": [
-        { name: "المهره" },
-        { name: "الراشدي" }
-      ], 
-      "701": [{ name: "بني عمرو" }],
-      "702": [{ name: "زهران" }],
-      "502": [{ name: "الدواسر" }],
-      "525": [{ name: "شمران" }],
-      "901": [
-        { name: "ثقيف" },
-        { name: "الفضول" }
-      ],
-      "506": [
-        { name: "بني تميم" }
-      ],
-      "B-52": [{ name: "عنزه" }],
-      "108": [{ name: "الجنيبي" }],
-      // "518": [{ name: "اللحوين" }], // Already merged above
-      // "515": [{ name: "النعيم" }], // Already merged above
-      "F-15": [{ name: "حرب" }],
-      "555": [{ name: "شمر" }],
-      "B-79": [{ name: "بني عطية" }],
-      "111": [{ name: "الحويطات" }],
-      "Y-10": [{ name: "بني يافع" }],
-      "716": [{ name: "نعمان" }],
-      "719": [{ name: "بنير" }, { name: "ال وهاش" }],
-      "501": [
-        { name: "بلحارث" },
-        { name: "ال حميقان" },
-        { name: "الحميقاني" }
-      ],
-      "611": [
-        { name: "العوابثه" },
-        { name: "باوزير" },
-        { name: "بني حسين" },
-        { name: "بني زيد" }
-      ],
-      "705": [
-        { name: "بني هلال" }, 
-        { name: "ال باجري" }
-      ], 
-      "110": [
-        { name: "الرصاص" },
-        { name: "المناهيل" }
-      ],
-      "809": [{ name: "سيبان" }],
-      "512": [
-        { name: "ال كثير" }, // Note: "ال كثير" appears for multiple codes
-        { name: "بني لام" },
-        { name: "فهم" }
-      ],
-      "919": [{ name: "ال بريك" }], // Note: "ال بريك" appears for multiple codes
-      "888": [{ name: "ال بكمي" }],
-      "714": [{ name: "حمّير" }],
-      "517": [{ name: "المشاجر" }],
-      "S300": [{ name: "ال كثير" }],
-      "604": [{ name: "المصعبين" }],
-      "910": [{ name: "ال بريك" }],
-      "F-14": [{ name: "الكرب" }],
-      "712": [
-        { name: "نوح" },
-        { name: "سعد الظالمة" },
-        { name: "شرعب" }
-      ],
-      "771": [{ name: "وصاب" }],
-      "720": [{ name: "العواذل" }],
-      "539": [{ name: "جهم" }],
-      "519": [{ name: "الشحري" }, { name: "عك" }],
-      "220": [{ name: "الطاهري" }],
-      "959": [{ name: "بني شداد" }],
-      "015": [{ name: "الحكلي" }],
-      "918": [{ name: "ال بريك" }],
-      "704": [
-        { name: "مقبنه" },
-        { name: "بني كعب" }, 
-        { name: "الشميري" }
-      ],
-      "510": [{ name: "السودي" }],
-      "909": [
-        { name: "الحدد" }, // This will overwrite the earlier "909": [{ name: "بلحمر" }] due to JS object literal behavior
-        { name: "الحداد" }
-      ],
-      "109": [{ name: "المناصير" }],
-      "553": [{ name: "الظفري" }],
-      "212": [{ name: "الانصار" }],
-      "307": [{ name: "غزوان" }],
-      "116": [{ name: "المشيخي" }],
-      "F-10": [{ name: "ال شريح" }],
-      "F-16": [{ name: "ال أسلم" }],
-      "405": [{ name: "المصاريه" }],
-      "55": [{ name: "ال مره" }],
-      "L-82": [{ name: "المساعيد" }]
+      "715": [{ name: "لقموش" }], "202": [{ name: "ردفان" }], "917": [{ name: "العوالق" }],
+      "711": [{ name: "الحسين" },{ name: "الصيعر" },{ name: "وادعه" },{ name: "بني مالك" },{ name: "وايله" },{ name: "قيفة" },{ name: "دهم" },{ name: "مراد" },{ name: "كندة" },{ name: "الدين" },{ name: "آل سحاق" },{ name: "سحار" }],
+      "505": [{ name: "قحطان" }, { name: "عبيده" }], "454": [{ name: "بلسمر" }],
+      "509": [{ name: "بلقرن" },{ name: "الشرارات" }], "511": [{ name: "عتيبه" }, { name: "الحموم" }],
+      "507": [{ name: "شهران" },{ name: "بني هلال" },{ name: "العمودي" }], 
+      "606": [{ name: "اكلب" },{ name: "بني غانم" }],
+      "911": [{ name: "البقوم" },{ name: "بني خالد" },{ name: "يام" }], "903": [{ name: "بارق" }],
+      "309": [{ name: "بني حمد" },{ name: "البلوش" }], "601": [{ name: "بني الطمح" }], "811": [{ name: "نهد" }], "101": [{ name: "العجمان" }],
+      "504": [{ name: "آل غريّبني" },{ name: "همام" }],
+      "516": [{ name: "الجحادله" },{ name: "خولان" },{ name: "الجبره" }],
+      "305": [{ name: "مطير" }], "518": [{ name: "جهينه" }, { name: "اللحوين" }], 
+      "607": [{ name: "عليان" },{ name: "خثعم" }], "717": [{ name: "السهول" }, { name: "بلعبيد" }],
+      "404": [{ name: "عبس" }, { name: "الرشايدة" }], "311": [{ name: "رجال الحجر" },{ name: "بني مسروح" }],
+      "907": [{ name: "بني الحكم" },{ name: "بني ذبيان" }],
+      "515": [{ name: "قريش" },{ name: "الاشراف" },{ name: "بني هاشم" },{ name: "سليم" },{ name: "النعيم" }],
+      "808": [{ name: "تليد" }], "A-10": [{ name: "العميرة" }], "205": [{ name: "ظفير" }], "503": [{ name: "سبيع" }],
+      "707": [{ name: "عسير" },{ name: "غامد" }], "703": [{ name: "بني يزيد" }], "779": [{ name: "الزيدي" }], "709": [{ name: "النواشر" }],
+      "818": [{ name: "بلي" }], "708": [{ name: "بني مروان" }], "902": [{ name: "بني شبيب" }], "912": [{ name: "العوامر" }],
+      "411": [{ name: "بني هاجر" }], "906": [{ name: "العوازم" }], "905": [{ name: "فيفاء" }],
+      "107": [{ name: "المهره" },{ name: "الراشدي" }], "701": [{ name: "بني عمرو" }], "702": [{ name: "زهران" }],
+      "502": [{ name: "الدواسر" }], "525": [{ name: "شمران" }], "901": [{ name: "ثقيف" },{ name: "الفضول" }],
+      "506": [{ name: "بني تميم" }], "B-52": [{ name: "عنزه" }], "108": [{ name: "الجنيبي" }],
+      "F-15": [{ name: "حرب" }], "555": [{ name: "شمر" }], "B-79": [{ name: "بني عطية" }], "111": [{ name: "الحويطات" }],
+      "Y-10": [{ name: "بني يافع" }], "716": [{ name: "نعمان" }], "719": [{ name: "بنير" }, { name: "ال وهاش" }],
+      "501": [{ name: "بلحارث" },{ name: "ال حميقان" },{ name: "الحميقاني" }],
+      "611": [{ name: "العوابثه" },{ name: "باوزير" },{ name: "بني حسين" },{ name: "بني زيد" }],
+      "705": [{ name: "بني هلال" },{ name: "ال باجري" }], "110": [{ name: "الرصاص" },{ name: "المناهيل" }],
+      "809": [{ name: "سيبان" }], "512": [{ name: "ال كثير" },{ name: "بني لام" },{ name: "فهم" }],
+      "919": [{ name: "ال بريك" }], "888": [{ name: "ال بكمي" }], "714": [{ name: "حمّير" }], "517": [{ name: "المشاجر" }],
+      "S300": [{ name: "ال كثير" }], "604": [{ name: "المصعبين" }], "910": [{ name: "ال بريك" }], "F-14": [{ name: "الكرب" }],
+      "712": [{ name: "نوح" },{ name: "سعد الظالمة" },{ name: "شرعب" }], "771": [{ name: "وصاب" }], "720": [{ name: "العواذل" }],
+      "539": [{ name: "جهم" }], "519": [{ name: "الشحري" }, { name: "عك" }], "220": [{ name: "الطاهري" }], "959": [{ name: "بني شداد" }],
+      "015": [{ name: "الحكلي" }], "918": [{ name: "ال بريك" }],
+      "704": [{ name: "مقبنه" },{ name: "بني كعب" },{ name: "الشميري" }], "510": [{ name: "السودي" }],
+      "909": [{ name: "الحدد" },{ name: "الحداد" }, { name: "بلحمر" }], // Combined 909
+      "109": [{ name: "المناصير" }], "553": [{ name: "الظفري" }], "212": [{ name: "الانصار" }], "307": [{ name: "غزوان" }],
+      "116": [{ name: "المشيخي" }], "F-10": [{ name: "ال شريح" }], "F-16": [{ name: "ال أسلم" }], "405": [{ name: "المصاريه" }],
+      "55": [{ name: "ال مره" }], "L-82": [{ name: "المساعيد" }]
     };
-    console.log("Hardcoded tribes list initialized:", JSON.parse(JSON.stringify(hardcodedTribes)));
 
-    // Data stores
-    let combinedTribesData = {}; // This will hold the MERGED data
-    let tribeInfoData = []; // For history data, if used
+    let combinedTribesData = {};
+    let tribeInfoData = [];
 
-    // UI Elements (from original script)
-    const searchBtn = document.getElementById("searchBtn");
     const searchInput = document.getElementById("searchInput");
     const resultDiv = document.getElementById("result");
     const loadingDiv = document.getElementById("loading");
-    const inputIcon = document.querySelector(".input-icon"); 
+    const inputIcon = document.querySelector(".input-container .input-icon"); 
     const clearIcon = document.getElementById("clearBtn");
-
+    const searchBtn = document.getElementById("searchBtn");
+    
     const openSidebar = document.getElementById("openSidebar");
     const closeSidebar = document.getElementById("closeSidebar");
     const sidebar = document.getElementById("sidebar");
@@ -934,363 +703,207 @@
     const contactPopupBtn = document.getElementById("contactBtn");
     const faqQuestions = document.querySelectorAll(".faq-question");
 
-    // Helper functions (from original script)
     function fadeOutAndRedirect(url) {
       document.body.classList.add("fade-out");
-      setTimeout(function() {
-        window.location.href = url;
-      }, 500);
+      setTimeout(function() { window.location.href = url; }, 500);
     }
 
     function normalizeArabic(text) {
-      return text
-        .toLowerCase()
-        .replace(/[إأآا]/g, "ا")
-        .replace(/ة/g, "ه")
-        .replace(/[ىئ]/g, "ي")
-        .replace(/[\u064B-\u0652]/g, "")
-        .trim();
+      return text.toLowerCase().replace(/[إأآا]/g, "ا").replace(/ة/g, "ه").replace(/[ىئ]/g, "ي").replace(/[\u064B-\u0652]/g, "").trim();
     }
     
-    function showPopup(query) {
+    function showPopup(query, type = "tribe") {
       const popupModal = document.getElementById("popupModal");
       const popupMessage = document.getElementById("popupMessage");
       if (popupModal && popupMessage) {
-        popupMessage.innerHTML = `قد يكون الرمز لقبيلة (<strong>${query}</strong>) غير مضاف حالياً قم بالتواصل معنا لتعريفه وإضافته في المنصة`;
+        if (type === "history") {
+            popupMessage.innerHTML = `لم يتم العثور على معلومات تاريخية للقبيلة (<strong>${query}</strong>). يمكنك التواصل معنا لإضافتها.`;
+        } else if (type === "code") {
+            popupMessage.innerHTML = `قد يكون رمز (<strong>${query}</strong>) يتبع لقبيلة غير مسجلة في المنصة، يمكنك التواصل معنا في حال أردت إضافته`;
+        } else {
+            popupMessage.innerHTML = `قد يكون الرمز لقبيلة (<strong>${query}</strong>) غير مضاف حالياً قم بالتواصل معنا لتعريفه وإضافته في المنصة`;
+        }
         popupModal.style.display = "flex";
-        if(contactPopupBtn) contactPopupBtn.onclick = function() {
-          window.location.href = "https://wa.me/967738889982";
-        };
+        if(contactPopupBtn) contactPopupBtn.onclick = function() { window.location.href = "https://wa.me/967738889982"; };
       }
     }
 
-    function showPopupCode(query) {
-      const popupModal = document.getElementById("popupModal");
-      const popupMessage = document.getElementById("popupMessage");
-      if (popupModal && popupMessage) {
-        popupMessage.innerHTML = `قد يكون رمز (<strong>${query}</strong>) يتبع لقبيلة غير مسجلة في المنصة، يمكنك التواصل معنا في حال أردت إضافته`;
-        popupModal.style.display = "flex";
-        if(contactPopupBtn) contactPopupBtn.onclick = function() {
-          window.location.href = "https://wa.me/967738889982";
-        };
-      }
-    }
-
-    // Event Listeners (from original script, with null checks for robustness)
-    if (openSidebar) openSidebar.addEventListener("click", () => { 
-      if(sidebar) sidebar.classList.toggle("active"); 
-      if(hamburger) hamburger.classList.toggle("active"); 
-    });
-    if (closeSidebar) closeSidebar.addEventListener("click", () => { 
-      if(sidebar) sidebar.classList.remove("active"); 
-      if(hamburger) hamburger.classList.remove("active"); 
-    });
-    if (homeLink) homeLink.addEventListener("click", () => {
-      if(sidebar) sidebar.classList.remove("active");
-      if(hamburger) hamburger.classList.remove("active");
-      const containerElement = document.querySelector(".container");
-      if(containerElement) containerElement.scrollIntoView({ behavior: "smooth" });
-    });
-    if (contactLink) contactLink.addEventListener("click", () => { 
-      if(socialContainer) socialContainer.classList.toggle("active"); 
-    });
-    if (aboutLink) aboutLink.addEventListener("click", function(event) { 
-      event.preventDefault(); 
-      fadeOutAndRedirect(this.href); 
-    });
-    if (orderLink) orderLink.addEventListener("click", function(event) { 
-      event.preventDefault(); 
-      fadeOutAndRedirect(this.href); 
-    });
-
-    if (searchInput) searchInput.addEventListener("input", function () {
-      if (searchInput.value.trim().length > 0) {
-        if(inputIcon) inputIcon.style.display = "none";
-        if(clearIcon) clearIcon.style.display = "block";
-      } else {
-        if(inputIcon) inputIcon.style.display = "block";
-        if(clearIcon) clearIcon.style.display = "none";
-      }
-    });
-    if (clearIcon) clearIcon.addEventListener("click", function () {
-      if(searchInput) searchInput.value = "";
-      if(inputIcon) inputIcon.style.display = "block";
-      if(clearIcon) clearIcon.style.display = "none";
-      if(searchInput) searchInput.focus();
-      if(resultDiv) resultDiv.innerHTML = "";
-      if(resultDiv) resultDiv.classList.remove("show");
-    });
-
+    if (openSidebar) openSidebar.addEventListener("click", () => { sidebar.classList.toggle("active"); hamburger.classList.toggle("active"); });
+    if (closeSidebar) closeSidebar.addEventListener("click", () => { sidebar.classList.remove("active"); hamburger.classList.remove("active"); });
+    if (homeLink) homeLink.addEventListener("click", () => { sidebar.classList.remove("active"); hamburger.classList.remove("active"); document.querySelector(".container").scrollIntoView({ behavior: "smooth" }); });
+    if (contactLink) contactLink.addEventListener("click", () => { socialContainer.classList.toggle("active"); });
+    if (aboutLink) aboutLink.addEventListener("click", function(event) { event.preventDefault(); fadeOutAndRedirect(this.href); });
+    if (orderLink) orderLink.addEventListener("click", function(event) { event.preventDefault(); fadeOutAndRedirect(this.href); });
+    if (searchInput) searchInput.addEventListener("input", function () { if (searchInput.value.trim().length > 0) { inputIcon.style.display = "none"; clearIcon.style.display = "block"; } else { inputIcon.style.display = "block"; clearIcon.style.display = "none"; } });
+    if (clearIcon) clearIcon.addEventListener("click", function () { searchInput.value = ""; inputIcon.style.display = "block"; clearIcon.style.display = "none"; searchInput.focus(); resultDiv.innerHTML = ""; resultDiv.classList.remove("show"); });
     if (searchBtn) searchBtn.addEventListener("click", performSearch);
     if (searchInput) searchInput.addEventListener("keydown", function (e) { if (e.key === "Enter") performSearch(); });
+    if (cancelPopupBtn) cancelPopupBtn.addEventListener("click", function() { document.getElementById("popupModal").style.display = "none"; });
+    if (adTelegramBtn) adTelegramBtn.addEventListener("click", function() { window.location.href = "https://wa.me/967738889982"; });
+    faqQuestions.forEach((question) => { question.addEventListener("click", function () { const answer = this.nextElementSibling; const icon = this.querySelector(".faq-icon"); const isActive = this.classList.contains("active"); faqQuestions.forEach(q => { if (q !== this && q.classList.contains("active")) { q.classList.remove("active"); q.nextElementSibling.style.display = "none"; const otherIcon = q.querySelector(".faq-icon"); if (otherIcon) otherIcon.classList.replace("bx-chevron-up", "bx-chevron-down"); } }); if (isActive) { answer.style.display = "none"; this.classList.remove("active"); if (icon) icon.classList.replace("bx-chevron-up", "bx-chevron-down"); } else { answer.style.display = "block"; this.classList.add("active"); if (icon) icon.classList.replace("bx-chevron-down", "bx-chevron-up"); } }); });
 
-    if (cancelPopupBtn) cancelPopupBtn.addEventListener("click", function() {
-      const popupModal = document.getElementById("popupModal");
-      if(popupModal) popupModal.style.display = "none";
-    });
-    if (adTelegramBtn) adTelegramBtn.addEventListener("click", function() {
-      window.location.href = "https://wa.me/967738889982";
-    });
-
-    faqQuestions.forEach((question) => {
-      question.addEventListener("click", function () {
-        const answer = this.nextElementSibling;
-        const icon = this.querySelector(".faq-icon");
-        const isActive = this.classList.contains("active");
-
-        faqQuestions.forEach(q => {
-            if (q !== this && q.classList.contains("active")) {
-                q.classList.remove("active");
-                q.nextElementSibling.style.display = "none";
-                const otherIcon = q.querySelector(".faq-icon");
-                if (otherIcon) otherIcon.classList.replace("bx-chevron-up", "bx-chevron-down");
-            }
-        });
-        
-        if (isActive) {
-          if(answer) answer.style.display = "none";
-          this.classList.remove("active");
-          if (icon) icon.classList.replace("bx-chevron-up", "bx-chevron-down");
-        } else {
-          if(answer) answer.style.display = "block";
-          this.classList.add("active");
-          if (icon) icon.classList.replace("bx-chevron-down", "bx-chevron-up");
-        }
-      });
-    });
-
-    // Perform Search function (uses combinedTribesData)
     function performSearch() {
-      console.log("performSearch called (Hybrid Mode)");
-      if (!searchInput || !resultDiv || !loadingDiv) {
-        console.error("Search UI elements not found!");
-        return;
-      }
-
+      if (!searchInput || !resultDiv || !loadingDiv) return;
       const query = searchInput.value.trim();
-      console.log("Search query:", query);
       if (!query) {
         resultDiv.textContent = "يرجى ملء خانة البحث";
         resultDiv.classList.add("show");
         return;
       }
-      
-      if (window.clicky) {
-        clicky.log("بحث_قبيلة", query);
-      }
-      
+      if (window.clicky) clicky.log("بحث_موقع", query);
       resultDiv.classList.remove("show");
       resultDiv.innerHTML = "";
       loadingDiv.style.display = "flex";
-      console.log("Loading data for search (Hybrid Mode)...");
 
-      if (Object.keys(combinedTribesData).length === 0) {
-          console.warn("combinedTribesData is empty. This might happen if initial load failed or is still in progress. Attempting to reload data.");
-          loadAndMergeData().then(() => {
-              console.log("Data reloaded/merged, proceeding with search.");
-              executeSearchLogic(query);
-          }).catch(error => {
-              console.error("Failed to reload/merge data during search:", error);
+      if (Object.keys(combinedTribesData).length === 0 && tribeInfoData.length === 0) {
+          loadAndMergeData().then(() => executeSearchLogic(query)).catch(error => {
               loadingDiv.style.display = "none";
               resultDiv.textContent = "فشل تحميل البيانات، يرجى المحاولة مرة أخرى.";
               resultDiv.classList.add("show");
           });
       } else {
-          console.log("Using existing combinedTribesData:", JSON.parse(JSON.stringify(combinedTribesData)));
           executeSearchLogic(query);
       }
     }
 
     function executeSearchLogic(query) {
-        const delay = Math.floor(Math.random() * 1000) + 500; 
+        const delay = Math.floor(Math.random() * 1000) + 500;
         setTimeout(function () {
             loadingDiv.style.display = "none";
-            console.log("Executing search logic with query:", query);
-            console.log("Current combinedTribesData for search:", JSON.parse(JSON.stringify(combinedTribesData)));
+            const normalizedQuery = normalizeArabic(query);
+            const historyKeyword = "تاريخ ";
+            const infoKeyword = "معلومات "; // Added another keyword for flexibility
 
-            if (/^\d+$|^(?:[A-Z]-?\d+)$/i.test(query)) {
-              let code = query.toUpperCase();
-              if (/^(?:[A-Z])\d+$/i.test(code)) {
-                code = code.replace(/^(?:([A-Z]))/, "$1-");
-              }
-              if (!combinedTribesData[code] && code.includes("-")) {
-                let codeNoDash = code.replace("-", "");
-                if (combinedTribesData[codeNoDash]) { code = codeNoDash; }
-              }
-              console.log("Searching by code:", code);
-
-              if (combinedTribesData[code]) {
-                console.log("Found by code:", combinedTribesData[code]);
-                if (window.clicky) {
-                  let tribeResult = combinedTribesData[code].map(entry => entry.name).join(", ") + " (" + code + ")";
-                  clicky.log("نتيجة_البحث", tribeResult);
+            if (normalizedQuery.startsWith(normalizeArabic(historyKeyword)) || normalizedQuery.startsWith(normalizeArabic(infoKeyword))) {
+                let tribeNameForHistory = "";
+                if (normalizedQuery.startsWith(normalizeArabic(historyKeyword))) {
+                    tribeNameForHistory = query.substring(historyKeyword.length).trim();
                 }
-                if (combinedTribesData[code].length > 1) {
-                  const table = document.createElement("table");
-                  table.className = "result-table";
-                  const thead = document.createElement("thead");
-                  const headerRow = document.createElement("tr");
-                  const thCode = document.createElement("th");
-                  thCode.textContent = "الرمز";
-                  const thTribes = document.createElement("th");
-                  thTribes.textContent = "القبائل المشتركة";
-                  headerRow.appendChild(thCode);
-                  headerRow.appendChild(thTribes);
-                  thead.appendChild(headerRow);
-                  table.appendChild(thead);
+                else if (normalizedQuery.startsWith(normalizeArabic(infoKeyword))) {
+                    tribeNameForHistory = query.substring(infoKeyword.length).trim();
+                }
+                
+                const normalizedTribeNameForHistory = normalizeArabic(tribeNameForHistory);
+                console.log("Searching for history of:", tribeNameForHistory, "(Normalized:", normalizedTribeNameForHistory, ")");
+                const foundHistory = tribeInfoData.find(info => normalizeArabic(info.name) === normalizedTribeNameForHistory);
 
-                  const tbody = document.createElement("tbody");
-                  const row = document.createElement("tr");
-                  const tdCode = document.createElement("td");
-                  tdCode.textContent = code;
-                  const tdTribes = document.createElement("td");
-                  const tribesNames = combinedTribesData[code].map((entry) => entry.name).join(", ");
-                  tdTribes.textContent = tribesNames;
-                  row.appendChild(tdCode);
-                  row.appendChild(tdTribes);
-                  tbody.appendChild(row);
-                  table.appendChild(tbody);
-                  resultDiv.appendChild(table);
+                if (foundHistory) {
+                    if (window.clicky) clicky.log("نتيجة_بحث_تاريخ", tribeNameForHistory);
+                    const historyBox = document.createElement("div");
+                    historyBox.className = "history-box";
+                    const title = document.createElement("h4");
+                    title.textContent = `معلومات عن قبيلة ${foundHistory.name}`;
+                    historyBox.appendChild(title);
+                    const historyParagraph = document.createElement("p");
+                    historyParagraph.innerHTML = foundHistory.history; // history is already HTML <br>
+                    historyBox.appendChild(historyParagraph);
+                    resultDiv.appendChild(historyBox);
                 } else {
-                  combinedTribesData[code].forEach(function (entry) {
-                    const box = document.createElement("div");
-                    box.className = "tribe-box";
-                    box.textContent = `هذا الرمز ${code} يعود لقبيلة ${entry.name}`;
-                    resultDiv.appendChild(box);
-                  });
+                    resultDiv.textContent = `عفواً، لم يتم العثور على معلومات تاريخية لقبيلة "${tribeNameForHistory}".`;
+                    if (window.clicky) clicky.log("بحث_تاريخ_غير_ناجح", tribeNameForHistory);
+                    setTimeout(() => showPopup(tribeNameForHistory, "history"), 1500);
                 }
-              } else {
-                console.log("Not found by code:", code);
-                let notFoundMsg = "عفواً لم يتم العثور على قبيلة بهذا الرمز";
-                resultDiv.textContent = notFoundMsg;
-                if (window.clicky) {
-                  clicky.log("بحث_غير_ناجح", notFoundMsg);
-                }
-                setTimeout(function(){
-                  showPopupCode(query);
-                }, 2000);
-              }
             } else {
-              const normalizedQuery = normalizeArabic(query);
-              console.log("Searching by name (normalized):", normalizedQuery);
-              let found = false;
-              for (const codeKey in combinedTribesData) {
-                if (combinedTribesData.hasOwnProperty(codeKey)) {
-                    combinedTribesData[codeKey].forEach(function (entry) {
-                    if (normalizeArabic(entry.name).includes(normalizedQuery)) {
-                      found = true;
-                      console.log("Found by name:", entry.name, "with code:", codeKey);
-                      if (window.clicky) {
-                        clicky.log("نتيجة_البحث", entry.name + " (" + codeKey + ")");
-                      }
-                      const box = document.createElement("div");
-                      box.className = "tribe-box";
-                      box.textContent = `${entry.name} رمز القبيلة هو ${codeKey}`;
-                      resultDiv.appendChild(box);
+                // Existing logic for searching by code or tribe name for its symbol
+                if (/^\d+$|^(?:[A-Z]-?\d+)$/i.test(query)) {
+                    let code = query.toUpperCase();
+                    if (/^(?:[A-Z])\d+$/i.test(code)) code = code.replace(/^(?:([A-Z]))/, "$1-");
+                    if (!combinedTribesData[code] && code.includes("-")) { let codeNoDash = code.replace("-", ""); if (combinedTribesData[codeNoDash]) code = codeNoDash; }
+
+                    if (combinedTribesData[code]) {
+                        if (window.clicky) clicky.log("نتيجة_بحث_رمز", combinedTribesData[code].map(e => e.name).join(", ") + " (" + code + ")");
+                        if (combinedTribesData[code].length > 1) {
+                            const table = document.createElement("table"); table.className = "result-table";
+                            const thead = document.createElement("thead"); const hr = document.createElement("tr");
+                            const thc = document.createElement("th"); thc.textContent = "الرمز";
+                            const tht = document.createElement("th"); tht.textContent = "القبائل المشتركة";
+                            hr.appendChild(thc); hr.appendChild(tht); thead.appendChild(hr); table.appendChild(thead);
+                            const tbody = document.createElement("tbody"); const r = document.createElement("tr");
+                            const tdc = document.createElement("td"); tdc.textContent = code;
+                            const tdt = document.createElement("td"); tdt.textContent = combinedTribesData[code].map((entry) => entry.name).join(", ");
+                            r.appendChild(tdc); r.appendChild(tdt); tbody.appendChild(r); table.appendChild(tbody);
+                            resultDiv.appendChild(table);
+                        } else {
+                            combinedTribesData[code].forEach(function (entry) {
+                                const box = document.createElement("div"); box.className = "tribe-box";
+                                box.textContent = `هذا الرمز ${code} يعود لقبيلة ${entry.name}`;
+                                resultDiv.appendChild(box);
+                            });
+                        }
+                    } else {
+                        resultDiv.textContent = "عفواً لم يتم العثور على قبيلة بهذا الرمز";
+                        if (window.clicky) clicky.log("بحث_رمز_غير_ناجح", query);
+                        setTimeout(() => showPopup(query, "code"), 1500);
                     }
-                  });
+                } else {
+                    let found = false;
+                    for (const codeKey in combinedTribesData) {
+                        if (combinedTribesData.hasOwnProperty(codeKey)) {
+                            combinedTribesData[codeKey].forEach(function (entry) {
+                                if (normalizeArabic(entry.name).includes(normalizedQuery)) {
+                                    found = true;
+                                    if (window.clicky) clicky.log("نتيجة_بحث_اسم", entry.name + " (" + codeKey + ")");
+                                    const box = document.createElement("div"); box.className = "tribe-box";
+                                    box.textContent = `${entry.name} رمز القبيلة هو ${codeKey}`;
+                                    resultDiv.appendChild(box);
+                                }
+                            });
+                        }
+                    }
+                    if (!found) {
+                        resultDiv.textContent = "عفواً لم يتم العثور على رمز لهذه القبيلة";
+                        if (window.clicky) clicky.log("بحث_اسم_غير_ناجح", query);
+                        setTimeout(() => showPopup(query, "tribe"), 1500);
+                    }
                 }
-              }
-              if (!found) {
-                console.log("Not found by name:", normalizedQuery);
-                let notFoundMsg = "عفواً لم يتم العثور على رمز لهذه القبيلة";
-                resultDiv.textContent = notFoundMsg;
-                if (window.clicky) {
-                  clicky.log("بحث_غير_ناجح", notFoundMsg);
-                }
-                if (!/^\d+$|^(?:[A-Z]-?\d+)$/i.test(query)) {
-                  setTimeout(function() {
-                    showPopup(query);
-                  }, 2000);
-                }
-              }
             }
             resultDiv.classList.add("show");
         }, delay);
     }
 
-    // Function to load data from Firebase AND MERGE with hardcoded list
     async function loadAndMergeData() {
-      console.log("loadAndMergeData called - Hybrid Mode");
-      let firebaseFetchedData = {};
-      try {
-        const tribesCollectionRef = collection(db, "tribes");
-        console.log("Fetching documents from 'tribes' collection (Firebase)...NOTICE: This will be merged with hardcoded list.");
-        const querySnapshot = await getDocs(tribesCollectionRef);
-        console.log(`Fetched ${querySnapshot.size} documents from 'tribes' (Firebase).`);
-        
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          const code = data.code; // Assuming code is stored directly as key
-          const name = data.name;
-          if (code && name) {
-              if (!firebaseFetchedData[code]) {
-                  firebaseFetchedData[code] = [];
-              }
-              // Avoid duplicate names for the same code from Firebase itself
-              if (!firebaseFetchedData[code].some(entry => entry.name === name)) {
-                 firebaseFetchedData[code].push({ name: name });
-              }
-              console.log(`Fetched from Firebase: Code=${code}, Name=${name}`);
-          } else {
-            console.warn("Firebase document missing code or name:", doc.id, data);
-          }
-        });
-        console.log("Firebase data fetched successfully for merging:", JSON.parse(JSON.stringify(firebaseFetchedData)));
+        let firebaseFetchedTribes = {};
+        try {
+            const tribesCollectionRef = collection(db, "tribes");
+            const querySnapshot = await getDocs(tribesCollectionRef);
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if (data.code && data.name) {
+                    if (!firebaseFetchedTribes[data.code]) firebaseFetchedTribes[data.code] = [];
+                    if (!firebaseFetchedTribes[data.code].some(e => e.name === data.name)) firebaseFetchedTribes[data.code].push({ name: data.name });
+                }
+            });
+        } catch (error) {
+            console.error("فشل تحميل رموز القبائل من Firebase:", error);
+        }
 
-      } catch (error) {
-        console.error("فشل تحميل البيانات من Firebase (سيتم الاعتماد على القائمة الثابتة فقط إذا لم يتم تحميلها مسبقاً):", error);
-        // If Firebase fails, combinedTribesData will rely on hardcodedTribes if it's the first load
-        // or retain its current state if this is a reload attempt during search.
-      }
+        let newMergedData = JSON.parse(JSON.stringify(hardcodedTribes));
+        for (const codeKey in firebaseFetchedTribes) {
+            if (firebaseFetchedTribes.hasOwnProperty(codeKey)) {
+                newMergedData[codeKey] = firebaseFetchedTribes[codeKey];
+            }
+        }
+        combinedTribesData = newMergedData;
+        console.log("بيانات رموز القبائل المدمجة جاهزة:", Object.keys(combinedTribesData).length, "رموز.");
 
-      // Merge Firebase data with hardcoded data
-      // Start with a deep copy of hardcodedTribes to ensure it's always part of the base
-      let newMergedData = JSON.parse(JSON.stringify(hardcodedTribes));
-      console.log("Starting merge with (deep copy of) hardcoded data:", JSON.parse(JSON.stringify(newMergedData)));
-
-      // Overlay Firebase data. Firebase data takes precedence for any given code.
-      for (const codeKey in firebaseFetchedData) {
-          if (firebaseFetchedData.hasOwnProperty(codeKey)) {
-              // If code exists in hardcoded, Firebase names for that code will replace entirely.
-              // If code does not exist in hardcoded, it will be added from Firebase.
-              newMergedData[codeKey] = firebaseFetchedData[codeKey]; 
-              console.log(`Merged/Overwritten code ${codeKey} with Firebase data:`, firebaseFetchedData[codeKey]);
-          }
-      }
-      
-      combinedTribesData = newMergedData;
-      console.log("بيانات رموز القبائل المدمجة (Firebase + ثابتة) جاهزة. البيانات النهائية:", JSON.parse(JSON.stringify(combinedTribesData)));
-
-      // Load history data (kept as is, assuming it's separate and not merged with tribes)
-      tribeInfoData.length = 0; // Clear previous history data
-      try {
-        const historyCollectionRef = collection(db, "histories");
-        const historySnapshot = await getDocs(historyCollectionRef);
-        historySnapshot.forEach((doc) => {
-          const data = doc.data();
-          if(data.name && data.history){
-            tribeInfoData.push({ name: data.name, history: data.history.replace(/\n/g, "<br>") });
-          }
-        });
-        console.log("تم تحميل بيانات تاريخ القبائل من Firebase (منفصلة):", tribeInfoData);
-      } catch (historyError) {
-        console.error("فشل تحميل بيانات تاريخ القبائل من Firebase:", historyError);
-      }
+        tribeInfoData.length = 0;
+        try {
+            const historyCollectionRef = collection(db, "histories");
+            const historySnapshot = await getDocs(historyCollectionRef);
+            historySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if(data.name && data.history) tribeInfoData.push({ name: data.name, history: data.history.replace(/\n/g, "<br>") });
+            });
+            console.log("تم تحميل بيانات تاريخ القبائل:", tribeInfoData.length, "إدخالات.");
+        } catch (historyError) {
+            console.error("فشل تحميل بيانات تاريخ القبائل:", historyError);
+        }
     }
 
-    // Load data when DOM is ready
     window.addEventListener("DOMContentLoaded", async () => {
-      console.log("DOMContentLoaded event fired. Initializing data load (Hybrid Mode).");
-      try {
         await loadAndMergeData();
-        console.log("Initial data load and merge complete on DOMContentLoaded.");
-      } catch (error) {
-        console.error("Error during initial data load/merge on DOMContentLoaded:", error);
-      }
     });
   </script>
-
 </body>
 </html>
 
