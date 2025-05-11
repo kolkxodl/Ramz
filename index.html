@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>الباحث في رموز القبائل</title>
+  <title>الباحث في رموز القبائل (نسخة مدمجة)</title>
   <!-- خط IBM Plex Sans Arabic -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -711,52 +711,11 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    console.log("Firebase App initialized:", app);
+    console.log("Firestore DB instance:", db);
 
-    // Data stores
-    let tribesDataFromFirebase = {};
-    let tribeInfoData = []; // For history data, if used
-
-    // UI Elements (from original script)
-    const searchBtn = document.getElementById("searchBtn");
-    const searchInput = document.getElementById("searchInput");
-    const resultDiv = document.getElementById("result");
-    const loadingDiv = document.getElementById("loading");
-    const inputIcon = document.querySelector(".input-icon"); // Original selector
-    const clearIcon = document.getElementById("clearBtn");
-
-    const openSidebar = document.getElementById("openSidebar");
-    const closeSidebar = document.getElementById("closeSidebar");
-    const sidebar = document.getElementById("sidebar");
-    const hamburger = document.querySelector(".hamburger");
-    const homeLink = document.getElementById("homeLink");
-    const orderLink = document.getElementById("orderLink");
-    const contactLink = document.getElementById("contactLink");
-    const socialContainer = document.getElementById("socialContainer");
-    const aboutLink = document.getElementById("aboutLink");
-    const adTelegramBtn = document.getElementById("adTelegramBtn");
-    const cancelPopupBtn = document.getElementById("cancelBtn");
-    const contactPopupBtn = document.getElementById("contactBtn");
-    const faqQuestions = document.querySelectorAll(".faq-question");
-
-    // Helper functions (from original script)
-    function fadeOutAndRedirect(url) {
-      document.body.classList.add('fade-out');
-      setTimeout(function() {
-        window.location.href = url;
-      }, 500);
-    }
-
-    function normalizeArabic(text) {
-      return text
-        .toLowerCase()
-        .replace(/[إأآا]/g, "ا")
-        .replace(/ة/g, "ه")
-        .replace(/[ىئ]/g, "ي")
-        .replace(/[\u064B-\u0652]/g, "")
-        .trim();
-    }
-
-    const tribes = {
+    // --- قائمة القبائل الثابتة ---
+    const hardcodedTribes = {
       "715": [{ name: "لقموش" }],
       "202": [{ name: "ردفان" }],
       "917": [{ name: "العوالق" }],
@@ -812,9 +771,9 @@
         { name: "خولان" }, 
         { name: "الجبره" }
       ],
-      "909": [{ name: "بلحمر" }],
+      "909": [{ name: "بلحمر" }], // Note: 909 appears twice in original, will be overwritten by later one if keys are identical in JS object literal.
       "305": [{ name: "مطير" }],
-      "518": [{ name: "جهينه" }],
+      "518": [{ name: "جهينه" }, { name: "اللحوين" }], // Merged 518 from original list
       "607": [
         { name: "عليان" },
         { name: "خثعم" }
@@ -833,7 +792,8 @@
         { name: "قريش" },
         { name: "الاشراف" },
         { name: "بني هاشم" },
-        { name: "سليم" }
+        { name: "سليم" },
+        { name: "النعيم" } // Merged 515 from original list
       ],
       "808": [{ name: "تليد" }],
       "A-10": [{ name: "العميرة" }],
@@ -870,8 +830,8 @@
       ],
       "B-52": [{ name: "عنزه" }],
       "108": [{ name: "الجنيبي" }],
-      "518": [{ name: "اللحوين" }],
-      "515": [{ name: "النعيم" }],
+      // "518": [{ name: "اللحوين" }], // Already merged above
+      // "515": [{ name: "النعيم" }], // Already merged above
       "F-15": [{ name: "حرب" }],
       "555": [{ name: "شمر" }],
       "B-79": [{ name: "بني عطية" }],
@@ -891,20 +851,20 @@
         { name: "بني زيد" }
       ],
       "705": [
-{ name: "بني هلال" }, 
-{ name: "ال باجري" }
-], 
+        { name: "بني هلال" }, 
+        { name: "ال باجري" }
+      ], 
       "110": [
         { name: "الرصاص" },
         { name: "المناهيل" }
       ],
       "809": [{ name: "سيبان" }],
       "512": [
-        { name: "ال كثير" },
+        { name: "ال كثير" }, // Note: "ال كثير" appears for multiple codes
         { name: "بني لام" },
         { name: "فهم" }
       ],
-      "919": [{ name: "ال بريك" }],
+      "919": [{ name: "ال بريك" }], // Note: "ال بريك" appears for multiple codes
       "888": [{ name: "ال بكمي" }],
       "714": [{ name: "حمّير" }],
       "517": [{ name: "المشاجر" }],
@@ -912,11 +872,11 @@
       "604": [{ name: "المصعبين" }],
       "910": [{ name: "ال بريك" }],
       "F-14": [{ name: "الكرب" }],
-      "712": [{ name: "نوح" },
-      { name: "سعد الظالمة" },
-     { name: "شرعب" }
-             
-             ],
+      "712": [
+        { name: "نوح" },
+        { name: "سعد الظالمة" },
+        { name: "شرعب" }
+      ],
       "771": [{ name: "وصاب" }],
       "720": [{ name: "العواذل" }],
       "539": [{ name: "جهم" }],
@@ -932,11 +892,9 @@
       ],
       "510": [{ name: "السودي" }],
       "909": [
-{ name: "الحدد" },
-{ name: "الحداد" }
-],
-
-
+        { name: "الحدد" }, // This will overwrite the earlier "909": [{ name: "بلحمر" }] due to JS object literal behavior
+        { name: "الحداد" }
+      ],
       "109": [{ name: "المناصير" }],
       "553": [{ name: "الظفري" }],
       "212": [{ name: "الانصار" }],
@@ -948,7 +906,51 @@
       "55": [{ name: "ال مره" }],
       "L-82": [{ name: "المساعيد" }]
     };
+    console.log("Hardcoded tribes list initialized:", JSON.parse(JSON.stringify(hardcodedTribes)));
 
+    // Data stores
+    let combinedTribesData = {}; // This will hold the MERGED data
+    let tribeInfoData = []; // For history data, if used
+
+    // UI Elements (from original script)
+    const searchBtn = document.getElementById("searchBtn");
+    const searchInput = document.getElementById("searchInput");
+    const resultDiv = document.getElementById("result");
+    const loadingDiv = document.getElementById("loading");
+    const inputIcon = document.querySelector(".input-icon"); 
+    const clearIcon = document.getElementById("clearBtn");
+
+    const openSidebar = document.getElementById("openSidebar");
+    const closeSidebar = document.getElementById("closeSidebar");
+    const sidebar = document.getElementById("sidebar");
+    const hamburger = document.querySelector(".hamburger");
+    const homeLink = document.getElementById("homeLink");
+    const orderLink = document.getElementById("orderLink");
+    const contactLink = document.getElementById("contactLink");
+    const socialContainer = document.getElementById("socialContainer");
+    const aboutLink = document.getElementById("aboutLink");
+    const adTelegramBtn = document.getElementById("adTelegramBtn");
+    const cancelPopupBtn = document.getElementById("cancelBtn");
+    const contactPopupBtn = document.getElementById("contactBtn");
+    const faqQuestions = document.querySelectorAll(".faq-question");
+
+    // Helper functions (from original script)
+    function fadeOutAndRedirect(url) {
+      document.body.classList.add("fade-out");
+      setTimeout(function() {
+        window.location.href = url;
+      }, 500);
+    }
+
+    function normalizeArabic(text) {
+      return text
+        .toLowerCase()
+        .replace(/[إأآا]/g, "ا")
+        .replace(/ة/g, "ه")
+        .replace(/[ىئ]/g, "ي")
+        .replace(/[\u064B-\u0652]/g, "")
+        .trim();
+    }
     
     function showPopup(query) {
       const popupModal = document.getElementById("popupModal");
@@ -1036,7 +1038,6 @@
         const icon = this.querySelector(".faq-icon");
         const isActive = this.classList.contains("active");
 
-        // Close other active FAQs
         faqQuestions.forEach(q => {
             if (q !== this && q.classList.contains("active")) {
                 q.classList.remove("active");
@@ -1058,11 +1059,16 @@
       });
     });
 
-    // Perform Search function (MODIFIED to use tribesDataFromFirebase)
+    // Perform Search function (uses combinedTribesData)
     function performSearch() {
-      if (!searchInput || !resultDiv || !loadingDiv) return; // Ensure elements exist
+      console.log("performSearch called (Hybrid Mode)");
+      if (!searchInput || !resultDiv || !loadingDiv) {
+        console.error("Search UI elements not found!");
+        return;
+      }
 
       const query = searchInput.value.trim();
+      console.log("Search query:", query);
       if (!query) {
         resultDiv.textContent = "يرجى ملء خانة البحث";
         resultDiv.classList.add("show");
@@ -1070,157 +1076,195 @@
       }
       
       if (window.clicky) {
-        clicky.log('بحث_قبيلة', query);
+        clicky.log("بحث_قبيلة", query);
       }
       
       resultDiv.classList.remove("show");
       resultDiv.innerHTML = "";
       loadingDiv.style.display = "flex";
+      console.log("Loading data for search (Hybrid Mode)...");
 
-      const delay = Math.floor(Math.random() * 2000) + 3000;
-      setTimeout(function () {
-        loadingDiv.style.display = "none";
-        if (/^\d+$|^(?:[A-Z]-?\d+)$/i.test(query)) {
-          let code = query.toUpperCase();
-          if (/^(?:[A-Z])\d+$/i.test(code)) {
-            code = code.replace(/^(?:([A-Z]))/, "$1-");
-          }
-          if (!tribesDataFromFirebase[code] && code.includes("-")) {
-            let codeNoDash = code.replace("-", "");
-            if (tribesDataFromFirebase[codeNoDash]) { code = codeNoDash; }
-          }
-
-          if (tribesDataFromFirebase[code]) {
-            if (window.clicky) {
-              let tribeResult = tribesDataFromFirebase[code].map(entry => entry.name).join("، ") + " (" + code + ")";
-              clicky.log('نتيجة_البحث', tribeResult);
-            }
-            if (tribesDataFromFirebase[code].length > 1) {
-              const table = document.createElement("table");
-              table.className = "result-table";
-              const thead = document.createElement("thead");
-              const headerRow = document.createElement("tr");
-              const thCode = document.createElement("th");
-              thCode.textContent = "الرمز";
-              const thTribes = document.createElement("th");
-              thTribes.textContent = "القبائل المشتركة";
-              headerRow.appendChild(thCode);
-              headerRow.appendChild(thTribes);
-              thead.appendChild(headerRow);
-              table.appendChild(thead);
-
-              const tbody = document.createElement("tbody");
-              const row = document.createElement("tr");
-              const tdCode = document.createElement("td");
-              tdCode.textContent = code;
-              const tdTribes = document.createElement("td");
-              const tribesNames = tribesDataFromFirebase[code].map((entry) => entry.name).join("، ");
-              tdTribes.textContent = tribesNames;
-              row.appendChild(tdCode);
-              row.appendChild(tdTribes);
-              tbody.appendChild(row);
-              table.appendChild(tbody);
-              resultDiv.appendChild(table);
-            } else {
-              tribesDataFromFirebase[code].forEach(function (entry) {
-                const box = document.createElement("div");
-                box.className = "tribe-box";
-                box.textContent = `هذا الرمز ${code} يعود لقبيلة ${entry.name}`;
-                if (code === "512" && entry.name === "ال كثير") {
-                  const desc = document.createElement("div");
-                  desc.className = "tribe-description";
-                  desc.textContent = "(ال كثير بني لام)";
-                  box.appendChild(desc);
-                }
-                if (code === "S300" && entry.name === "ال كثير") { // Corrected: was S300, not just S300
-                  const desc = document.createElement("div");
-                  desc.className = "tribe-description";
-                  desc.textContent = "(ال كثير همدان)";
-                  box.appendChild(desc);
-                }
-                resultDiv.appendChild(box);
-              });
-            }
-          } else {
-            let notFoundMsg = "عفواً لم يتم العثور على قبيلة بهذا الرمز";
-            resultDiv.textContent = notFoundMsg;
-            if (window.clicky) {
-              clicky.log('بحث_غير_ناجح', notFoundMsg);
-            }
-            setTimeout(function(){
-              showPopupCode(query);
-            }, 2000);
-          }
-        } else {
-          const normalizedQuery = normalizeArabic(query);
-          let found = false;
-          for (const codeKey in tribesDataFromFirebase) {
-            if (tribesDataFromFirebase.hasOwnProperty(codeKey)) {
-                tribesDataFromFirebase[codeKey].forEach(function (entry) {
-                if (normalizeArabic(entry.name).includes(normalizedQuery)) {
-                  found = true;
-                  if (window.clicky) {
-                    clicky.log('نتيجة_البحث', entry.name + " (" + codeKey + ")");
-                  }
-                  const box = document.createElement("div");
-                  box.className = "tribe-box";
-                  box.textContent = `${entry.name} رمز القبيلة هو ${codeKey}`;
-                  if (codeKey === "512" && entry.name === "ال كثير") {
-                    const desc = document.createElement("div");
-                    desc.className = "tribe-description";
-                    desc.textContent = "(ال كثير بني لام)";
-                    box.appendChild(desc);
-                  }
-                  if (codeKey === "S300" && entry.name === "ال كثير") {
-                    const desc = document.createElement("div");
-                    desc.className = "tribe-description";
-                    desc.textContent = "(ال كثير همدان)";
-                    box.appendChild(desc);
-                  }
-                  resultDiv.appendChild(box);
-                }
-              });
-            }
-          }
-          if (!found) {
-            let notFoundMsg = "عفواً لم يتم العثور على رمز لهذه القبيلة";
-            resultDiv.textContent = notFoundMsg;
-            if (window.clicky) {
-              clicky.log('بحث_غير_ناجح', notFoundMsg);
-            }
-            if (!/^\d+$|^(?:[A-Z]-?\d+)$/i.test(query)) {
-              setTimeout(function() {
-                showPopup(query);
-              }, 2000);
-            }
-          }
-        }
-        resultDiv.classList.add("show");
-      }, delay);
+      if (Object.keys(combinedTribesData).length === 0) {
+          console.warn("combinedTribesData is empty. This might happen if initial load failed or is still in progress. Attempting to reload data.");
+          loadAndMergeData().then(() => {
+              console.log("Data reloaded/merged, proceeding with search.");
+              executeSearchLogic(query);
+          }).catch(error => {
+              console.error("Failed to reload/merge data during search:", error);
+              loadingDiv.style.display = "none";
+              resultDiv.textContent = "فشل تحميل البيانات، يرجى المحاولة مرة أخرى.";
+              resultDiv.classList.add("show");
+          });
+      } else {
+          console.log("Using existing combinedTribesData:", JSON.parse(JSON.stringify(combinedTribesData)));
+          executeSearchLogic(query);
+      }
     }
 
-    // Function to load data from Firebase
-    async function loadFirebaseData() {
+    function executeSearchLogic(query) {
+        const delay = Math.floor(Math.random() * 1000) + 500; 
+        setTimeout(function () {
+            loadingDiv.style.display = "none";
+            console.log("Executing search logic with query:", query);
+            console.log("Current combinedTribesData for search:", JSON.parse(JSON.stringify(combinedTribesData)));
+
+            if (/^\d+$|^(?:[A-Z]-?\d+)$/i.test(query)) {
+              let code = query.toUpperCase();
+              if (/^(?:[A-Z])\d+$/i.test(code)) {
+                code = code.replace(/^(?:([A-Z]))/, "$1-");
+              }
+              if (!combinedTribesData[code] && code.includes("-")) {
+                let codeNoDash = code.replace("-", "");
+                if (combinedTribesData[codeNoDash]) { code = codeNoDash; }
+              }
+              console.log("Searching by code:", code);
+
+              if (combinedTribesData[code]) {
+                console.log("Found by code:", combinedTribesData[code]);
+                if (window.clicky) {
+                  let tribeResult = combinedTribesData[code].map(entry => entry.name).join(", ") + " (" + code + ")";
+                  clicky.log("نتيجة_البحث", tribeResult);
+                }
+                if (combinedTribesData[code].length > 1) {
+                  const table = document.createElement("table");
+                  table.className = "result-table";
+                  const thead = document.createElement("thead");
+                  const headerRow = document.createElement("tr");
+                  const thCode = document.createElement("th");
+                  thCode.textContent = "الرمز";
+                  const thTribes = document.createElement("th");
+                  thTribes.textContent = "القبائل المشتركة";
+                  headerRow.appendChild(thCode);
+                  headerRow.appendChild(thTribes);
+                  thead.appendChild(headerRow);
+                  table.appendChild(thead);
+
+                  const tbody = document.createElement("tbody");
+                  const row = document.createElement("tr");
+                  const tdCode = document.createElement("td");
+                  tdCode.textContent = code;
+                  const tdTribes = document.createElement("td");
+                  const tribesNames = combinedTribesData[code].map((entry) => entry.name).join(", ");
+                  tdTribes.textContent = tribesNames;
+                  row.appendChild(tdCode);
+                  row.appendChild(tdTribes);
+                  tbody.appendChild(row);
+                  table.appendChild(tbody);
+                  resultDiv.appendChild(table);
+                } else {
+                  combinedTribesData[code].forEach(function (entry) {
+                    const box = document.createElement("div");
+                    box.className = "tribe-box";
+                    box.textContent = `هذا الرمز ${code} يعود لقبيلة ${entry.name}`;
+                    resultDiv.appendChild(box);
+                  });
+                }
+              } else {
+                console.log("Not found by code:", code);
+                let notFoundMsg = "عفواً لم يتم العثور على قبيلة بهذا الرمز";
+                resultDiv.textContent = notFoundMsg;
+                if (window.clicky) {
+                  clicky.log("بحث_غير_ناجح", notFoundMsg);
+                }
+                setTimeout(function(){
+                  showPopupCode(query);
+                }, 2000);
+              }
+            } else {
+              const normalizedQuery = normalizeArabic(query);
+              console.log("Searching by name (normalized):", normalizedQuery);
+              let found = false;
+              for (const codeKey in combinedTribesData) {
+                if (combinedTribesData.hasOwnProperty(codeKey)) {
+                    combinedTribesData[codeKey].forEach(function (entry) {
+                    if (normalizeArabic(entry.name).includes(normalizedQuery)) {
+                      found = true;
+                      console.log("Found by name:", entry.name, "with code:", codeKey);
+                      if (window.clicky) {
+                        clicky.log("نتيجة_البحث", entry.name + " (" + codeKey + ")");
+                      }
+                      const box = document.createElement("div");
+                      box.className = "tribe-box";
+                      box.textContent = `${entry.name} رمز القبيلة هو ${codeKey}`;
+                      resultDiv.appendChild(box);
+                    }
+                  });
+                }
+              }
+              if (!found) {
+                console.log("Not found by name:", normalizedQuery);
+                let notFoundMsg = "عفواً لم يتم العثور على رمز لهذه القبيلة";
+                resultDiv.textContent = notFoundMsg;
+                if (window.clicky) {
+                  clicky.log("بحث_غير_ناجح", notFoundMsg);
+                }
+                if (!/^\d+$|^(?:[A-Z]-?\d+)$/i.test(query)) {
+                  setTimeout(function() {
+                    showPopup(query);
+                  }, 2000);
+                }
+              }
+            }
+            resultDiv.classList.add("show");
+        }, delay);
+    }
+
+    // Function to load data from Firebase AND MERGE with hardcoded list
+    async function loadAndMergeData() {
+      console.log("loadAndMergeData called - Hybrid Mode");
+      let firebaseFetchedData = {};
       try {
         const tribesCollectionRef = collection(db, "tribes");
+        console.log("Fetching documents from 'tribes' collection (Firebase)...NOTICE: This will be merged with hardcoded list.");
         const querySnapshot = await getDocs(tribesCollectionRef);
-        let tempData = {};
+        console.log(`Fetched ${querySnapshot.size} documents from 'tribes' (Firebase).`);
+        
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const code = data.code;
+          const code = data.code; // Assuming code is stored directly as key
           const name = data.name;
           if (code && name) {
-              if (!tempData[code]) {
-                  tempData[code] = [];
+              if (!firebaseFetchedData[code]) {
+                  firebaseFetchedData[code] = [];
               }
-              tempData[code].push({ name: name });
+              // Avoid duplicate names for the same code from Firebase itself
+              if (!firebaseFetchedData[code].some(entry => entry.name === name)) {
+                 firebaseFetchedData[code].push({ name: name });
+              }
+              console.log(`Fetched from Firebase: Code=${code}, Name=${name}`);
+          } else {
+            console.warn("Firebase document missing code or name:", doc.id, data);
           }
         });
-        tribesDataFromFirebase = tempData;
-        console.log("تم تحميل بيانات رموز القبائل من Firebase بنجاح:", tribesDataFromFirebase);
+        console.log("Firebase data fetched successfully for merging:", JSON.parse(JSON.stringify(firebaseFetchedData)));
 
-        // Load history data
-        tribeInfoData.length = 0; // Clear previous data
+      } catch (error) {
+        console.error("فشل تحميل البيانات من Firebase (سيتم الاعتماد على القائمة الثابتة فقط إذا لم يتم تحميلها مسبقاً):", error);
+        // If Firebase fails, combinedTribesData will rely on hardcodedTribes if it's the first load
+        // or retain its current state if this is a reload attempt during search.
+      }
+
+      // Merge Firebase data with hardcoded data
+      // Start with a deep copy of hardcodedTribes to ensure it's always part of the base
+      let newMergedData = JSON.parse(JSON.stringify(hardcodedTribes));
+      console.log("Starting merge with (deep copy of) hardcoded data:", JSON.parse(JSON.stringify(newMergedData)));
+
+      // Overlay Firebase data. Firebase data takes precedence for any given code.
+      for (const codeKey in firebaseFetchedData) {
+          if (firebaseFetchedData.hasOwnProperty(codeKey)) {
+              // If code exists in hardcoded, Firebase names for that code will replace entirely.
+              // If code does not exist in hardcoded, it will be added from Firebase.
+              newMergedData[codeKey] = firebaseFetchedData[codeKey]; 
+              console.log(`Merged/Overwritten code ${codeKey} with Firebase data:`, firebaseFetchedData[codeKey]);
+          }
+      }
+      
+      combinedTribesData = newMergedData;
+      console.log("بيانات رموز القبائل المدمجة (Firebase + ثابتة) جاهزة. البيانات النهائية:", JSON.parse(JSON.stringify(combinedTribesData)));
+
+      // Load history data (kept as is, assuming it's separate and not merged with tribes)
+      tribeInfoData.length = 0; // Clear previous history data
+      try {
         const historyCollectionRef = collection(db, "histories");
         const historySnapshot = await getDocs(historyCollectionRef);
         historySnapshot.forEach((doc) => {
@@ -1229,20 +1273,21 @@
             tribeInfoData.push({ name: data.name, history: data.history.replace(/\n/g, "<br>") });
           }
         });
-        console.log("تم تحميل بيانات تاريخ القبائل من Firebase:", tribeInfoData);
-
-      } catch (error) {
-        console.error("فشل تحميل البيانات من Firebase:", error);
-        if (resultDiv) {
-          resultDiv.textContent = "حدث خطأ أثناء تحميل بيانات القبائل. يرجى المحاولة مرة أخرى لاحقًا.";
-          resultDiv.classList.add("show");
-        }
+        console.log("تم تحميل بيانات تاريخ القبائل من Firebase (منفصلة):", tribeInfoData);
+      } catch (historyError) {
+        console.error("فشل تحميل بيانات تاريخ القبائل من Firebase:", historyError);
       }
     }
 
     // Load data when DOM is ready
     window.addEventListener("DOMContentLoaded", async () => {
-      await loadFirebaseData();
+      console.log("DOMContentLoaded event fired. Initializing data load (Hybrid Mode).");
+      try {
+        await loadAndMergeData();
+        console.log("Initial data load and merge complete on DOMContentLoaded.");
+      } catch (error) {
+        console.error("Error during initial data load/merge on DOMContentLoaded:", error);
+      }
     });
   </script>
 
