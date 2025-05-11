@@ -157,6 +157,12 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
       margin-top: 10px;
     }
+    button.submit-btn.delete-btn {
+        background: linear-gradient(90deg, #c0392b, #e74c3c);
+    }
+    button.submit-btn.delete-btn:hover {
+        background: linear-gradient(90deg, #a52a2a, #c0392b);
+    }
     button.submit-btn:hover {
       background: linear-gradient(90deg, #b87333, #c8a070);
     }
@@ -200,8 +206,9 @@
 
   <div id="dashboard">
     <div class="sidebar">
-      <a href="#" onclick="showSection('code', this)" class="active">إضافة رمز قبيلة</a>
-      <a href="#" onclick="showSection('history', this)">إضافة معلومات القبيلة</a>
+      <a href="#" onclick="showSection(\'code\', this)" class="active">إضافة رمز قبيلة</a>
+      <a href="#" onclick="showSection(\'history\', this)">إضافة معلومات القبيلة</a>
+      <a href="#" onclick="showSection(\'delete\', this)">حذف قبيلة</a>
     </div>
     <div class="content">
       <h2>مرحباً بك في لوحة التحكم</h2>
@@ -221,18 +228,24 @@
         <textarea id="tribeHistory" rows="5"></textarea>
         <button class="submit-btn" onclick="addHistory()"><i class="bx bx-plus-circle"></i> إضافة المعلومات</button>
       </div>
+      <div id="section-delete" class="form-section" style="display:none;">
+        <h3>حذف قبيلة</h3>
+        <label for="tribeIdentifier">اسم القبيلة أو رمزها:</label>
+        <input type="text" id="tribeIdentifier" placeholder="أدخل اسم القبيلة أو رمزها هنا">
+        <button class="submit-btn delete-btn" onclick="deleteTribe()"><i class="bx bx-trash"></i> حذف القبيلة</button>
+      </div>
     </div>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDGLwl69D9W5c03G5WsfU8pahvVHL4zKzs",
       authDomain: "tribes-project-18d2b.firebaseapp.com",
       projectId: "tribes-project-18d2b",
-      storageBucket: "tribes-project-18d2b.appspot.com", // Corrected: .appspot.com
+      storageBucket: "tribes-project-18d2b.appspot.com",
       messagingSenderId: "375771927234",
       appId: "1:375771927234:web:5fa0ec96fd9c80fce7615b"
     };
@@ -246,7 +259,7 @@
       if (username === "Sahm" && password === "na1000856") {
         document.getElementById("login-screen").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
-        showSection('code', document.querySelector('.sidebar a')); // Activate first link
+        showSection(\'code\', document.querySelector(".sidebar a[onclick*=\\'code\\']"));
       } else {
         alert("بيانات الدخول غير صحيحة!");
       }
@@ -261,9 +274,10 @@
     window.showSection = function(section, element) {
       document.getElementById("section-code").style.display = section === "code" ? "block" : "none";
       document.getElementById("section-history").style.display = section === "history" ? "block" : "none";
+      document.getElementById("section-delete").style.display = section === "delete" ? "block" : "none";
       
-      document.querySelectorAll('.sidebar a').forEach(el => el.classList.remove('active'));
-      if(element) element.classList.add('active');
+      document.querySelectorAll(\.sidebar a\').forEach(el => el.classList.remove(\'active\'));
+      if(element) element.classList.add(\'active\');
     }
 
     window.addCode = async function() {
@@ -291,7 +305,7 @@
       if (!name || !history) return alert("يرجى ملء جميع الحقول الخاصة بمعلومات القبيلة.");
       try {
         const docRef = await addDoc(collection(db, "histories"), {
-          name: name, // This should match a name in the 'tribes' collection for linking
+          name: name, 
           history: history.replace(/\n/g, "<br>"),
           timestamp: serverTimestamp()
         });
@@ -303,6 +317,56 @@
         alert(`فشلت إضافة معلومات القبيلة. الخطأ: ${e.message}`);
       }
     }
+
+    window.deleteTribe = async function() {
+      const identifier = document.getElementById("tribeIdentifier").value.trim();
+      if (!identifier) return alert("يرجى إدخال اسم القبيلة أو رمزها للحذف.");
+
+      const confirmation = confirm(`هل أنت متأكد أنك تريد حذف القبيلة/الرمز: "${identifier}"؟ هذا الإجراء لا يمكن التراجع عنه.`);
+      if (!confirmation) return;
+
+      try {
+        let deletedCount = 0;
+        const tribesRef = collection(db, "tribes");
+        
+        // Try deleting by code first (assuming codes are more unique or primary)
+        const qByCode = query(tribesRef, where("code", "==", identifier.toUpperCase()));
+        const snapshotByCode = await getDocs(qByCode);
+        
+        const batch = writeBatch(db);
+
+        if (!snapshotByCode.empty) {
+          snapshotByCode.forEach(doc => {
+            batch.delete(doc.ref);
+            deletedCount++;
+          });
+        } else {
+          // If not found by code, try by name
+          const qByName = query(tribesRef, where("name", "==", identifier));
+          const snapshotByName = await getDocs(qByName);
+          if (!snapshotByName.empty) {
+            snapshotByName.forEach(doc => {
+              batch.delete(doc.ref);
+              deletedCount++;
+            });
+          } 
+        }
+
+        if (deletedCount > 0) {
+          await batch.commit();
+          alert(`تم حذف ${deletedCount} سجل بنجاح بناءً على المعرف: "${identifier}".`);
+          document.getElementById("tribeIdentifier").value = "";
+        } else {
+          alert(`لم يتم العثور على قبيلة بالاسم أو الرمز: "${identifier}".`);
+        }
+
+      } catch (e) {
+        console.error("خطأ في حذف القبيلة: ", e);
+        alert(`فشلت عملية الحذف. الخطأ: ${e.message}`);
+      }
+    }
+
   </script>
 </body>
 </html>
+
