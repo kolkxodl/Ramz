@@ -11,7 +11,6 @@
   <!-- مكتبة أيقونات Boxicons -->
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
   <style>
-    /* ... (نفس الأنماط CSS كما في site_hybrid_data_v5.html) ... */
     body {
       background: linear-gradient(135deg, #FAF3E0, #F2E8D5);
       color: #5C4033;
@@ -157,8 +156,12 @@
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
+    .container h2 {
+        margin-bottom: 25px; /* Original margin */
+    }
     .input-container {
       position: relative;
+      margin-top: 15px; /* Added margin for spacing from title */
       margin-bottom: 20px;
       width: 100%;
     }
@@ -221,45 +224,47 @@
       margin-top: 20px;
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
-      font-size: 18px;
-      text-align: right; /* Changed to right for history display */
+      /* font-size: 18px; /* Will be set by individual boxes */
+      text-align: center; /* Center the result boxes themselves */
       color: #3E2723;
     }
     .result.show {
       opacity: 1;
     }
-    .result .tribe-box {
+    /* Unified style for result boxes based on user's disclaimer */
+    .result .tribe-box,
+    .result .history-box,
+    .result .not-found-message {
       background: rgba(253, 248, 240, 0.8);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
       border: 1px solid #D2B48C;
-      padding: 12px;
+      padding: 12px; /* Slightly reduced padding for smaller feel */
       border-radius: 8px;
-      margin-bottom: 12px;
+      font-size: 15px; /* As per user request */
       color: #3E2723;
-      text-align: center; /* Keep tribe box centered */
-    }
-    .result .history-box {
-      background: rgba(253, 248, 240, 0.9);
-      border: 1px solid #D2B48C;
-      padding: 15px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      color: #3E2723;
-      text-align: right;
-      line-height: 1.8;
+      line-height: 1.7; /* Adjusted from 1.8 for better fit */
+      text-align: center;
+      margin: 0 auto 20px auto; /* Centering block element and margin bottom */
+      max-width: 90%; /* Ensure it doesn't get too wide */
+      word-wrap: break-word;
     }
     .result .history-box h4 {
         margin-bottom: 10px;
         color: #CD853F;
-        font-size: 20px;
+        font-size: 17px; /* Slightly smaller title */
+        text-align: center;
+    }
+    .result .history-box p {
+        margin: 0; /* Remove default p margin if any */
+        text-align: center; /* Center history text as well */
     }
     .result-table {
       width: 100%;
       border-collapse: separate;
       border-spacing: 0;
       margin-top: 20px;
-      font-size: 16px;
+      font-size: 15px; /* Slightly smaller */
       border: none;
       border-radius: 8px;
       overflow: hidden;
@@ -269,7 +274,7 @@
       background-color: #EAD7C0;
     }
     .result-table thead th {
-      padding: 12px;
+      padding: 10px;
       border: none;
       color: #3E2723;
       font-weight: bold;
@@ -281,10 +286,11 @@
       background-color: #F7F1E1;
     }
     .result-table tbody td {
-      padding: 10px;
+      padding: 8px;
       border: none;
       color: #5C4033;
       border-bottom: 1px solid #EFE8DC;
+      text-align: center; /* Center table cell content */
     }
     .result-table tbody tr:last-child td {
       border-bottom: none;
@@ -465,8 +471,17 @@
         font-size: 16px;
         padding: 12px;
       }
-      .faq-container h3, h2 {
+      .faq-container h3, .container h2 {
         font-size: 20px;
+      }
+      .result .tribe-box,
+      .result .history-box,
+      .result .not-found-message {
+        font-size: 14px; /* Even smaller on mobile */
+        padding: 10px;
+      }
+      .result .history-box h4 {
+        font-size: 16px;
       }
     }
     .popup-modal {
@@ -550,7 +565,7 @@
   <div class="container">
     <h2>الباحث في رموز القبائل</h2>
     <div class="input-container">
-      <input type="text" id="searchInput" placeholder="أدخل رمز القبيلة او اسمها'" enterkeyhint="go" />
+      <input type="text" id="searchInput" placeholder="أدخل رمز القبيلة، اسمها، أو &#39;تاريخ [اسم القبيلة]&#39;" enterkeyhint="go" />
       <i class="bx bx-search input-icon"></i>
       <i class="bx bx-x clear-icon" id="clearBtn"></i>
     </div>
@@ -673,7 +688,7 @@
       "539": [{ name: "جهم" }], "519": [{ name: "الشحري" }, { name: "عك" }], "220": [{ name: "الطاهري" }], "959": [{ name: "بني شداد" }],
       "015": [{ name: "الحكلي" }], "918": [{ name: "ال بريك" }],
       "704": [{ name: "مقبنه" },{ name: "بني كعب" },{ name: "الشميري" }], "510": [{ name: "السودي" }],
-      "909": [{ name: "الحدد" },{ name: "الحداد" }, { name: "بلحمر" }], // Combined 909
+      "909": [{ name: "الحدد" },{ name: "الحداد" }, { name: "بلحمر" }],
       "109": [{ name: "المناصير" }], "553": [{ name: "الظفري" }], "212": [{ name: "الانصار" }], "307": [{ name: "غزوان" }],
       "116": [{ name: "المشيخي" }], "F-10": [{ name: "ال شريح" }], "F-16": [{ name: "ال أسلم" }], "405": [{ name: "المصاريه" }],
       "55": [{ name: "ال مره" }], "L-82": [{ name: "المساعيد" }]
@@ -716,7 +731,7 @@
       const popupModal = document.getElementById("popupModal");
       const popupMessage = document.getElementById("popupMessage");
       if (popupModal && popupMessage) {
-        if (type === "history") {
+        if (type === "history_popup") { // Differentiated popup type
             popupMessage.innerHTML = `لم يتم العثور على معلومات تاريخية للقبيلة (<strong>${query}</strong>). يمكنك التواصل معنا لإضافتها.`;
         } else if (type === "code") {
             popupMessage.innerHTML = `قد يكون رمز (<strong>${query}</strong>) يتبع لقبيلة غير مسجلة في المنصة، يمكنك التواصل معنا في حال أردت إضافته`;
@@ -742,11 +757,18 @@
     if (adTelegramBtn) adTelegramBtn.addEventListener("click", function() { window.location.href = "https://wa.me/967738889982"; });
     faqQuestions.forEach((question) => { question.addEventListener("click", function () { const answer = this.nextElementSibling; const icon = this.querySelector(".faq-icon"); const isActive = this.classList.contains("active"); faqQuestions.forEach(q => { if (q !== this && q.classList.contains("active")) { q.classList.remove("active"); q.nextElementSibling.style.display = "none"; const otherIcon = q.querySelector(".faq-icon"); if (otherIcon) otherIcon.classList.replace("bx-chevron-up", "bx-chevron-down"); } }); if (isActive) { answer.style.display = "none"; this.classList.remove("active"); if (icon) icon.classList.replace("bx-chevron-up", "bx-chevron-down"); } else { answer.style.display = "block"; this.classList.add("active"); if (icon) icon.classList.replace("bx-chevron-down", "bx-chevron-up"); } }); });
 
+    function displayNotFoundMessage(messageContent) {
+        const messageBox = document.createElement("div");
+        messageBox.className = "not-found-message"; // Use the unified class
+        messageBox.textContent = messageContent;
+        resultDiv.appendChild(messageBox);
+    }
+
     function performSearch() {
       if (!searchInput || !resultDiv || !loadingDiv) return;
       const query = searchInput.value.trim();
       if (!query) {
-        resultDiv.textContent = "يرجى ملء خانة البحث";
+        displayNotFoundMessage("يرجى ملء خانة البحث");
         resultDiv.classList.add("show");
         return;
       }
@@ -758,7 +780,7 @@
       if (Object.keys(combinedTribesData).length === 0 && tribeInfoData.length === 0) {
           loadAndMergeData().then(() => executeSearchLogic(query)).catch(error => {
               loadingDiv.style.display = "none";
-              resultDiv.textContent = "فشل تحميل البيانات، يرجى المحاولة مرة أخرى.";
+              displayNotFoundMessage("فشل تحميل البيانات، يرجى المحاولة مرة أخرى.");
               resultDiv.classList.add("show");
           });
       } else {
@@ -772,19 +794,17 @@
             loadingDiv.style.display = "none";
             const normalizedQuery = normalizeArabic(query);
             const historyKeyword = "تاريخ ";
-            const infoKeyword = "معلومات "; // Added another keyword for flexibility
+            const infoKeyword = "معلومات ";
 
             if (normalizedQuery.startsWith(normalizeArabic(historyKeyword)) || normalizedQuery.startsWith(normalizeArabic(infoKeyword))) {
                 let tribeNameForHistory = "";
                 if (normalizedQuery.startsWith(normalizeArabic(historyKeyword))) {
                     tribeNameForHistory = query.substring(historyKeyword.length).trim();
-                }
-                else if (normalizedQuery.startsWith(normalizeArabic(infoKeyword))) {
+                } else if (normalizedQuery.startsWith(normalizeArabic(infoKeyword))) {
                     tribeNameForHistory = query.substring(infoKeyword.length).trim();
                 }
                 
                 const normalizedTribeNameForHistory = normalizeArabic(tribeNameForHistory);
-                console.log("Searching for history of:", tribeNameForHistory, "(Normalized:", normalizedTribeNameForHistory, ")");
                 const foundHistory = tribeInfoData.find(info => normalizeArabic(info.name) === normalizedTribeNameForHistory);
 
                 if (foundHistory) {
@@ -795,16 +815,15 @@
                     title.textContent = `معلومات عن قبيلة ${foundHistory.name}`;
                     historyBox.appendChild(title);
                     const historyParagraph = document.createElement("p");
-                    historyParagraph.innerHTML = foundHistory.history; // history is already HTML <br>
+                    historyParagraph.innerHTML = foundHistory.history;
                     historyBox.appendChild(historyParagraph);
                     resultDiv.appendChild(historyBox);
                 } else {
-                    resultDiv.textContent = `عفواً، لم يتم العثور على معلومات تاريخية لقبيلة "${tribeNameForHistory}".`;
+                    displayNotFoundMessage(`لم يتم اضافه معلومات (${tribeNameForHistory})`);
                     if (window.clicky) clicky.log("بحث_تاريخ_غير_ناجح", tribeNameForHistory);
-                    setTimeout(() => showPopup(tribeNameForHistory, "history"), 1500);
+                    setTimeout(() => showPopup(tribeNameForHistory, "history_popup"), 1500);
                 }
             } else {
-                // Existing logic for searching by code or tribe name for its symbol
                 if (/^\d+$|^(?:[A-Z]-?\d+)$/i.test(query)) {
                     let code = query.toUpperCase();
                     if (/^(?:[A-Z])\d+$/i.test(code)) code = code.replace(/^(?:([A-Z]))/, "$1-");
@@ -831,27 +850,34 @@
                             });
                         }
                     } else {
-                        resultDiv.textContent = "عفواً لم يتم العثور على قبيلة بهذا الرمز";
+                        displayNotFoundMessage("عفواً لم يتم العثور على قبيلة بهذا الرمز");
                         if (window.clicky) clicky.log("بحث_رمز_غير_ناجح", query);
                         setTimeout(() => showPopup(query, "code"), 1500);
                     }
                 } else {
                     let found = false;
+                    const matchingTribes = [];
                     for (const codeKey in combinedTribesData) {
                         if (combinedTribesData.hasOwnProperty(codeKey)) {
                             combinedTribesData[codeKey].forEach(function (entry) {
                                 if (normalizeArabic(entry.name).includes(normalizedQuery)) {
+                                    if (!matchingTribes.some(t => t.name === entry.name && t.code === codeKey)) {
+                                        matchingTribes.push({name: entry.name, code: codeKey});
+                                    }
                                     found = true;
-                                    if (window.clicky) clicky.log("نتيجة_بحث_اسم", entry.name + " (" + codeKey + ")");
-                                    const box = document.createElement("div"); box.className = "tribe-box";
-                                    box.textContent = `${entry.name} رمز القبيلة هو ${codeKey}`;
-                                    resultDiv.appendChild(box);
                                 }
                             });
                         }
                     }
-                    if (!found) {
-                        resultDiv.textContent = "عفواً لم يتم العثور على رمز لهذه القبيلة";
+                    if (found) {
+                        matchingTribes.forEach(match => {
+                            if (window.clicky) clicky.log("نتيجة_بحث_اسم", match.name + " (" + match.code + ")");
+                            const box = document.createElement("div"); box.className = "tribe-box";
+                            box.textContent = `${match.name} رمز القبيلة هو ${match.code}`;
+                            resultDiv.appendChild(box);
+                        });
+                    } else {
+                        displayNotFoundMessage("عفواً لم يتم العثور على رمز لهذه القبيلة");
                         if (window.clicky) clicky.log("بحث_اسم_غير_ناجح", query);
                         setTimeout(() => showPopup(query, "tribe"), 1500);
                     }
@@ -880,7 +906,7 @@
         let newMergedData = JSON.parse(JSON.stringify(hardcodedTribes));
         for (const codeKey in firebaseFetchedTribes) {
             if (firebaseFetchedTribes.hasOwnProperty(codeKey)) {
-                newMergedData[codeKey] = firebaseFetchedTribes[codeKey];
+                newMergedData[codeKey] = firebaseFetchedTribes[codeKey]; // Firebase data takes precedence
             }
         }
         combinedTribesData = newMergedData;
