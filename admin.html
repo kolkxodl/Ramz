@@ -166,6 +166,12 @@
     button.submit-btn:hover {
       background: linear-gradient(90deg, #b87333, #c8a070);
     }
+    hr.section-divider {
+        border: 0;
+        height: 1px;
+        background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(92, 64, 51, 0.75), rgba(0, 0, 0, 0));
+        margin: 25px 0;
+    }
     @media (min-width: 768px) {
       .sidebar {
         width: 250px;
@@ -206,20 +212,30 @@
 
   <div id="dashboard">
     <div class="sidebar">
-      <a href="#" onclick="showSection(\'code\', this)" class="active">إضافة رمز قبيلة</a>
-      <a href="#" onclick="showSection(\'history\', this)">إضافة معلومات القبيلة</a>
-      <a href="#" onclick="showSection(\'delete\', this)">حذف قبيلة</a>
+      <a href="#" onclick="showSection('code', this)" class="active">إدارة رموز القبائل</a>
+      <a href="#" onclick="showSection('history', this)">إضافة معلومات القبيلة</a>
     </div>
     <div class="content">
       <h2>مرحباً بك في لوحة التحكم</h2>
+      
       <div id="section-code" class="form-section">
-        <h3>إضافة رمز قبيلة</h3>
+        <h3>إدارة رموز القبائل</h3>
+        
+        <h4>إضافة رمز قبيلة جديد</h4>
         <label for="tribeNameCode">اسم القبيلة:</label>
         <input type="text" id="tribeNameCode">
         <label for="tribeCode">رمز القبيلة:</label>
         <input type="text" id="tribeCode">
         <button class="submit-btn" onclick="addCode()"><i class="bx bx-plus-circle"></i> إضافة الرمز</button>
+
+        <hr class="section-divider">
+
+        <h4>حذف رمز قبيلة موجود</h4>
+        <label for="tribeIdentifierDelete">اسم القبيلة أو رمزها للحذف:</label>
+        <input type="text" id="tribeIdentifierDelete" placeholder="أدخل اسم القبيلة أو رمزها هنا">
+        <button class="submit-btn delete-btn" onclick="deleteTribe()"><i class="bx bx-trash"></i> حذف الرمز</button>
       </div>
+
       <div id="section-history" class="form-section" style="display:none;">
         <h3>إضافة معلومات وتاريخ قبيلة</h3>
         <label for="tribeNameHistory">اسم القبيلة (يجب أن يكون مطابقًا لاسم قبيلة لها رمز مُضاف):</label>
@@ -228,12 +244,7 @@
         <textarea id="tribeHistory" rows="5"></textarea>
         <button class="submit-btn" onclick="addHistory()"><i class="bx bx-plus-circle"></i> إضافة المعلومات</button>
       </div>
-      <div id="section-delete" class="form-section" style="display:none;">
-        <h3>حذف قبيلة</h3>
-        <label for="tribeIdentifier">اسم القبيلة أو رمزها:</label>
-        <input type="text" id="tribeIdentifier" placeholder="أدخل اسم القبيلة أو رمزها هنا">
-        <button class="submit-btn delete-btn" onclick="deleteTribe()"><i class="bx bx-trash"></i> حذف القبيلة</button>
-      </div>
+
     </div>
   </div>
 
@@ -254,35 +265,53 @@
     const db = getFirestore(app);
 
     window.checkLogin = function() {
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-      if (username === "Sahm" && password === "na1000856") {
+      const usernameEl = document.getElementById("username");
+      const passwordEl = document.getElementById("password");
+      if (usernameEl.value === "Sahm" && passwordEl.value === "na1000856") {
         document.getElementById("login-screen").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
-        showSection(\'code\', document.querySelector(".sidebar a[onclick*=\\'code\\']"));
+        // Ensure the first section's link is correctly selected
+        const firstLink = document.querySelector(".sidebar a[onclick*='code']");
+        if (firstLink) {
+            showSection('code', firstLink);
+        }
       } else {
         alert("بيانات الدخول غير صحيحة!");
       }
     }
     
-    document.getElementById("password").addEventListener("keydown", function(event) {
-        if (event.key === "Enter") {
-            checkLogin();
-        }
-    });
+    const passwordInput = document.getElementById("password");
+    if (passwordInput) {
+        passwordInput.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                checkLogin();
+            }
+        });
+    }
 
-    window.showSection = function(section, element) {
-      document.getElementById("section-code").style.display = section === "code" ? "block" : "none";
-      document.getElementById("section-history").style.display = section === "history" ? "block" : "none";
-      document.getElementById("section-delete").style.display = section === "delete" ? "block" : "none";
+    window.showSection = function(sectionId, element) {
+      const sections = {
+          'code': document.getElementById("section-code"),
+          'history': document.getElementById("section-history")
+      };
       
-      document.querySelectorAll(\.sidebar a\').forEach(el => el.classList.remove(\'active\'));
-      if(element) element.classList.add(\'active\');
+      for (const id in sections) {
+          if (sections[id]) {
+              sections[id].style.display = id === sectionId ? "block" : "none";
+          }
+      }
+      
+      document.querySelectorAll('.sidebar a').forEach(el => el.classList.remove('active'));
+      if(element) {
+          element.classList.add('active');
+      }
     }
 
     window.addCode = async function() {
-      const name = document.getElementById("tribeNameCode").value.trim();
-      const code = document.getElementById("tribeCode").value.trim().toUpperCase();
+      const nameEl = document.getElementById("tribeNameCode");
+      const codeEl = document.getElementById("tribeCode");
+      const name = nameEl.value.trim();
+      const code = codeEl.value.trim().toUpperCase();
       if (!name || !code) return alert("يرجى ملء جميع الحقول الخاصة برمز القبيلة.");
       try {
         const docRef = await addDoc(collection(db, "tribes"), {
@@ -291,8 +320,8 @@
           timestamp: serverTimestamp()
         });
         alert(`تمت إضافة رمز القبيلة بنجاح. معرف المستند: ${docRef.id}`);
-        document.getElementById("tribeNameCode").value = "";
-        document.getElementById("tribeCode").value = "";
+        nameEl.value = "";
+        codeEl.value = "";
       } catch (e) {
         console.error("خطأ في إضافة رمز القبيلة: ", e);
         alert(`فشلت إضافة رمز القبيلة. الخطأ: ${e.message}`);
@@ -300,8 +329,10 @@
     }
 
     window.addHistory = async function() {
-      const name = document.getElementById("tribeNameHistory").value.trim();
-      const history = document.getElementById("tribeHistory").value.trim();
+      const nameEl = document.getElementById("tribeNameHistory");
+      const historyEl = document.getElementById("tribeHistory");
+      const name = nameEl.value.trim();
+      const history = historyEl.value.trim();
       if (!name || !history) return alert("يرجى ملء جميع الحقول الخاصة بمعلومات القبيلة.");
       try {
         const docRef = await addDoc(collection(db, "histories"), {
@@ -310,8 +341,8 @@
           timestamp: serverTimestamp()
         });
         alert(`تمت إضافة معلومات القبيلة بنجاح. معرف المستند: ${docRef.id}`);
-        document.getElementById("tribeNameHistory").value = "";
-        document.getElementById("tribeHistory").value = "";
+        nameEl.value = "";
+        historyEl.value = "";
       } catch (e) {
         console.error("خطأ في إضافة معلومات القبيلة: ", e);
         alert(`فشلت إضافة معلومات القبيلة. الخطأ: ${e.message}`);
@@ -319,43 +350,50 @@
     }
 
     window.deleteTribe = async function() {
-      const identifier = document.getElementById("tribeIdentifier").value.trim();
+      const identifierEl = document.getElementById("tribeIdentifierDelete");
+      const identifier = identifierEl.value.trim();
       if (!identifier) return alert("يرجى إدخال اسم القبيلة أو رمزها للحذف.");
 
-      const confirmation = confirm(`هل أنت متأكد أنك تريد حذف القبيلة/الرمز: "${identifier}"؟ هذا الإجراء لا يمكن التراجع عنه.`);
+      const confirmation = confirm(`هل أنت متأكد أنك تريد حذف كل السجلات المطابقة لـ: "${identifier}"؟ هذا الإجراء لا يمكن التراجع عنه.`);
       if (!confirmation) return;
 
       try {
         let deletedCount = 0;
         const tribesRef = collection(db, "tribes");
-        
-        // Try deleting by code first (assuming codes are more unique or primary)
+        const batch = writeBatch(db);
+
+        // Search by code (case-insensitive for input, but stored as uppercase)
         const qByCode = query(tribesRef, where("code", "==", identifier.toUpperCase()));
         const snapshotByCode = await getDocs(qByCode);
         
-        const batch = writeBatch(db);
+        snapshotByCode.forEach(doc => {
+          batch.delete(doc.ref);
+          deletedCount++;
+        });
 
-        if (!snapshotByCode.empty) {
-          snapshotByCode.forEach(doc => {
-            batch.delete(doc.ref);
-            deletedCount++;
-          });
-        } else {
-          // If not found by code, try by name
-          const qByName = query(tribesRef, where("name", "==", identifier));
-          const snapshotByName = await getDocs(qByName);
-          if (!snapshotByName.empty) {
+        // Search by name (exact match, case-sensitive as stored)
+        // To avoid deleting by name if code already matched, we can check deletedCount
+        if (snapshotByCode.empty) { // Only search by name if no code match was found
+            const qByName = query(tribesRef, where("name", "==", identifier));
+            const snapshotByName = await getDocs(qByName);
             snapshotByName.forEach(doc => {
-              batch.delete(doc.ref);
-              deletedCount++;
+              // Avoid double-adding to batch if somehow a name matched a code that was different case
+              // This check is a bit redundant if the first search was exhaustive for the identifier as a code
+              let alreadyMarkedForDeletion = false;
+              snapshotByCode.forEach(codeDoc => {
+                  if(codeDoc.id === doc.id) alreadyMarkedForDeletion = true;
+              });
+              if(!alreadyMarkedForDeletion){
+                  batch.delete(doc.ref);
+                  deletedCount++;
+              }
             });
-          } 
         }
 
         if (deletedCount > 0) {
           await batch.commit();
           alert(`تم حذف ${deletedCount} سجل بنجاح بناءً على المعرف: "${identifier}".`);
-          document.getElementById("tribeIdentifier").value = "";
+          identifierEl.value = "";
         } else {
           alert(`لم يتم العثور على قبيلة بالاسم أو الرمز: "${identifier}".`);
         }
@@ -365,6 +403,9 @@
         alert(`فشلت عملية الحذف. الخطأ: ${e.message}`);
       }
     }
+
+    // Initialize the first section view on load after login
+    // This is handled inside checkLogin now.
 
   </script>
 </body>
