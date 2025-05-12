@@ -906,43 +906,22 @@
                 const data = doc.data();
                 if (data.code && data.name) {
                     if (!firebaseFetchedTribes[data.code]) firebaseFetchedTribes[data.code] = [];
-                    // التأكد من عدم إضافة أسماء مكررة لنفس الرمز من Firebase نفسها أثناء الجلب
-                    if (!firebaseFetchedTribes[data.code].some(e => e.name === data.name)) {
-                        firebaseFetchedTribes[data.code].push({ name: data.name });
-                    }
+                    if (!firebaseFetchedTribes[data.code].some(e => e.name === data.name)) firebaseFetchedTribes[data.code].push({ name: data.name });
                 }
             });
         } catch (error) {
             console.error("فشل تحميل رموز القبائل من Firebase:", error);
         }
 
-        // البدء بنسخة عميقة من القبائل المضمنة في الكود
         let newMergedData = JSON.parse(JSON.stringify(hardcodedTribes));
-
-        // دمج بيانات Firebase في newMergedData
         for (const codeKey in firebaseFetchedTribes) {
             if (firebaseFetchedTribes.hasOwnProperty(codeKey)) {
-                if (newMergedData.hasOwnProperty(codeKey)) {
-                    // إذا كان الرمز موجوداً في كلا المصدرين، قم بدمج قوائم القبائل
-                    const existingTribes = newMergedData[codeKey]; // القبائل الموجودة من hardcoded
-                    const firebaseTribesForCode = firebaseFetchedTribes[codeKey]; // قبائل Firebase لهذا الرمز
-
-                    firebaseTribesForCode.forEach(fbTribe => {
-                        // أضف قبيلة Firebase فقط إذا لم تكن موجودة بالفعل في القائمة الحالية لهذا الرمز (لتجنب التكرار)
-                        if (!existingTribes.some(existingTribe => existingTribe.name === fbTribe.name)) {
-                            existingTribes.push(fbTribe);
-                        }
-                    });
-                } else {
-                    // إذا كان الرمز موجوداً فقط في Firebase، قم بإضافته مباشرة
-                    newMergedData[codeKey] = firebaseFetchedTribes[codeKey];
-                }
+                newMergedData[codeKey] = firebaseFetchedTribes[codeKey]; // Firebase data takes precedence
             }
         }
         combinedTribesData = newMergedData;
         console.log("بيانات رموز القبائل المدمجة جاهزة:", Object.keys(combinedTribesData).length, "رموز.");
 
-        // الجزء الخاص بتحميل بيانات تاريخ القبائل يبقى كما هو
         tribeInfoData.length = 0;
         try {
             const historyCollectionRef = collection(db, "histories");
@@ -962,4 +941,4 @@
     });
   </script>
 </body>
-</html>
+        </html>
