@@ -1,152 +1,208 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>لوحة تحكم رموز القبائل</title>
+  <title>الباحث  في رموز القبائل </title>
+  <!-- خط IBM Plex Sans Arabic -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet" />
+  <!-- مكتبة أيقونات Boxicons -->
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
   <style>
     body {
-      margin: 0;
-      font-family: "IBM Plex Sans Arabic", sans-serif;          
       background: linear-gradient(135deg, #FAF3E0, #F2E8D5);
       color: #5C4033;
-    }
-    #login-screen {
-      background: rgba(255, 255, 255, 0.7);
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
-      margin: 150px auto;
-      max-width: 320px;
-      width: 90%;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      direction: rtl;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
       text-align: center;
+      padding-top: 120px;
+      transition: opacity 0.5s ease;
     }
-    #login-screen h2 {
-        margin-bottom: 20px;
-        color: #3E2723;
+    body.fade-out {
+      opacity: 0;
     }
-    #login-screen input, #login-screen button {
-      width: 100%;
-      margin: 12px 0;
-      padding: 12px;
-      border-radius: 30px;
-      border: 1px solid #D2B48C;
+    * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
-      border-color: #CD853F;
-      box-shadow: 0 0 8px rgba(205, 133, 63, 0.2);
-      background-color: #fff;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    h1, h2, h3, h4, h5, h6 {
       color: #3E2723;
-      text-align: center;
-      font-size: 16px;
     }
-    #login-screen input:focus, #login-screen button:focus{
-      transition: border-color 0.3s, box-shadow 0.3s;
-      border-color: #b87333; 
-      box-shadow: 0 0 10px rgba(184, 115, 51, 0.5);
-    } 
-    #login-screen button {
-      background: linear-gradient(90deg, #CD853F, #D2B48C);
-      color: #fff;
-      font-size: 18px;
-      cursor: pointer;
-      transition: background 0.3s;
-      border: none;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    }
-    #login-screen button:hover {
-        background: linear-gradient(90deg, #b87333, #c8a070);
-    }
-    .input-icon-container {
-        position: relative;
-    }
-    .input-icon {
-      position: absolute;
-      top: 50%;
-      right: 20px;
-      transform: translateY(-50%);
-      font-size: 20px;
-      pointer-events: none;
-      color: #D2B48C;
-    } 
-    #dashboard {
-      display: none;
-    }
-    .sidebar {
-      width: 100%;
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
       background: rgba(139, 69, 19, 0.8);
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
       color: #fff;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row-reverse;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      padding: 10px 0;
-      text-align: center;
     }
-    .sidebar a {
-      display: inline-block;
-      color: white;
-      padding: 10px 20px;
-      text-decoration: none;
-      font-size: 16px;
+    .logo {
+      height: 50px;
+      filter: brightness(0) invert(1);
+    }
+    .hamburger {
+      font-size: 24px;
+      cursor: pointer;
+      color: #fff;
+      padding: 8px;
+      border-radius: 6px;
       transition: background-color 0.3s;
     }
-    .sidebar a:hover, .sidebar a.active {
-      background-color: rgba(255,255,255,0.2);
-      border-radius: 5px;
+    .hamburger.active {
+      background-color: rgba(255, 255, 255, 0.2);
     }
-    .content {
-      padding: 20px;
-    }
-    .content h2 {
-      color: #3E2723;
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .form-section {
-      background-color: rgba(255, 255, 255, 0.8);
-      -webkit-backdrop-filter: blur(5px);
-      backdrop-filter: blur(5px);
-      padding: 25px;
-      border-radius: 10px;
-      margin-top: 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .form-section label {
-      font-weight: bold;
-      display: block;
-      margin-top: 15px;
-      margin-bottom: 5px;
+    #sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      transform: translateX(-100%);
+      width: 250px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.7);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
       color: #5C4033;
-      text-align: right;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+      padding: 20px;
+      z-index: 20;
     }
-    .form-section input[type="text"], .form-section textarea {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #D2B48C;
-      box-sizing: border-box;
+    #sidebar.active {
+      transform: translateX(0);
+    }
+    #sidebar .close-btn {
+      font-size: 22px;
+      cursor: pointer;
+      text-align: right;
+      margin-bottom: 15px;
+      color: #5C4033;
+    }
+    #sidebar .sidebar-logo {
+      margin-bottom: 15px;
+    }
+    #sidebar .sidebar-logo img {
+      height: 45px;
+      width: auto;
+      filter: brightness(0);
+    }
+    #sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
       font-size: 16px;
+      text-align: center;
+    }
+    #sidebar ul li {
+      margin: 12px 0;
+      border-bottom: 1px solid #EFE8DC;
+      padding-bottom: 8px;
+    }
+    #sidebar ul li:last-child {
+      border-bottom: none;
+    }
+    #sidebar ul li a {
+      color: #5C4033;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #socialContainer {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease, opacity 0.5s ease;
+    }
+    #socialContainer.active {
+      max-height: 50px;
+      opacity: 1;
+      margin-top: 10px; 
+    }
+    #socialContainer a {
+      margin: 0 8px;
+      font-size: 20px;
+      color: #D2B48C;
+      transition: color 0.3s;
+    }
+    #socialContainer a:hover {
+      color: #CD853F;
+    }
+    .container {
+      background: rgba(255, 255, 255, 0.7);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      margin: 60px auto 30px;
+      max-width: 800px;
+      width: 90%;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .container h2 {
+        margin-bottom: 25px; /* Original margin */
+    }
+    .input-container {
+      position: relative;
+      margin-top: 15px; /* Added margin for spacing from title */
+      margin-bottom: 20px;
+      width: 100%;
+    }
+    .input-container input[type="text"] {
+      width: 100%;
+      padding: 14px 45px 14px 45px;
+      border: 2px solid #D2B48C;
+      border-radius: 30px;
+      font-size: 16px;
+      text-align: center;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
       background-color: #fff;
       color: #3E2723;
-      margin-bottom:15px
     }
-    .form-section input[type="text"]:focus, .form-section textarea:focus {
-      border-color: #b87333;
-      box-shadow: 0 0 8px rgba(184, 115, 51, 0.3);
-      outline: none;
+    .input-container input[type="text"]:focus {
+      border-color: #CD853F;
+      box-shadow: 0 0 8px rgba(205, 133, 63, 0.3);
     }
-    .form-section textarea {
-        resize: vertical;
-        min-height: 100px;
+    .input-container .input-icon {
+      position: absolute;
+      top: 50%;
+      right: 18px;
+      transform: translateY(-50%);
+      font-size: 20px;
+      pointer-events: none;
+      color: #D2B48C;
     }
-    button.submit-btn {
+    .input-container .clear-icon {
+      position: absolute;
+      top: 50%;
+      left: 18px;
+      transform: translateY(-50%);
+      font-size: 20px;
+      color: #D2B48C;
+      cursor: pointer;
+      display: none;
+    }
+    .search-button {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       border: none;
       border-radius: 30px;
       background: linear-gradient(90deg, #CD853F, #D2B48C);
@@ -154,109 +210,452 @@
       font-size: 18px;
       cursor: pointer;
       transition: background 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+    .search-button:hover {
+      background: linear-gradient(90deg, #D2B48C, #CD853F);
+    }
+    .result {
+      margin-top: 20px;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      font-size: 18px;
+      text-align: center; /* Center the result boxes themselves */
+      color: #3E2723;
+    }
+    .result.show {
+      opacity: 1;
+    }
+     .result .tribe-box {
+      background: rgba(253, 248, 240, 0.8);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid #D2B48C;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      color: #3E2723;
+    } 
+    
+    /* Unified style for result boxes - adjusted to match original tribe-box shape */
+    
+    .result .history-box,
+     {
+      background: rgba(253, 248, 240, 0.8);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid #D2B48C;
+      padding: 12px;
+      border-radius: 8px;
+      margin: 0 auto 12px auto; /* Centering the box, bottom margin 12px, from original .result .tribe-box margin-bottom and todo */
+      color: #3E2723;
+      font-size: 18px; /* As per todo.md, and matches original .result font-size */
+      /* text-align is inherited from .result */
+      /* line-height removed as per todo.md (it was not in original .result .tribe-box) */
+      /* max-width and word-wrap removed to simplify and match original .result .tribe-box */
+    }
+    .result .history-box h4 {
+        margin-bottom: 10px;
+        color: #CD853F;
+        font-size: 17px; /* Slightly smaller title */
+        text-align: center;
+    }
+    .result .history-box p {
+        margin: 0; /* Remove default p margin if any */
+        text-align: center; /* Center history text as well */
+    }
+    .result-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .result-table thead {
+      background-color: #EAD7C0;
+    }
+    .result-table thead th {
+      padding: 12px;
+      border: none;
+      color: #3E2723;
+      font-weight: bold;
+    }
+    .result-table tbody tr {
+      background-color: #fff;
+    }
+    .result-table tbody tr:nth-child(even) {
+      background-color: #F7F1E1;
+    }
+    .result-table tbody td {
+      padding: 10px;
+      border: none;
+      color: #5C4033;
+      border-bottom: 1px solid #EFE8DC;
+      text-align: center; /* Center table cell content */
+    }
+    .result-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+    .ad-container {
+      background: rgba(255, 255, 255, 0.7);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      margin: 30px auto;
+      max-width: 800px;
+      width: 90%;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .ad-container h3 {
+      font-size: 22px;
+      margin-bottom: 10px;
+      color: #3E2723;
+    }
+    .ad-container p {
+      font-size: 16px;
+      margin-bottom: 20px;
+      color: #5C4033;
+    }
+    .ad-button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      background: linear-gradient(90deg, #CD853F, #D2B48C);
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ad-button:hover {
+      background: linear-gradient(90deg, #D2B48C, #CD853F);
+    }
+    .faq-container {
+      background: rgba(255, 255, 255, 0.7);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      max-width: 800px;
+      width: 90%;
+      margin: 30px auto;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .faq-container h3 {
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: #3E2723;
+      text-align: center;
+    }
+    .faq-item {
+      border: 1px solid #EDE7E3;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .faq-question {
+      background-color: #F9F3EE;
+      padding: 12px 18px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background-color 0.3s;
+      color: #5C4033;
+      font-size: 16px;
+      text-align: right;
+    }
+    .faq-question:hover,
+    .faq-question.active {
+      background-color: #F3EDE7;
+    }
+    .faq-question .faq-icon {
+      font-size: 18px;
+      margin-left: 10px;
+      transition: transform 0.3s;
+    }
+    .faq-question.active .faq-icon {
+      transform: rotate(180deg);
+    }
+    .faq-answer {
+      padding: 12px 18px;
+      display: none;
+      background-color: #fff;
+      text-align: right;
+      color: #3E2723;
+      font-size: 15px;
+    }
+    .contact-container {
+      background: rgba(255, 255, 255, 0.7);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      max-width: 800px;
+      width: 90%;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .contact-container h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: #3E2723;
+    }
+    .contact-container .social-icons a {
+      margin: 0 8px;
+      font-size: 20px;
+      color: #D2B48C;
+      transition: color 0.3s;
+    }
+    .contact-container .social-icons a:hover {
+      color: #CD853F;
+    }
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px 0;
+    }
+    .loading-circle {
+      border: 4px solid #D2B48C;
+      border-top: 4px solid #CD853F;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+    .loading-text {
       margin-top: 10px;
+      font-size: 16px;
+      color: #5C4033;
     }
-    button.submit-btn.delete-btn {
-        background: linear-gradient(90deg, #c0392b, #e74c3c);
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
-    button.submit-btn.delete-btn:hover {
-        background: linear-gradient(90deg, #a52a2a, #c0392b);
+    footer {
+      background: rgba(139, 69, 19, 0.8);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      color: #F5F5DC;
+      padding: 15px;
+      text-align: center;
+      font-size: 14px;
+      margin-top: auto;
+      box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
     }
-    button.submit-btn:hover {
-      background: linear-gradient(90deg, #b87333, #c8a070);
+    footer p {
+      margin-bottom: 5px;
     }
-    hr.section-divider {
-        border: 0;
-        height: 1px;
-        background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(92, 64, 51, 0.75), rgba(0, 0, 0, 0));
-        margin: 25px 0;
+    footer .extra {
+      font-size: 12px;
+      color: #F5F5DC;
     }
-    @media (min-width: 768px) {
-      .sidebar {
-        width: 250px;
-        height: 100vh;
-        position: fixed;
-        top: 0;
-        right: 0;
-        padding-top: 20px;
+    @media (max-width: 600px) {
+      .container,
+      .faq-container,
+      .contact-container,
+      .ad-container {
+        margin: 20px auto;
+        padding: 20px;
       }
-      .sidebar a {
-        display: block;
-        text-align: right;
-        padding: 12px 25px;
-        margin: 5px 0;
+      .input-container input[type="text"] {
+        padding: 12px 35px 12px 35px;
       }
-      .content {
-        margin-right: 250px; 
+      .search-button {
+        font-size: 16px;
+        padding: 12px;
       }
-      #login-screen {
-        margin: 10% auto;
+      .faq-container h3, .container h2 {
+        font-size: 20px;
       }
+      
+      .result .history-box,
+     {
+        font-size: 14px; /* Even smaller on mobile */
+        padding: 10px;
+      }
+      .result .history-box h4 {
+        font-size: 16px;
+      }
+    }
+    .popup-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+    }
+    .popup-content {
+      background: rgba(255, 255, 255, 0.8);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 90%;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      animation: popupAnimation 0.5s ease;
+    }
+    @keyframes popupAnimation {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .popup-buttons {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .popup-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      background: linear-gradient(90deg, #CD853F, #D2B48C);
+      color: #fff;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+    .popup-btn:hover {
+      background: linear-gradient(90deg, #D2B48C, #CD853F);
     }
   </style>
 </head>
 <body>
-  <div id="login-screen">
-    <h2>تسجيل الدخول إلى لوحة التحكم</h2>
-    <div class="input-icon-container">
-        <i class="bx bx-user input-icon"></i>
-        <input type="text" id="username" placeholder="اسم المستخدم">
+  <header>
+    <div class="hamburger" id="openSidebar">
+      <i class="bx bx-menu"></i>
     </div>
-    <div class="input-icon-container">
-        <i class="bx bx-lock input-icon"></i>
-        <input type="password" id="password" placeholder="كلمة المرور" enterkeyhint="go">
+    <img src="https://www2.0zz0.com/2025/04/03/00/209652548.png" alt="الشعار" class="logo" oncontextmenu="return false;" draggable="false" />
+  </header>
+  <nav id="sidebar">
+    <div class="close-btn" id="closeSidebar">
+      <i class="bx bx-x"></i>
     </div>
-    <button onclick="checkLogin()"> <i class="bx bx-log-in-circle"></i> دخول</button>
-  </div>
-
-  <div id="dashboard">
-    <div class="sidebar">
-      <a href="#" onclick="showSection('code', this)" class="active">إدارة رموز القبائل</a>
-      <a href="#" onclick="showSection('history', this)">إضافة معلومات القبيلة</a>
+    <div class="sidebar-logo">
+      <img src="https://www2.0zz0.com/2025/04/03/00/209652548.png" alt="الشعار" oncontextmenu="return false;" draggable="false" />
     </div>
-    <div class="content">
-      <h2>مرحباً بك في لوحة التحكم</h2>
-      
-      <div id="section-code" class="form-section">
-        <h3>إدارة رموز القبائل</h3>
-        
-        <h4>إضافة رمز قبيلة جديد</h4>
-        <label for="tribeNameCode">اسم القبيلة:</label>
-        <input type="text" id="tribeNameCode">
-        <label for="tribeCode">رمز القبيلة:</label>
-        <input type="text" id="tribeCode">
-        <button class="submit-btn" onclick="addCode()"><i class="bx bx-plus-circle"></i> إضافة الرمز</button>
-
-        <hr class="section-divider">
-
-        <h4>حذف رمز قبيلة موجود</h4>
-        <label for="tribeIdentifierDelete">اسم القبيلة أو رمزها للحذف:</label>
-        <input type="text" id="tribeIdentifierDelete" placeholder="أدخل اسم القبيلة أو رمزها هنا">
-        <button class="submit-btn delete-btn" onclick="deleteTribe()"><i class="bx bx-trash"></i> حذف الرمز</button>
-      </div>
-
-      <div id="section-history" class="form-section" style="display:none;">
-        <h3>إضافة معلومات وتاريخ قبيلة</h3>
-        <label for="tribeNameHistory">اسم القبيلة (يجب أن يكون مطابقًا لاسم قبيلة لها رمز مُضاف):</label>
-        <input type="text" id="tribeNameHistory">
-        <label for="tribeHistory">معلومات وتاريخ القبيلة:</label>
-        <textarea id="tribeHistory" rows="5"></textarea>
-        <button class="submit-btn" onclick="addHistory()"><i class="bx bx-plus-circle"></i> إضافة المعلومات</button>
-      </div>
-
+    <ul>
+      <li><a id="homeLink" href="#">الصفحة الرئيسية</a></li>
+      <li>
+        <a id="contactLink" href="#">تواصل معنا</a>
+        <div id="socialContainer">
+          <a href="https://www.tiktok.com/@designer_co?_r=1&_d=ed0h27ak1gi5h5&sec_uid=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&share_author_id=7411089680148710408&sharer_language=ar&source=h5_m&u_code=eg4363i2jmk0je&timestamp=1744307461&user_id=7411089680148710408&sec_user_id=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7489355090459346709&share_link_id=c5287d92-5f28-43a4-a565-c07bf819151f&share_app_id=1233&ugbiz_name=ACCOUNT&ug_btm=b8727%2Cb7360&social_share_type=5&enable_checksum=1" target="_blank"><i class="bx bxl-tiktok"></i></a>
+          <a href="https://youtube.com/@designer_co2?si=0UkuOB6YMiOg1rDY"><i class="bx bxl-youtube"></i></a>
+          <a href="https://wa.me/967738889982"><i class="bx bxl-whatsapp"></i></a>
+          <a href="https://www.facebook.com/share/151kE2vx5T/https://www.facebook.com/share/151kE2vx5T/"><i class="bx bxl-facebook"></i></a>
+          <a href="https://www.instagram.com/designer_co3?igsh=b3VucWs1cDhqc2c1"><i class="bx bxl-instagram"></i></a>
+        </div>
+      </li>
+      <li><a id="aboutLink" href="about.html">حول</a></li>
+      <li><a id="orderLink" href="order.html">لـ طلب تصميم موقع</a></li>
+    </ul>
+  </nav>
+  <div class="container">
+    <h2>الباحث في رموز ومعلومات القبائل</h2>
+    <div class="input-container">
+      <input type="text" id="searchInput" placeholder="أدخل رمز القبيلة او اسمها  "enterkeyhint="go" />
+      <i class="bx bx-search input-icon"></i>
+      <i class="bx bx-x clear-icon" id="clearBtn"></i>
+    </div>
+    <button id="searchBtn" class="search-button">
+      <i class="bx bx-search"></i>
+      بحث
+    </button>
+    <div id="result" class="result"></div>
+    <div id="loading" class="loading" style="display: none;">
+      <div class="loading-circle"></div>
+      <div class="loading-text">جارٍ البحث…</div>
     </div>
   </div>
+  <div class="ad-container">
+    <h3>اعلاناتنا</h3>
+    <p>هل تريد الإعلان على الموقع ؟<br>تواصل معنا عبر الواتساب للتفاصيل</p>
+    <button id="adTelegramBtn" class="ad-button">
+      <i class="bx bxl-whatsapp"></i>
+      تواصل عبر الواتساب 
+    </button>
+  </div>
+  <div class="faq-container">
+    <h3>الأسئلة الشائعة</h3>
+    <div class="faq-item">
+      <div class="faq-question"><span>1. وش المقصود برموز القبائل؟</span><i class="bx bx-chevron-down faq-icon"></i></div>
+      <div class="faq-answer">رموز القبائل هي أرقام يختارها أفراد القبيلة لتمثيلها بشكل رمزي، غالبًا في مواقع التواصل، وتستخدم كنوع من الفخر بالانتماء.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question"><span>2. هل رموز القبائل رسمية؟</span><i class="bx bx-chevron-down faq-icon"></i></div>
+      <div class="faq-answer">لا. الرموز غير رسمية ولا معتمدة من أي جهة حكومية. هي رموز اجتهادية وشعبية يستخدمها الشباب بشكل غير رسمي.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question"><span>3. من اللي يحدد رمز القبيلة؟</span><i class="bx bx-chevron-down faq-icon"></i></div>
+      <div class="faq-answer">عادةً يتم تداول الرمز بين أفراد القبيلة حتى ينتشر ويصبح معروف، ولا توجد جهة رسمية تحدده.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question"><span>4. هل ممكن أكثر من قبيلة تستخدم نفس الرقم؟</span><i class="bx bx-chevron-down faq-icon"></i></div>
+      <div class="faq-answer">نعم، أحيانًا أكثر من قبيلة تستخدم نفس الرمز خاصةً إذا كان الرقم مميزًا أو ذو شعبية.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question"><span>5. هل كل القبائل لها رموز؟</span><i class="bx bx-chevron-down faq-icon"></i></div>
+      <div class="faq-answer">لا، بعض القبائل لها رموز متداولة بينما لا تهتم البعض الآخر بتلك الرموز.</div>
+    </div>
+  </div>
+  <div class="contact-container">
+    <h3>تابعنا على</h3>
+    <div class="social-icons">
+      <a href="https://www.tiktok.com/@designer_co?_r=1&_d=ed0h27ak1gi5h5&sec_uid=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&share_author_id=7411089680148710408&sharer_language=ar&source=h5_m&u_code=eg4363i2jmk0je&timestamp=1744307461&user_id=7411089680148710408&sec_user_id=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7489355090459346709&share_link_id=c5287d92-5f28-43a4-a565-c07bf819151f&share_app_id=1233&ugbiz_name=ACCOUNT&ug_btm=b8727%2Cb7360&social_share_type=5&enable_checksum=1" target="_blank"><i class="bx bxl-tiktok"></i></a>
+      <a href="https://youtube.com/@designer_co2?si=0UkuOB6YMiOg1rDY" target="_blank"><i class="bx bxl-youtube"></i></a>
+      <a href="https://wa.me/967738889982" target="_blank"><i class="bx bxl-whatsapp"></i></a>
+      <a href="https://www.facebook.com/share/151kE2vx5T/" target="_blank"><i class="bx bxl-facebook"></i></a>
+      <a href="https://www.instagram.com/designer_co3?igsh=b3VucWs1cDhqc2c1" target="_blank"><i class="bx bxl-instagram"></i></a>
+    </div>
+  </div>
+  <div id="popupModal" class="popup-modal">
+    <div class="popup-content">
+      <p id="popupMessage"></p>
+      <div class="popup-buttons">
+        <button id="contactBtn" class="popup-btn">تواصل</button>
+        <button id="cancelBtn" class="popup-btn">الغاء</button>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <p>تم تصميمه بواسطة المبرمج <a href="https://wa.me/967738889982">سهم الحميقاني</a></p>
+    <p>&copy; حقوق النشر محفوظة</p>
+    <p class="extra">رمز | Ramz</p>
+  </footer>
+  <script async src="https://static.getclicky.com/101482035.js"></script>
+  <noscript><p><img alt="Clicky" width="1" height="1" src="https://in.getclicky.com/101482035ns.gif" /></p></noscript>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDGLwl69D9W5c03G5WsfU8pahvVHL4zKzs",
       authDomain: "tribes-project-18d2b.firebaseapp.com",
       projectId: "tribes-project-18d2b",
-      storageBucket: "tribes-project-18d2b.appspot.com",
+      storageBucket: "tribes-project-18d2b.firebasestorage.app",
       messagingSenderId: "375771927234",
       appId: "1:375771927234:web:5fa0ec96fd9c80fce7615b"
     };
@@ -264,150 +663,303 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    window.checkLogin = function() {
-      const usernameEl = document.getElementById("username");
-      const passwordEl = document.getElementById("password");
-      if (usernameEl.value === "Sahm" && passwordEl.value === "na1000856") {
-        document.getElementById("login-screen").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-        // Ensure the first section's link is correctly selected
-        const firstLink = document.querySelector(".sidebar a[onclick*='code']");
-        if (firstLink) {
-            showSection('code', firstLink);
-        }
-      } else {
-        alert("بيانات الدخول غير صحيحة!");
-      }
+    const hardcodedTribes = {
+      "715": [{ name: "لقموش" }], "202": [{ name: "ردفان" }], "917": [{ name: "العوالق" }],
+      "711": [{ name: "الحسين" },{ name: "الصيعر" },{ name: "وادعه" },{ name: "بني مالك" },{ name: "وايله" },{ name: "قيفة" },{ name: "دهم" },{ name: "مراد" },{ name: "كندة" },{ name: "الدين" },{ name: "آل سحاق" },{ name: "سحار" }],
+      "505": [{ name: "قحطان" }, { name: "عبيده" }], "454": [{ name: "بلسمر" }],
+      "509": [{ name: "بلقرن" },{ name: "الشرارات" }], "511": [{ name: "عتيبه" }, { name: "الحموم" }],
+      "507": [{ name: "شهران" },{ name: "بني هلال" },{ name: "العمودي" }], 
+      "606": [{ name: "اكلب" },{ name: "بني غانم" }],
+      "911": [{ name: "البقوم" },{ name: "بني خالد" },{ name: "يام" }], "903": [{ name: "بارق" }],
+      "309": [{ name: "بني حمد" },{ name: "البلوش" }], "601": [{ name: "بني الطمح" }], "811": [{ name: "نهد" }], "101": [{ name: "العجمان" }],
+      "504": [{ name: "آل غريّبني" },{ name: "همام" }],
+      "516": [{ name: "الجحادله" },{ name: "خولان" },{ name: "الجبره" }],
+      "305": [{ name: "مطير" }], "518": [{ name: "جهينه" }, { name: "اللحوين" }], 
+      "607": [{ name: "عليان" },{ name: "خثعم" }], "717": [{ name: "السهول" }, { name: "بلعبيد" }],
+      "404": [{ name: "عبس" }, { name: "الرشايدة" }], "311": [{ name: "رجال الحجر" },{ name: "بني مسروح" }],
+      "907": [{ name: "بني الحكم" },{ name: "بني ذبيان" }],
+      "515": [{ name: "قريش" },{ name: "الاشراف" },{ name: "بني هاشم" },{ name: "سليم" },{ name: "النعيم" }],
+      "808": [{ name: "تليد" }], "A-10": [{ name: "العميرة" }], "205": [{ name: "ظفير" }], "503": [{ name: "سبيع" }],
+      "707": [{ name: "عسير" },{ name: "غامد" }], "703": [{ name: "بني يزيد" }], "779": [{ name: "الزيدي" }], "709": [{ name: "النواشر" }],
+      "818": [{ name: "بلي" }], "708": [{ name: "بني مروان" }], "902": [{ name: "بني شبيب" }], "912": [{ name: "العوامر" }],
+      "411": [{ name: "بني هاجر" }], "906": [{ name: "العوازم" }], "905": [{ name: "فيفاء" }],
+      "107": [{ name: "المهره" },{ name: "الراشدي" }], "701": [{ name: "بني عمرو" }], "702": [{ name: "زهران" }],
+      "502": [{ name: "الدواسر" }], "525": [{ name: "شمران" }], "901": [{ name: "ثقيف" },{ name: "الفضول" }],
+      "506": [{ name: "بني تميم" }], "B-52": [{ name: "عنزه" }], "108": [{ name: "الجنيبي" }],
+      "F-15": [{ name: "حرب" }], "555": [{ name: "شمر" }], "B-79": [{ name: "بني عطية" }], "111": [{ name: "الحويطات" }],
+      "Y-10": [{ name: "بني يافع" }], "716": [{ name: "نعمان" }], "719": [{ name: "بنير" }, { name: "ال وهاش" }],
+      "501": [{ name: "بلحارث" },{ name: "ال حميقان" },{ name: "الحميقاني" }],
+      "611": [{ name: "العوابثه" },{ name: "باوزير" },{ name: "بني حسين" },{ name: "بني زيد" }],
+      "705": [{ name: "بني هلال" },{ name: "ال باجري" }], "110": [{ name: "الرصاص" },{ name: "المناهيل" }],
+      "809": [{ name: "سيبان" }], "512": [{ name: "ال كثير" },{ name: "بني لام" },{ name: "فهم" }],
+      "919": [{ name: "ال بريك" }], "888": [{ name: "ال بكمي" }], "714": [{ name: "حمّير" }], "517": [{ name: "المشاجر" }],
+      "S300": [{ name: "ال كثير" }], "604": [{ name: "المصعبين" }], "910": [{ name: "ال بريك" }], "F-14": [{ name: "الكرب" }],
+      "712": [{ name: "نوح" },{ name: "سعد الظالمة" },{ name: "شرعب" }], "771": [{ name: "وصاب" }], "720": [{ name: "العواذل" }],
+      "539": [{ name: "جهم" }], "519": [{ name: "الشحري" }, { name: "عك" }], "220": [{ name: "الطاهري" }], "959": [{ name: "بني شداد" }],
+      "015": [{ name: "الحكلي" }], "918": [{ name: "ال بريك" }],
+      "704": [{ name: "مقبنه" },{ name: "بني كعب" },{ name: "الشميري" }], "510": [{ name: "السودي" }],
+      "909": [{ name: "الحدد" },{ name: "الحداد" }, { name: "بلحمر" }],
+      "109": [{ name: "المناصير" }], "553": [{ name: "الظفري" }], "212": [{ name: "الانصار" }], "307": [{ name: "غزوان" }],
+      "116": [{ name: "المشيخي" }], "F-10": [{ name: "ال شريح" }], "F-16": [{ name: "ال أسلم" }], "405": [{ name: "المصاريه" }],
+      "55": [{ name: "ال مره" }], "L-82": [{ name: "المساعيد" }]
+    };
+
+    let combinedTribesData = {};
+    let tribeInfoData = [];
+
+    const searchInput = document.getElementById("searchInput");
+    const resultDiv = document.getElementById("result");
+    const loadingDiv = document.getElementById("loading");
+    const inputIcon = document.querySelector(".input-container .input-icon"); 
+    const clearIcon = document.getElementById("clearBtn");
+    const searchBtn = document.getElementById("searchBtn");
+    
+    const openSidebar = document.getElementById("openSidebar");
+    const closeSidebar = document.getElementById("closeSidebar");
+    const sidebar = document.getElementById("sidebar");
+    const hamburger = document.querySelector(".hamburger");
+    const homeLink = document.getElementById("homeLink");
+    const orderLink = document.getElementById("orderLink");
+    const contactLink = document.getElementById("contactLink");
+    const socialContainer = document.getElementById("socialContainer");
+    const aboutLink = document.getElementById("aboutLink");
+    const adTelegramBtn = document.getElementById("adTelegramBtn");
+    const cancelPopupBtn = document.getElementById("cancelBtn");
+    const contactPopupBtn = document.getElementById("contactBtn");
+    const faqQuestions = document.querySelectorAll(".faq-question");
+
+    function fadeOutAndRedirect(url) {
+      document.body.classList.add("fade-out");
+      setTimeout(function() { window.location.href = url; }, 500);
+    }
+
+    function normalizeArabic(text) {
+      return text.toLowerCase().replace(/[إأآا]/g, "ا").replace(/ة/g, "ه").replace(/[ىئ]/g, "ي").replace(/[\u064B-\u0652]/g, "").trim();
     }
     
-    const passwordInput = document.getElementById("password");
-    if (passwordInput) {
-        passwordInput.addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                checkLogin();
-            }
-        });
-    }
-
-    window.showSection = function(sectionId, element) {
-      const sections = {
-          'code': document.getElementById("section-code"),
-          'history': document.getElementById("section-history")
-      };
-      
-      for (const id in sections) {
-          if (sections[id]) {
-              sections[id].style.display = id === sectionId ? "block" : "none";
-          }
-      }
-      
-      document.querySelectorAll('.sidebar a').forEach(el => el.classList.remove('active'));
-      if(element) {
-          element.classList.add('active');
-      }
-    }
-
-    window.addCode = async function() {
-      const nameEl = document.getElementById("tribeNameCode");
-      const codeEl = document.getElementById("tribeCode");
-      const name = nameEl.value.trim();
-      const code = codeEl.value.trim().toUpperCase();
-      if (!name || !code) return alert("يرجى ملء جميع الحقول الخاصة برمز القبيلة.");
-      try {
-        const docRef = await addDoc(collection(db, "tribes"), {
-          name: name,
-          code: code,
-          timestamp: serverTimestamp()
-        });
-        alert(`تمت إضافة رمز القبيلة بنجاح. معرف المستند: ${docRef.id}`);
-        nameEl.value = "";
-        codeEl.value = "";
-      } catch (e) {
-        console.error("خطأ في إضافة رمز القبيلة: ", e);
-        alert(`فشلت إضافة رمز القبيلة. الخطأ: ${e.message}`);
-      }
-    }
-
-    window.addHistory = async function() {
-      const nameEl = document.getElementById("tribeNameHistory");
-      const historyEl = document.getElementById("tribeHistory");
-      const name = nameEl.value.trim();
-      const history = historyEl.value.trim();
-      if (!name || !history) return alert("يرجى ملء جميع الحقول الخاصة بمعلومات القبيلة.");
-      try {
-        const docRef = await addDoc(collection(db, "histories"), {
-          name: name, 
-          history: history.replace(/\n/g, "<br>"),
-          timestamp: serverTimestamp()
-        });
-        alert(`تمت إضافة معلومات القبيلة بنجاح. معرف المستند: ${docRef.id}`);
-        nameEl.value = "";
-        historyEl.value = "";
-      } catch (e) {
-        console.error("خطأ في إضافة معلومات القبيلة: ", e);
-        alert(`فشلت إضافة معلومات القبيلة. الخطأ: ${e.message}`);
-      }
-    }
-
-    window.deleteTribe = async function() {
-      const identifierEl = document.getElementById("tribeIdentifierDelete");
-      const identifier = identifierEl.value.trim();
-      if (!identifier) return alert("يرجى إدخال اسم القبيلة أو رمزها للحذف.");
-
-      const confirmation = confirm(`هل أنت متأكد أنك تريد حذف كل السجلات المطابقة لـ: "${identifier}"؟ هذا الإجراء لا يمكن التراجع عنه.`);
-      if (!confirmation) return;
-
-      try {
-        let deletedCount = 0;
-        const tribesRef = collection(db, "tribes");
-        const batch = writeBatch(db);
-
-        // Search by code (case-insensitive for input, but stored as uppercase)
-        const qByCode = query(tribesRef, where("code", "==", identifier.toUpperCase()));
-        const snapshotByCode = await getDocs(qByCode);
-        
-        snapshotByCode.forEach(doc => {
-          batch.delete(doc.ref);
-          deletedCount++;
-        });
-
-        // Search by name (exact match, case-sensitive as stored)
-        // To avoid deleting by name if code already matched, we can check deletedCount
-        if (snapshotByCode.empty) { // Only search by name if no code match was found
-            const qByName = query(tribesRef, where("name", "==", identifier));
-            const snapshotByName = await getDocs(qByName);
-            snapshotByName.forEach(doc => {
-              // Avoid double-adding to batch if somehow a name matched a code that was different case
-              // This check is a bit redundant if the first search was exhaustive for the identifier as a code
-              let alreadyMarkedForDeletion = false;
-              snapshotByCode.forEach(codeDoc => {
-                  if(codeDoc.id === doc.id) alreadyMarkedForDeletion = true;
-              });
-              if(!alreadyMarkedForDeletion){
-                  batch.delete(doc.ref);
-                  deletedCount++;
-              }
-            });
-        }
-
-        if (deletedCount > 0) {
-          await batch.commit();
-          alert(`تم حذف ${deletedCount} سجل بنجاح بناءً على المعرف: "${identifier}".`);
-          identifierEl.value = "";
+    function showPopup(query, type = "tribe") {
+      const popupModal = document.getElementById("popupModal");
+      const popupMessage = document.getElementById("popupMessage");
+      if (popupModal && popupMessage) {
+        if (type === "history_popup") { // Differentiated popup type
+            popupMessage.innerHTML = `لم يتم العثور على معلومات تاريخية للقبيلة (<strong>${query}</strong>). يمكنك التواصل معنا لإضافتها.`;
+        } else if (type === "code") {
+            popupMessage.innerHTML = `قد يكون رمز (<strong>${query}</strong>) يتبع لقبيلة غير مسجلة في المنصة، يمكنك التواصل معنا في حال أردت إضافته`;
         } else {
-          alert(`لم يتم العثور على قبيلة بالاسم أو الرمز: "${identifier}".`);
+            popupMessage.innerHTML = `قد يكون الرمز لقبيلة (<strong>${query}</strong>) غير مضاف حالياً قم بالتواصل معنا لتعريفه وإضافته في المنصة`;
         }
-
-      } catch (e) {
-        console.error("خطأ في حذف القبيلة: ", e);
-        alert(`فشلت عملية الحذف. الخطأ: ${e.message}`);
+        popupModal.style.display = "flex";
+        if(contactPopupBtn) contactPopupBtn.onclick = function() { window.location.href = "https://wa.me/967738889982"; };
       }
     }
 
-    // Initialize the first section view on load after login
-    // This is handled inside checkLogin now.
+    if (openSidebar) openSidebar.addEventListener("click", () => { sidebar.classList.toggle("active"); hamburger.classList.toggle("active"); });
+    if (closeSidebar) closeSidebar.addEventListener("click", () => { sidebar.classList.remove("active"); hamburger.classList.remove("active"); });
+    if (homeLink) homeLink.addEventListener("click", () => { sidebar.classList.remove("active"); hamburger.classList.remove("active"); document.querySelector(".container").scrollIntoView({ behavior: "smooth" }); });
+    if (contactLink) contactLink.addEventListener("click", () => { socialContainer.classList.toggle("active"); });
+    if (aboutLink) aboutLink.addEventListener("click", function(event) { event.preventDefault(); fadeOutAndRedirect(this.href); });
+    if (orderLink) orderLink.addEventListener("click", function(event) { event.preventDefault(); fadeOutAndRedirect(this.href); });
+    if (searchInput) searchInput.addEventListener("input", function () { if (searchInput.value.trim().length > 0) { inputIcon.style.display = "none"; clearIcon.style.display = "block"; } else { inputIcon.style.display = "block"; clearIcon.style.display = "none"; } });
+    if (clearIcon) clearIcon.addEventListener("click", function () { searchInput.value = ""; inputIcon.style.display = "block"; clearIcon.style.display = "none"; searchInput.focus(); resultDiv.innerHTML = ""; resultDiv.classList.remove("show"); });
+    if (searchBtn) searchBtn.addEventListener("click", performSearch);
+    if (searchInput) searchInput.addEventListener("keydown", function (e) { if (e.key === "Enter") performSearch(); });
+    if (cancelPopupBtn) cancelPopupBtn.addEventListener("click", function() { document.getElementById("popupModal").style.display = "none"; });
+    if (adTelegramBtn) adTelegramBtn.addEventListener("click", function() { window.location.href = "https://wa.me/967738889982"; });
+    faqQuestions.forEach((question) => { question.addEventListener("click", function () { const answer = this.nextElementSibling; const icon = this.querySelector(".faq-icon"); const isActive = this.classList.contains("active"); faqQuestions.forEach(q => { if (q !== this && q.classList.contains("active")) { q.classList.remove("active"); q.nextElementSibling.style.display = "none"; const otherIcon = q.querySelector(".faq-icon"); if (otherIcon) otherIcon.classList.replace("bx-chevron-up", "bx-chevron-down"); } }); if (isActive) { answer.style.display = "none"; this.classList.remove("active"); if (icon) icon.classList.replace("bx-chevron-up", "bx-chevron-down"); } else { answer.style.display = "block"; this.classList.add("active"); if (icon) icon.classList.replace("bx-chevron-down", "bx-chevron-up"); } }); });
 
+    function displayNotFoundMessage(messageContent) {
+        const messageBox = document.createElement("div");
+        messageBox.className = "not-found-message"; // Use the unified class
+        messageBox.textContent = messageContent;
+        resultDiv.appendChild(messageBox);
+    }
+
+    function performSearch() {
+      if (!searchInput || !resultDiv || !loadingDiv) return;
+      const query = searchInput.value.trim();
+      if (!query) {
+        displayNotFoundMessage("يرجى ملء خانة البحث");
+        resultDiv.classList.add("show");
+        return;
+      }
+      if (window.clicky) clicky.log("بحث_موقع", query);
+      resultDiv.classList.remove("show");
+      resultDiv.innerHTML = "";
+      loadingDiv.style.display = "flex";
+
+      if (Object.keys(combinedTribesData).length === 0 && tribeInfoData.length === 0) {
+          loadAndMergeData().then(() => executeSearchLogic(query)).catch(error => {
+              loadingDiv.style.display = "none";
+              displayNotFoundMessage("فشل تحميل البيانات، يرجى المحاولة مرة أخرى.");
+              resultDiv.classList.add("show");
+          });
+      } else {
+          executeSearchLogic(query);
+      }
+    }
+
+    function executeSearchLogic(query) {
+        const delay = Math.floor(Math.random() * 1000) + 500;
+        setTimeout(function () {
+            loadingDiv.style.display = "none";
+            const normalizedQuery = normalizeArabic(query);
+            const historyKeyword = "تاريخ ";
+            const infoKeyword = "معلومات ";
+
+            if (normalizedQuery.startsWith(normalizeArabic(historyKeyword)) || normalizedQuery.startsWith(normalizeArabic(infoKeyword))) {
+                let tribeNameForHistory = "";
+                if (normalizedQuery.startsWith(normalizeArabic(historyKeyword))) {
+                    tribeNameForHistory = query.substring(historyKeyword.length).trim();
+                } else if (normalizedQuery.startsWith(normalizeArabic(infoKeyword))) {
+                    tribeNameForHistory = query.substring(infoKeyword.length).trim();
+                }
+                
+                const normalizedTribeNameForHistory = normalizeArabic(tribeNameForHistory);
+                const foundHistory = tribeInfoData.find(info => normalizeArabic(info.name) === normalizedTribeNameForHistory);
+
+                if (foundHistory) {
+                    if (window.clicky) clicky.log("نتيجة_بحث_تاريخ", tribeNameForHistory);
+                    const historyBox = document.createElement("div");
+                    historyBox.className = "history-box";
+                    const title = document.createElement("h4");
+                    title.textContent = `معلومات عن قبيلة ${foundHistory.name}`;
+                    historyBox.appendChild(title);
+                    const historyParagraph = document.createElement("p");
+                    historyParagraph.innerHTML = foundHistory.history;
+                    historyBox.appendChild(historyParagraph);
+                    resultDiv.appendChild(historyBox);
+                } else {
+                    displayNotFoundMessage(`لم يتم اضافه معلومات (${tribeNameForHistory})`);
+                    if (window.clicky) clicky.log("بحث_تاريخ_غير_ناجح", tribeNameForHistory);
+                    setTimeout(() => showPopup(tribeNameForHistory, "history_popup"), 1500);
+                }
+            } else {
+                if (/^\d+$|^(?:[A-Z]-?\d+)$/i.test(query)) {
+                    let code = query.toUpperCase();
+                    if (/^(?:[A-Z])\d+$/i.test(code)) code = code.replace(/^(?:([A-Z]))/, "$1-");
+                    if (!combinedTribesData[code] && code.includes("-")) { let codeNoDash = code.replace("-", ""); if (combinedTribesData[codeNoDash]) code = codeNoDash; }
+
+                    if (combinedTribesData[code]) {
+                        if (window.clicky) clicky.log("نتيجة_بحث_رمز", combinedTribesData[code].map(e => e.name).join(", ") + " (" + code + ")");
+                        if (combinedTribesData[code].length > 1) {
+                            const table = document.createElement("table"); table.className = "result-table";
+                            const thead = document.createElement("thead"); const hr = document.createElement("tr");
+                            const thc = document.createElement("th"); thc.textContent = "الرمز";
+                            const tht = document.createElement("th"); tht.textContent = "القبائل المشتركة";
+                            hr.appendChild(thc); hr.appendChild(tht); thead.appendChild(hr); table.appendChild(thead);
+                            const tbody = document.createElement("tbody"); const r = document.createElement("tr");
+                            const tdc = document.createElement("td"); tdc.textContent = code;
+                            const tdt = document.createElement("td"); tdt.textContent = combinedTribesData[code].map((entry) => entry.name).join(", ");
+                            r.appendChild(tdc); r.appendChild(tdt); tbody.appendChild(r); table.appendChild(tbody);
+                            resultDiv.appendChild(table);
+                        } else {
+                            combinedTribesData[code].forEach(function (entry) {
+                                const box = document.createElement("div"); box.className = "tribe-box";
+                                box.textContent = `هذا الرمز ${code} يعود لقبيلة ${entry.name}`;
+                                resultDiv.appendChild(box);
+                            });
+                        }
+                    } else {
+                        displayNotFoundMessage("عفواً لم يتم العثور على قبيلة بهذا الرمز");
+                        if (window.clicky) clicky.log("بحث_رمز_غير_ناجح", query);
+                        setTimeout(() => showPopup(query, "code"), 1500);
+                    }
+                } else {
+                    let found = false;
+                    const matchingTribes = [];
+                    for (const codeKey in combinedTribesData) {
+                        if (combinedTribesData.hasOwnProperty(codeKey)) {
+                            combinedTribesData[codeKey].forEach(function (entry) {
+                                if (normalizeArabic(entry.name).includes(normalizedQuery)) {
+                                    if (!matchingTribes.some(t => t.name === entry.name && t.code === codeKey)) {
+                                        matchingTribes.push({name: entry.name, code: codeKey});
+                                    }
+                                    found = true;
+                                }
+                            });
+                        }
+                    }
+                    if (found) {
+                        matchingTribes.forEach(match => {
+                            if (window.clicky) clicky.log("نتيجة_بحث_اسم", match.name + " (" + match.code + ")");
+                            const box = document.createElement("div"); box.className = "tribe-box";
+                            box.textContent = `${match.name} رمز القبيلة هو ${match.code}`;
+                            resultDiv.appendChild(box);
+                        });
+                    } else {
+                        displayNotFoundMessage("عفواً لم يتم العثور على رمز لهذه القبيلة");
+                        if (window.clicky) clicky.log("بحث_اسم_غير_ناجح", query);
+                        setTimeout(() => showPopup(query, "tribe"), 1500);
+                    }
+                }
+            }
+            resultDiv.classList.add("show");
+        }, delay);
+    }
+
+    async function loadAndMergeData() {
+        let firebaseFetchedTribes = {};
+        try {
+            const tribesCollectionRef = collection(db, "tribes");
+            const querySnapshot = await getDocs(tribesCollectionRef);
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if (data.code && data.name) {
+                    if (!firebaseFetchedTribes[data.code]) firebaseFetchedTribes[data.code] = [];
+                    // التأكد من عدم إضافة أسماء مكررة لنفس الرمز من Firebase نفسها أثناء الجلب
+                    if (!firebaseFetchedTribes[data.code].some(e => e.name === data.name)) {
+                        firebaseFetchedTribes[data.code].push({ name: data.name });
+                    }
+                }
+            });
+        } catch (error) {
+            console.error("فشل تحميل رموز القبائل من Firebase:", error);
+        }
+
+        // البدء بنسخة عميقة من القبائل المضمنة في الكود
+        let newMergedData = JSON.parse(JSON.stringify(hardcodedTribes));
+
+        // دمج بيانات Firebase في newMergedData
+        for (const codeKey in firebaseFetchedTribes) {
+            if (firebaseFetchedTribes.hasOwnProperty(codeKey)) {
+                if (newMergedData.hasOwnProperty(codeKey)) {
+                    // إذا كان الرمز موجوداً في كلا المصدرين، قم بدمج قوائم القبائل
+                    const existingTribes = newMergedData[codeKey]; // القبائل الموجودة من hardcoded
+                    const firebaseTribesForCode = firebaseFetchedTribes[codeKey]; // قبائل Firebase لهذا الرمز
+
+                    firebaseTribesForCode.forEach(fbTribe => {
+                        // أضف قبيلة Firebase فقط إذا لم تكن موجودة بالفعل في القائمة الحالية لهذا الرمز (لتجنب التكرار)
+                        if (!existingTribes.some(existingTribe => existingTribe.name === fbTribe.name)) {
+                            existingTribes.push(fbTribe);
+                        }
+                    });
+                } else {
+                    // إذا كان الرمز موجوداً فقط في Firebase، قم بإضافته مباشرة
+                    newMergedData[codeKey] = firebaseFetchedTribes[codeKey];
+                }
+            }
+        }
+        combinedTribesData = newMergedData;
+        console.log("بيانات رموز القبائل المدمجة جاهزة:", Object.keys(combinedTribesData).length, "رموز.");
+
+        // الجزء الخاص بتحميل بيانات تاريخ القبائل يبقى كما هو
+        tribeInfoData.length = 0;
+        try {
+            const historyCollectionRef = collection(db, "histories");
+            const historySnapshot = await getDocs(historyCollectionRef);
+            historySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if(data.name && data.history) tribeInfoData.push({ name: data.name, history: data.history.replace(/\n/g, "<br>") });
+            });
+            console.log("تم تحميل بيانات تاريخ القبائل:", tribeInfoData.length, "إدخالات.");
+        } catch (historyError) {
+            console.error("فشل تحميل بيانات تاريخ القبائل:", historyError);
+        }
+    }
+
+    window.addEventListener("DOMContentLoaded", async () => {
+        await loadAndMergeData();
+    });
   </script>
 </body>
 </html>
-
