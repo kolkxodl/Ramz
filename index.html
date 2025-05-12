@@ -242,32 +242,26 @@
       color: #3E2723;
     } 
     
-    /* Unified style for result boxes - adjusted to match original tribe-box shape */
-    
-    .result .history-box,
-     {
+    .result .history-box {
       background: rgba(253, 248, 240, 0.8);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
       border: 1px solid #D2B48C;
       padding: 12px;
       border-radius: 8px;
-      margin: 0 auto 12px auto; /* Centering the box, bottom margin 12px, from original .result .tribe-box margin-bottom and todo */
+      margin: 0 auto 12px auto; 
       color: #3E2723;
-      font-size: 18px; /* As per todo.md, and matches original .result font-size */
-      /* text-align is inherited from .result */
-      /* line-height removed as per todo.md (it was not in original .result .tribe-box) */
-      /* max-width and word-wrap removed to simplify and match original .result .tribe-box */
+      font-size: 18px; 
     }
     .result .history-box h4 {
         margin-bottom: 10px;
         color: #CD853F;
-        font-size: 17px; /* Slightly smaller title */
+        font-size: 17px; 
         text-align: center;
     }
     .result .history-box p {
-        margin: 0; /* Remove default p margin if any */
-        text-align: center; /* Center history text as well */
+        margin: 0; 
+        text-align: center; 
     }
     .result-table {
       width: 100%;
@@ -300,7 +294,7 @@
       border: none;
       color: #5C4033;
       border-bottom: 1px solid #EFE8DC;
-      text-align: center; /* Center table cell content */
+      text-align: center; 
     }
     .result-table tbody tr:last-child td {
       border-bottom: none;
@@ -485,9 +479,8 @@
         font-size: 20px;
       }
       
-      .result .history-box,
-     {
-        font-size: 14px; /* Even smaller on mobile */
+      .result .history-box {
+        font-size: 14px; 
         padding: 10px;
       }
       .result .history-box h4 {
@@ -504,7 +497,7 @@
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 30;
+      z-index: 30; /* Default z-index for popups */
     }
     .popup-content {
       background: rgba(255, 255, 255, 0.8);
@@ -517,6 +510,11 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       animation: popupAnimation 0.5s ease;
     }
+    /* Specific styling for TikTok popup content if needed, otherwise it inherits from .popup-content */
+    .tiktok-popup-content {
+        max-width: 420px; /* Slightly wider for the message */
+    }
+
     @keyframes popupAnimation {
       from { transform: scale(0.8); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
@@ -536,6 +534,10 @@
       color: #fff;
       font-size: 16px;
       transition: background 0.3s;
+      display: inline-flex; /* To allow icon and text alignment */
+      align-items: center;
+      justify-content: center;
+      gap: 8px; /* Gap between icon and text */
     }
     .popup-btn:hover {
       background: linear-gradient(90deg, #D2B48C, #CD853F);
@@ -562,10 +564,10 @@
         <a id="contactLink" href="#">تواصل معنا</a>
         <div id="socialContainer">
           <a href="https://www.tiktok.com/@designer_co?_r=1&_d=ed0h27ak1gi5h5&sec_uid=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&share_author_id=7411089680148710408&sharer_language=ar&source=h5_m&u_code=eg4363i2jmk0je&timestamp=1744307461&user_id=7411089680148710408&sec_user_id=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7489355090459346709&share_link_id=c5287d92-5f28-43a4-a565-c07bf819151f&share_app_id=1233&ugbiz_name=ACCOUNT&ug_btm=b8727%2Cb7360&social_share_type=5&enable_checksum=1" target="_blank"><i class="bx bxl-tiktok"></i></a>
-          <a href="https://youtube.com/@designer_co2?si=0UkuOB6YMiOg1rDY"><i class="bx bxl-youtube"></i></a>
-          <a href="https://wa.me/967738889982"><i class="bx bxl-whatsapp"></i></a>
-          <a href="https://www.facebook.com/share/151kE2vx5T/https://www.facebook.com/share/151kE2vx5T/"><i class="bx bxl-facebook"></i></a>
-          <a href="https://www.instagram.com/designer_co3?igsh=b3VucWs1cDhqc2c1"><i class="bx bxl-instagram"></i></a>
+          <a href="https://youtube.com/@designer_co2?si=0UkuOB6YMiOg1rDY" target="_blank"><i class="bx bxl-youtube"></i></a>
+          <a href="https://wa.me/967738889982" target="_blank"><i class="bx bxl-whatsapp"></i></a>
+          <a href="https://www.facebook.com/share/151kE2vx5T/" target="_blank"><i class="bx bxl-facebook"></i></a>
+          <a href="https://www.instagram.com/designer_co3?igsh=b3VucWs1cDhqc2c1" target="_blank"><i class="bx bxl-instagram"></i></a>
         </div>
       </li>
       <li><a id="aboutLink" href="about.html">حول</a></li>
@@ -630,6 +632,8 @@
       <a href="https://www.instagram.com/designer_co3?igsh=b3VucWs1cDhqc2c1" target="_blank"><i class="bx bxl-instagram"></i></a>
     </div>
   </div>
+
+  <!-- Existing Popup Modal for general messages -->
   <div id="popupModal" class="popup-modal">
     <div class="popup-content">
       <p id="popupMessage"></p>
@@ -639,6 +643,21 @@
       </div>
     </div>
   </div>
+
+  <!-- TikTok Follow Popup Modal -->
+  <div id="tiktokPopupModal" class="popup-modal" style="z-index: 35;"> <!-- Ensure z-index is high enough -->
+    <div class="popup-content tiktok-popup-content">
+      <p id="tiktokPopupMessageText" style="margin-bottom: 20px; color: #3E2723; font-size: 17px; line-height: 1.8;">
+        لمتابعة البحث واستكشاف المزيد من رموز القبائل،<br>يرجى دعمنا بمتابعة حسابنا على تيك توك أولاً.
+      </p>
+      <button id="tiktokFollowBtn" class="popup-btn" style="padding: 12px 25px; font-size: 17px;">
+        <i class='bx bxl-tiktok' style="font-size: 22px; vertical-align: middle; margin-left: 8px;"></i> <!-- Adjusted margin for RTL -->
+        اضغط هنا لمتابعتنا
+      </button>
+    </div>
+  </div>
+  <!-- End TikTok Follow Popup Modal -->
+
   <footer>
     <p>تم تصميمه بواسطة المبرمج <a href="https://wa.me/967738889982">سهم الحميقاني</a></p>
     <p>&copy; حقوق النشر محفوظة</p>
@@ -728,6 +747,12 @@
     const contactPopupBtn = document.getElementById("contactBtn");
     const faqQuestions = document.querySelectorAll(".faq-question");
 
+    // TikTok Popup Elements and Variables
+    const tiktokPopupModal = document.getElementById("tiktokPopupModal");
+    const tiktokFollowBtn = document.getElementById("tiktokFollowBtn");
+    const TIKTOK_ACCOUNT_URL = "https://www.tiktok.com/@designer_co?_r=1&_d=ed0h27ak1gi5h5&sec_uid=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&share_author_id=7411089680148710408&sharer_language=ar&source=h5_m&u_code=eg4363i2jmk0je&timestamp=1744307461&user_id=7411089680148710408&sec_user_id=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7489355090459346709&share_link_id=c5287d92-5f28-43a4-a565-c07bf819151f&share_app_id=1233&ugbiz_name=ACCOUNT&ug_btm=b8727%2Cb7360&social_share_type=5&enable_checksum=1";
+    let currentSearchQuery = null; 
+
     function fadeOutAndRedirect(url) {
       document.body.classList.add("fade-out");
       setTimeout(function() { window.location.href = url; }, 500);
@@ -741,7 +766,7 @@
       const popupModal = document.getElementById("popupModal");
       const popupMessage = document.getElementById("popupMessage");
       if (popupModal && popupMessage) {
-        if (type === "history_popup") { // Differentiated popup type
+        if (type === "history_popup") { 
             popupMessage.innerHTML = `لم يتم العثور على معلومات تاريخية للقبيلة (<strong>${query}</strong>). يمكنك التواصل معنا لإضافتها.`;
         } else if (type === "code") {
             popupMessage.innerHTML = `قد يكون رمز (<strong>${query}</strong>) يتبع لقبيلة غير مسجلة في المنصة، يمكنك التواصل معنا في حال أردت إضافته`;
@@ -761,15 +786,34 @@
     if (orderLink) orderLink.addEventListener("click", function(event) { event.preventDefault(); fadeOutAndRedirect(this.href); });
     if (searchInput) searchInput.addEventListener("input", function () { if (searchInput.value.trim().length > 0) { inputIcon.style.display = "none"; clearIcon.style.display = "block"; } else { inputIcon.style.display = "block"; clearIcon.style.display = "none"; } });
     if (clearIcon) clearIcon.addEventListener("click", function () { searchInput.value = ""; inputIcon.style.display = "block"; clearIcon.style.display = "none"; searchInput.focus(); resultDiv.innerHTML = ""; resultDiv.classList.remove("show"); });
+    
     if (searchBtn) searchBtn.addEventListener("click", performSearch);
     if (searchInput) searchInput.addEventListener("keydown", function (e) { if (e.key === "Enter") performSearch(); });
+    
     if (cancelPopupBtn) cancelPopupBtn.addEventListener("click", function() { document.getElementById("popupModal").style.display = "none"; });
     if (adTelegramBtn) adTelegramBtn.addEventListener("click", function() { window.location.href = "https://wa.me/967738889982"; });
     faqQuestions.forEach((question) => { question.addEventListener("click", function () { const answer = this.nextElementSibling; const icon = this.querySelector(".faq-icon"); const isActive = this.classList.contains("active"); faqQuestions.forEach(q => { if (q !== this && q.classList.contains("active")) { q.classList.remove("active"); q.nextElementSibling.style.display = "none"; const otherIcon = q.querySelector(".faq-icon"); if (otherIcon) otherIcon.classList.replace("bx-chevron-up", "bx-chevron-down"); } }); if (isActive) { answer.style.display = "none"; this.classList.remove("active"); if (icon) icon.classList.replace("bx-chevron-up", "bx-chevron-down"); } else { answer.style.display = "block"; this.classList.add("active"); if (icon) icon.classList.replace("bx-chevron-down", "bx-chevron-up"); } }); });
 
+    // TikTok Follow Button Logic
+    if (tiktokFollowBtn) {
+      tiktokFollowBtn.addEventListener("click", () => {
+        window.open(TIKTOK_ACCOUNT_URL, "_blank");
+        localStorage.setItem("tiktokFollowed", "true");
+        if (tiktokPopupModal) tiktokPopupModal.style.display = "none";
+        
+        if (currentSearchQuery) {
+          initiateSearchProcess(currentSearchQuery);
+        }
+      });
+    }
+
     function displayNotFoundMessage(messageContent) {
         const messageBox = document.createElement("div");
-        messageBox.className = "not-found-message"; // Use the unified class
+        // Noticed a style issue in previous code: .result .history-box, { ... } had a trailing comma.
+        // Assuming .not-found-message should be styled similar to .tribe-box or .history-box for consistency.
+        // For now, let's use a generic class and ensure it's visible.
+        messageBox.className = "tribe-box"; // Re-using for similar styling
+        messageBox.style.color = "#3E2723"; // Ensure text color
         messageBox.textContent = messageContent;
         resultDiv.appendChild(messageBox);
     }
@@ -777,25 +821,43 @@
     function performSearch() {
       if (!searchInput || !resultDiv || !loadingDiv) return;
       const query = searchInput.value.trim();
+      currentSearchQuery = query; // Store the query for later use if popup interrupts
+
       if (!query) {
         displayNotFoundMessage("يرجى ملء خانة البحث");
         resultDiv.classList.add("show");
         return;
       }
-      if (window.clicky) clicky.log("بحث_موقع", query);
-      resultDiv.classList.remove("show");
-      resultDiv.innerHTML = "";
-      loadingDiv.style.display = "flex";
 
-      if (Object.keys(combinedTribesData).length === 0 && tribeInfoData.length === 0) {
-          loadAndMergeData().then(() => executeSearchLogic(query)).catch(error => {
-              loadingDiv.style.display = "none";
-              displayNotFoundMessage("فشل تحميل البيانات، يرجى المحاولة مرة أخرى.");
-              resultDiv.classList.add("show");
-          });
-      } else {
-          executeSearchLogic(query);
+      // Check if TikTok follow is needed
+      if (!localStorage.getItem("tiktokFollowed")) {
+        if (tiktokPopupModal) {
+            tiktokPopupModal.style.display = "flex";
+        }
+        return; // Stop further execution until follow button is clicked
       }
+
+      // Proceed with search if already followed or popup handled
+      initiateSearchProcess(currentSearchQuery);
+    }
+
+    function initiateSearchProcess(queryToSearch) {
+        if (!queryToSearch) return; 
+
+        if (window.clicky) clicky.log("بحث_موقع", queryToSearch);
+        resultDiv.classList.remove("show");
+        resultDiv.innerHTML = "";
+        loadingDiv.style.display = "flex";
+
+        if (Object.keys(combinedTribesData).length === 0 && tribeInfoData.length === 0) {
+            loadAndMergeData().then(() => executeSearchLogic(queryToSearch)).catch(error => {
+                loadingDiv.style.display = "none";
+                displayNotFoundMessage("فشل تحميل البيانات، يرجى المحاولة مرة أخرى.");
+                resultDiv.classList.add("show");
+            });
+        } else {
+            executeSearchLogic(queryToSearch);
+        }
     }
 
     function executeSearchLogic(query) {
@@ -906,7 +968,6 @@
                 const data = doc.data();
                 if (data.code && data.name) {
                     if (!firebaseFetchedTribes[data.code]) firebaseFetchedTribes[data.code] = [];
-                    // التأكد من عدم إضافة أسماء مكررة لنفس الرمز من Firebase نفسها أثناء الجلب
                     if (!firebaseFetchedTribes[data.code].some(e => e.name === data.name)) {
                         firebaseFetchedTribes[data.code].push({ name: data.name });
                     }
@@ -916,25 +977,18 @@
             console.error("فشل تحميل رموز القبائل من Firebase:", error);
         }
 
-        // البدء بنسخة عميقة من القبائل المضمنة في الكود
         let newMergedData = JSON.parse(JSON.stringify(hardcodedTribes));
-
-        // دمج بيانات Firebase في newMergedData
         for (const codeKey in firebaseFetchedTribes) {
             if (firebaseFetchedTribes.hasOwnProperty(codeKey)) {
                 if (newMergedData.hasOwnProperty(codeKey)) {
-                    // إذا كان الرمز موجوداً في كلا المصدرين، قم بدمج قوائم القبائل
-                    const existingTribes = newMergedData[codeKey]; // القبائل الموجودة من hardcoded
-                    const firebaseTribesForCode = firebaseFetchedTribes[codeKey]; // قبائل Firebase لهذا الرمز
-
+                    const existingTribes = newMergedData[codeKey]; 
+                    const firebaseTribesForCode = firebaseFetchedTribes[codeKey]; 
                     firebaseTribesForCode.forEach(fbTribe => {
-                        // أضف قبيلة Firebase فقط إذا لم تكن موجودة بالفعل في القائمة الحالية لهذا الرمز (لتجنب التكرار)
                         if (!existingTribes.some(existingTribe => existingTribe.name === fbTribe.name)) {
                             existingTribes.push(fbTribe);
                         }
                     });
                 } else {
-                    // إذا كان الرمز موجوداً فقط في Firebase، قم بإضافته مباشرة
                     newMergedData[codeKey] = firebaseFetchedTribes[codeKey];
                 }
             }
@@ -942,7 +996,6 @@
         combinedTribesData = newMergedData;
         console.log("بيانات رموز القبائل المدمجة جاهزة:", Object.keys(combinedTribesData).length, "رموز.");
 
-        // الجزء الخاص بتحميل بيانات تاريخ القبائل يبقى كما هو
         tribeInfoData.length = 0;
         try {
             const historyCollectionRef = collection(db, "histories");
