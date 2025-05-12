@@ -224,14 +224,14 @@
       margin-top: 20px;
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
-      /* font-size: 18px; /* Will be set by individual boxes */
+      font-size: 18px;
       text-align: center; /* Center the result boxes themselves */
       color: #3E2723;
     }
     .result.show {
       opacity: 1;
     }
-    /* Unified style for result boxes based on user's disclaimer */
+    /* Unified style for result boxes - adjusted to match original tribe-box shape */
     .result .tribe-box,
     .result .history-box,
     .result .not-found-message {
@@ -239,15 +239,14 @@
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
       border: 1px solid #D2B48C;
-      padding: 12px; /* Slightly reduced padding for smaller feel */
+      padding: 12px;
       border-radius: 8px;
-      font-size: 15px; /* As per user request */
+      margin: 0 auto 12px auto; /* Centering the box, bottom margin 12px, from original .result .tribe-box margin-bottom and todo */
       color: #3E2723;
-      line-height: 1.7; /* Adjusted from 1.8 for better fit */
-      text-align: center;
-      margin: 0 auto 20px auto; /* Centering block element and margin bottom */
-      max-width: 90%; /* Ensure it doesn't get too wide */
-      word-wrap: break-word;
+      font-size: 18px; /* As per todo.md, and matches original .result font-size */
+      /* text-align is inherited from .result */
+      /* line-height removed as per todo.md (it was not in original .result .tribe-box) */
+      /* max-width and word-wrap removed to simplify and match original .result .tribe-box */
     }
     .result .history-box h4 {
         margin-bottom: 10px;
@@ -264,7 +263,7 @@
       border-collapse: separate;
       border-spacing: 0;
       margin-top: 20px;
-      font-size: 15px; /* Slightly smaller */
+      font-size: 16px;
       border: none;
       border-radius: 8px;
       overflow: hidden;
@@ -274,7 +273,7 @@
       background-color: #EAD7C0;
     }
     .result-table thead th {
-      padding: 10px;
+      padding: 12px;
       border: none;
       color: #3E2723;
       font-weight: bold;
@@ -286,7 +285,7 @@
       background-color: #F7F1E1;
     }
     .result-table tbody td {
-      padding: 8px;
+      padding: 10px;
       border: none;
       color: #5C4033;
       border-bottom: 1px solid #EFE8DC;
@@ -565,7 +564,7 @@
   <div class="container">
     <h2>الباحث في رموز القبائل</h2>
     <div class="input-container">
-      <input type="text" id="searchInput" placeholder="أدخل رمز القبيلة، اسمها، أو &#39;تاريخ [اسم القبيلة]&#39;" enterkeyhint="go" />
+      <input type="text" id="searchInput" placeholder="أدخل رمز القبيلة او اسمها  "enterkeyhint="go" />
       <i class="bx bx-search input-icon"></i>
       <i class="bx bx-x clear-icon" id="clearBtn"></i>
     </div>
@@ -932,4 +931,3 @@
   </script>
 </body>
 </html>
-
