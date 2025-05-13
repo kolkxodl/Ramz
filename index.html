@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>الباحث في رموز القبائل</title>
-  <meta name="description" content="اكتشف رموز القبائل العربية ومعلوماتها التفصيلية وأصولها التاريخية عبر أكبر باحث متخصص. ابحث بالرمز أو اسم القبيلة الآن واستكشف إرث وتاريخ القبائل في الوطن العربي.">
+  <meta name="description" content="اكتشف رموز القبائل العربية ومعلوماتها التفصيلية وأصولها التاريخية عبر أكبر بااحث متخصص. ابحث بالرمز أو اسم القبيلة الآن واستكشف إرث وتاريخ القبائل في الوطن العربي.">
   <!-- خط IBM Plex Sans Arabic -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -705,7 +705,7 @@
         لمتابعة البحث واستكشاف المزيد من رموز القبائل،<br>يرجى دعمنا بمتابعة حسابنا على تيك توك أولاً.
       </p>
       <button id="tiktokFollowBtn" class="popup-btn" style="padding: 12px 25px; font-size: 17px;">
-        <i class='bx bxl-tiktok' style="font-size: 22px; vertical-align: middle; margin-left: 8px;"></i> <!-- Adjusted margin for RTL -->
+        <i class=\'bx bxl-tiktok\' style="font-size: 22px; vertical-align: middle; margin-left: 8px;"></i> <!-- Adjusted margin for RTL -->
         اضغط هنا لمتابعتنا
       </button>
     </div>
@@ -722,7 +722,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, doc, updateDoc, increment, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"; // Added doc, updateDoc, increment, setDoc, serverTimestamp
 
     const firebaseConfig = {
       apiKey: "AIzaSyDGLwl69D9W5c03G5WsfU8pahvVHL4zKzs",
@@ -735,6 +735,29 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+
+    // Function to increment site visitor count
+    async function incrementSiteVisitor() {
+        const analyticsRef = doc(db, "siteAnalytics", "totalVisitors");
+        try {
+            await updateDoc(analyticsRef, {
+                count: increment(1),
+                lastVisitTimestamp: serverTimestamp()
+            });
+            console.log("Site visitor count incremented.");
+        } catch (error) {
+            if (error.code === 'not-found' || (error.message && error.message.includes('No document to update'))) {
+                 await setDoc(analyticsRef, { 
+                     count: 1, 
+                     firstVisitTimestamp: serverTimestamp(), 
+                     lastVisitTimestamp: serverTimestamp()
+                 });
+                 console.log("Site visitor counter initialized and incremented.");
+            } else {
+                console.error("Error incrementing site visitor count: ", error);
+            }
+        }
+    }
 
     const hardcodedTribes = {
       "715": [{ name: "لقموش" }], "202": [{ name: "ردفان" }], "917": [{ name: "العوالق" }],
@@ -1066,7 +1089,9 @@
 
     window.addEventListener("DOMContentLoaded", async () => {
         await loadAndMergeData();
+        await incrementSiteVisitor(); // Call the function to increment visitor count on page load
     });
   </script>
 </body>
 </html>
+
