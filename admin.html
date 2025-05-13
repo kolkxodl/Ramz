@@ -86,18 +86,22 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
       padding: 10px 0;
       text-align: center;
+      display: flex; /* Added for horizontal layout */
+      justify-content: center; /* Center buttons */
+      flex-wrap: wrap; /* Allow wrapping on small screens */
     }
     .sidebar a {
       display: inline-block;
       color: white;
-      padding: 10px 20px;
+      padding: 8px 15px; /* Adjusted padding */
       text-decoration: none;
-      font-size: 16px;
+      font-size: 14px; /* Adjusted font size */
       transition: background-color 0.3s;
+      margin: 5px; /* Added margin for spacing */
+      border-radius: 5px;
     }
     .sidebar a:hover, .sidebar a.active {
       background-color: rgba(255,255,255,0.2);
-      border-radius: 5px;
     }
     .content {
       padding: 20px;
@@ -180,12 +184,14 @@
         top: 0;
         right: 0;
         padding-top: 20px;
+        display: block; /* Revert to block for vertical layout on larger screens */
       }
       .sidebar a {
         display: block;
         text-align: right;
-        padding: 12px 25px;
-        margin: 5px 0;
+        padding: 10px 20px; /* Revert padding for vertical layout */
+        font-size: 16px; /* Revert font size */
+        margin: 5px 0; /* Revert margin for vertical layout */
       }
       .content {
         margin-right: 250px; 
@@ -214,6 +220,7 @@
     <div class="sidebar">
       <a href="#" onclick="showSection('code', this)" class="active">إدارة رموز القبائل</a>
       <a href="#" onclick="showSection('history', this)">إدارة معلومات القبيلة</a>
+      <a href="#" onclick="showSection('siteVisitors', this)">زوار الموقع (<span id="siteVisitorCount">0</span>)</a>
     </div>
     <div class="content">
       <h2>مرحباً بك في لوحة التحكم</h2>
@@ -253,12 +260,18 @@
         <button class="submit-btn delete-btn" onclick="deleteHistory()"><i class="bx bx-trash"></i> حذف المعلومات</button>
       </div>
 
+      <div id="section-siteVisitors" class="form-section" style="display:none;">
+        <h3>زوار الموقع الأساسي</h3>
+        <p>إجمالي عدد زوار الموقع: <strong id="siteTotalVisitorsDisplay">جاري التحميل...</strong></p>
+        <!-- Detailed breakdown or graph can be added here in the future -->
+      </div>
+
     </div>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, writeBatch, doc, getDoc, increment, setDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js"; // Added doc, getDoc, increment, setDoc
 
     const firebaseConfig = {
       apiKey: "AIzaSyDGLwl69D9W5c03G5WsfU8pahvVHL4zKzs",
@@ -299,7 +312,8 @@
     window.showSection = function(sectionId, element) {
       const sections = {
           'code': document.getElementById("section-code"),
-          'history': document.getElementById("section-history")
+          'history': document.getElementById("section-history"),
+          'siteVisitors': document.getElementById("section-siteVisitors") // Added siteVisitors section
       };
       
       for (const id in sections) {
@@ -312,7 +326,62 @@
       if(element) {
           element.classList.add('active');
       }
+
+      if (sectionId === 'siteVisitors') {
+        fetchSiteVisitorCount();
+      }
     }
+
+    async function fetchSiteVisitorCount() {
+        const countSpan = document.getElementById("siteVisitorCount");
+        const displayStrong = document.getElementById("siteTotalVisitorsDisplay");
+        if (!countSpan || !displayStrong) return;
+
+        countSpan.textContent = "..."; // Loading indicator for sidebar
+        displayStrong.textContent = "جاري التحميل..."; // Loading indicator for section
+
+        try {
+            const analyticsRef = doc(db, "siteAnalytics", "totalVisitors");
+            const docSnap = await getDoc(analyticsRef);
+            if (docSnap.exists()) {
+                const count = docSnap.data().count || 0;
+                countSpan.textContent = count;
+                displayStrong.textContent = count;
+            } else {
+                // If the document doesn't exist, initialize it
+                await setDoc(analyticsRef, { count: 0 });
+                countSpan.textContent = "0";
+                displayStrong.textContent = "0";
+                console.log("Site visitor counter initialized in Firestore.");
+            }
+        } catch (error) {
+            console.error("Error fetching site visitor count: ", error);
+            countSpan.textContent = "خطأ";
+            displayStrong.textContent = "حدث خطأ أثناء جلب البيانات";
+        }
+    }
+
+    // Function to be called on your main website to increment visitor count
+    // This function is for ILLUSTRATIVE PURPOSES for the main site, not for the admin panel itself.
+    /* 
+    async function incrementSiteVisitor() {
+        const analyticsRef = doc(db, "siteAnalytics", "totalVisitors");
+        try {
+            await updateDoc(analyticsRef, {
+                count: increment(1)
+            });
+            console.log("Site visitor count incremented.");
+        } catch (error) {
+            // If the document doesn't exist, create it with count 1
+            if (error.code === 'not-found' || error.message.includes('No document to update')) {
+                 await setDoc(analyticsRef, { count: 1 });
+                 console.log("Site visitor counter initialized and incremented.");
+            } else {
+                console.error("Error incrementing site visitor count: ", error);
+            }
+        }
+    }
+    */
 
     window.addCode = async function() {
       const nameEl = document.getElementById("tribeNameCode");
@@ -443,3 +512,4 @@
   </script>
 </body>
 </html>
+
