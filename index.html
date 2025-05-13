@@ -722,7 +722,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, updateDoc, increment, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"; // Added doc, updateDoc, increment, setDoc, serverTimestamp
+    import { getFirestore, collection, getDocs, doc, updateDoc, increment, setDoc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"; // Added getDoc
 
     const firebaseConfig = {
       apiKey: "AIzaSyDGLwl69D9W5c03G5WsfU8pahvVHL4zKzs",
@@ -736,25 +736,59 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Function to increment site visitor count
-    async function incrementSiteVisitor() {
-        const analyticsRef = doc(db, "siteAnalytics", "totalVisitors");
-        try {
-            await updateDoc(analyticsRef, {
-                count: increment(1),
-                lastVisitTimestamp: serverTimestamp()
-            });
-            console.log("Site visitor count incremented.");
-        } catch (error) {
-            if (error.code === 'not-found' || (error.message && error.message.includes('No document to update'))) {
-                 await setDoc(analyticsRef, { 
-                     count: 1, 
-                     firstVisitTimestamp: serverTimestamp(), 
-                     lastVisitTimestamp: serverTimestamp()
-                 });
-                 console.log("Site visitor counter initialized and incremented.");
-            } else {
-                console.error("Error incrementing site visitor count: ", error);
+    // Function to increment site visitor count per session and per day
+    async function trackVisitor() {
+        const sessionKey = "siteVisitedThisSession";
+        const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
+
+        if (!sessionStorage.getItem(sessionKey)) {
+            sessionStorage.setItem(sessionKey, "true");
+
+            // Increment daily visitor count
+            const dailyVisitorRef = doc(db, "siteAnalyticsByDay", today);
+            try {
+                await updateDoc(dailyVisitorRef, {
+                    count: increment(1),
+                    lastVisitTimestamp: serverTimestamp()
+                });
+                console.log(`Daily visitor count for ${today} incremented.`);
+            } catch (error) {
+                if (error.code === "not-found" || (error.message && error.message.includes("No document to update"))) {
+                    await setDoc(dailyVisitorRef, { 
+                        count: 1, 
+                        date: today,
+                        firstVisitTimestamp: serverTimestamp(), 
+                        lastVisitTimestamp: serverTimestamp()
+                    });
+                    console.log(`Daily visitor counter for ${today} initialized and incremented.`);
+                } else {
+                    console.error(`Error incrementing daily visitor count for ${today}: `, error);
+                }
+            }
+
+            // Increment total unique visitors (optional, if you still want a simple total)
+            // This part can be removed if daily tracking is sufficient for "total"
+            const totalUniqueVisitorsRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
+            try {
+                // Check if a general unique visitor marker exists for this user (e.g., using localStorage for longer persistence)
+                // For simplicity, we'll just increment a general counter here, but a more robust unique visitor system might use localStorage or cookies.
+                // This example will increment total on each new session, which is a common way to track "total visits" rather than strictly unique users over all time.
+                await updateDoc(totalUniqueVisitorsRef, {
+                    count: increment(1),
+                    lastVisitTimestamp: serverTimestamp()
+                });
+                 console.log("Total unique visitor sessions count incremented.");
+            } catch (error) {
+                 if (error.code === "not-found" || (error.message && error.message.includes("No document to update"))) {
+                    await setDoc(totalUniqueVisitorsRef, { 
+                        count: 1, 
+                        firstVisitTimestamp: serverTimestamp(), 
+                        lastVisitTimestamp: serverTimestamp()
+                    });
+                    console.log("Total unique visitor sessions counter initialized.");
+                } else {
+                    console.error("Error incrementing total unique visitor sessions count: ", error);
+                }
             }
         }
     }
@@ -886,11 +920,8 @@
 
     function displayNotFoundMessage(messageContent) {
         const messageBox = document.createElement("div");
-        // Noticed a style issue in previous code: .result .history-box, { ... } had a trailing comma.
-        // Assuming .not-found-message should be styled similar to .tribe-box or .history-box for consistency.
-        // For now, let's use a generic class and ensure it's visible.
-        messageBox.className = "tribe-box"; // Re-using for similar styling
-        messageBox.style.color = "#3E2723"; // Ensure text color
+        messageBox.className = "tribe-box"; 
+        messageBox.style.color = "#3E2723"; 
         messageBox.textContent = messageContent;
         resultDiv.appendChild(messageBox);
     }
@@ -898,7 +929,7 @@
     function performSearch() {
       if (!searchInput || !resultDiv || !loadingDiv) return;
       const query = searchInput.value.trim();
-      currentSearchQuery = query; // Store the query for later use if popup interrupts
+      currentSearchQuery = query; 
 
       if (!query) {
         displayNotFoundMessage("يرجى ملء خانة البحث");
@@ -906,15 +937,13 @@
         return;
       }
 
-      // Check if TikTok follow is needed
       if (!localStorage.getItem("tiktokFollowed")) {
         if (tiktokPopupModal) {
             tiktokPopupModal.style.display = "flex";
         }
-        return; // Stop further execution until follow button is clicked
+        return; 
       }
 
-      // Proceed with search if already followed or popup handled
       initiateSearchProcess(currentSearchQuery);
     }
 
@@ -1089,7 +1118,7 @@
 
     window.addEventListener("DOMContentLoaded", async () => {
         await loadAndMergeData();
-        await incrementSiteVisitor(); // Call the function to increment visitor count on page load
+        await trackVisitor(); // Call the function to track visitor on page load
     });
   </script>
 </body>
