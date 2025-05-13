@@ -213,7 +213,7 @@
   <div id="dashboard">
     <div class="sidebar">
       <a href="#" onclick="showSection('code', this)" class="active">إدارة رموز القبائل</a>
-      <a href="#" onclick="showSection('history', this)">إضافة معلومات القبيلة</a>
+      <a href="#" onclick="showSection('history', this)">إدارة معلومات القبيلة</a>
     </div>
     <div class="content">
       <h2>مرحباً بك في لوحة التحكم</h2>
@@ -237,12 +237,20 @@
       </div>
 
       <div id="section-history" class="form-section" style="display:none;">
-        <h3>إضافة معلومات وتاريخ قبيلة</h3>
+        <h3>إدارة معلومات وتاريخ القبائل</h3>
+        <h4>إضافة معلومات وتاريخ قبيلة</h4>
         <label for="tribeNameHistory">اسم القبيلة (يجب أن يكون مطابقًا لاسم قبيلة لها رمز مُضاف):</label>
         <input type="text" id="tribeNameHistory">
         <label for="tribeHistory">معلومات وتاريخ القبيلة:</label>
         <textarea id="tribeHistory" rows="5"></textarea>
         <button class="submit-btn" onclick="addHistory()"><i class="bx bx-plus-circle"></i> إضافة المعلومات</button>
+
+        <hr class="section-divider">
+
+        <h4>حذف معلومات وتاريخ قبيلة</h4>
+        <label for="tribeNameDeleteHistory">اسم القبيلة لحذف معلوماتها:</label>
+        <input type="text" id="tribeNameDeleteHistory" placeholder="أدخل اسم القبيلة هنا">
+        <button class="submit-btn delete-btn" onclick="deleteHistory()"><i class="bx bx-trash"></i> حذف المعلومات</button>
       </div>
 
     </div>
@@ -270,7 +278,6 @@
       if (usernameEl.value === "Sahm" && passwordEl.value === "na1000856") {
         document.getElementById("login-screen").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
-        // Ensure the first section's link is correctly selected
         const firstLink = document.querySelector(".sidebar a[onclick*='code']");
         if (firstLink) {
             showSection('code', firstLink);
@@ -354,7 +361,7 @@
       const identifier = identifierEl.value.trim();
       if (!identifier) return alert("يرجى إدخال اسم القبيلة أو رمزها للحذف.");
 
-      const confirmation = confirm(`هل أنت متأكد أنك تريد حذف كل السجلات المطابقة لـ: "${identifier}"؟ هذا الإجراء لا يمكن التراجع عنه.`);
+      const confirmation = confirm(`هل أنت متأكد أنك تريد حذف كل رموز القبائل المطابقة لـ: "${identifier}"؟ هذا الإجراء لا يمكن التراجع عنه.`);
       if (!confirmation) return;
 
       try {
@@ -362,7 +369,6 @@
         const tribesRef = collection(db, "tribes");
         const batch = writeBatch(db);
 
-        // Search by code (case-insensitive for input, but stored as uppercase)
         const qByCode = query(tribesRef, where("code", "==", identifier.toUpperCase()));
         const snapshotByCode = await getDocs(qByCode);
         
@@ -371,14 +377,10 @@
           deletedCount++;
         });
 
-        // Search by name (exact match, case-sensitive as stored)
-        // To avoid deleting by name if code already matched, we can check deletedCount
-        if (snapshotByCode.empty) { // Only search by name if no code match was found
+        if (snapshotByCode.empty) { 
             const qByName = query(tribesRef, where("name", "==", identifier));
             const snapshotByName = await getDocs(qByName);
             snapshotByName.forEach(doc => {
-              // Avoid double-adding to batch if somehow a name matched a code that was different case
-              // This check is a bit redundant if the first search was exhaustive for the identifier as a code
               let alreadyMarkedForDeletion = false;
               snapshotByCode.forEach(codeDoc => {
                   if(codeDoc.id === doc.id) alreadyMarkedForDeletion = true;
@@ -392,20 +394,51 @@
 
         if (deletedCount > 0) {
           await batch.commit();
-          alert(`تم حذف ${deletedCount} سجل بنجاح بناءً على المعرف: "${identifier}".`);
+          alert(`تم حذف ${deletedCount} من رموز القبائل بنجاح بناءً على المعرف: "${identifier}".`);
           identifierEl.value = "";
         } else {
-          alert(`لم يتم العثور على قبيلة بالاسم أو الرمز: "${identifier}".`);
+          alert(`لم يتم العثور على رمز قبيلة بالاسم أو الرمز: "${identifier}".`);
         }
 
       } catch (e) {
-        console.error("خطأ في حذف القبيلة: ", e);
-        alert(`فشلت عملية الحذف. الخطأ: ${e.message}`);
+        console.error("خطأ في حذف رمز القبيلة: ", e);
+        alert(`فشلت عملية حذف رمز القبيلة. الخطأ: ${e.message}`);
       }
     }
 
-    // Initialize the first section view on load after login
-    // This is handled inside checkLogin now.
+    window.deleteHistory = async function() {
+      const nameEl = document.getElementById("tribeNameDeleteHistory");
+      const name = nameEl.value.trim();
+      if (!name) return alert("يرجى إدخال اسم القبيلة لحذف معلوماتها.");
+
+      const confirmation = confirm(`هل أنت متأكد أنك تريد حذف جميع معلومات وتاريخ القبيلة "${name}"؟ هذا الإجراء لا يمكن التراجع عنه.`);
+      if (!confirmation) return;
+
+      try {
+        let deletedCount = 0;
+        const historiesRef = collection(db, "histories");
+        const batch = writeBatch(db);
+
+        const qByName = query(historiesRef, where("name", "==", name));
+        const snapshotByName = await getDocs(qByName);
+
+        snapshotByName.forEach(doc => {
+          batch.delete(doc.ref);
+          deletedCount++;
+        });
+
+        if (deletedCount > 0) {
+          await batch.commit();
+          alert(`تم حذف ${deletedCount} من سجلات معلومات وتاريخ القبيلة "${name}" بنجاح.`);
+          nameEl.value = ""; 
+        } else {
+          alert(`لم يتم العثور على معلومات أو تاريخ للقبيلة بالاسم: "${name}".`);
+        }
+      } catch (e) {
+        console.error("خطأ في حذف معلومات القبيلة: ", e);
+        alert(`فشلت عملية حذف معلومات القبيلة. الخطأ: ${e.message}`);
+      }
+    }
 
   </script>
 </body>
