@@ -86,18 +86,18 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
       padding: 10px 0;
       text-align: center;
-      display: flex; /* Added for horizontal layout */
-      justify-content: center; /* Center buttons */
-      flex-wrap: wrap; /* Allow wrapping on small screens */
+      display: flex; 
+      justify-content: center; 
+      flex-wrap: wrap; 
     }
     .sidebar a {
       display: inline-block;
       color: white;
-      padding: 8px 15px; /* Adjusted padding */
+      padding: 8px 12px; 
       text-decoration: none;
-      font-size: 14px; /* Adjusted font size */
+      font-size: 13px; 
       transition: background-color 0.3s;
-      margin: 5px; /* Added margin for spacing */
+      margin: 5px; 
       border-radius: 5px;
     }
     .sidebar a:hover, .sidebar a.active {
@@ -148,26 +148,31 @@
         resize: vertical;
         min-height: 100px;
     }
-    button.submit-btn {
-      width: 100%;
-      padding: 12px;
+    button.submit-btn, button.filter-btn {
+      width: auto; 
+      min-width: 120px;
+      padding: 10px 20px; 
       border: none;
-      border-radius: 30px;
+      border-radius: 20px; 
       background: linear-gradient(90deg, #CD853F, #D2B48C);
       color: #fff;
-      font-size: 18px;
+      font-size: 16px; 
       cursor: pointer;
       transition: background 0.3s;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      margin-top: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin: 5px;
     }
-    button.submit-btn.delete-btn {
+    button.submit-btn.full-width {
+        width: 100%;
+        margin-top: 10px;
+    }
+    button.submit-btn.delete-btn, button.filter-btn.delete-btn {
         background: linear-gradient(90deg, #c0392b, #e74c3c);
     }
-    button.submit-btn.delete-btn:hover {
+    button.submit-btn.delete-btn:hover, button.filter-btn.delete-btn:hover {
         background: linear-gradient(90deg, #a52a2a, #c0392b);
     }
-    button.submit-btn:hover {
+    button.submit-btn:hover, button.filter-btn:hover {
       background: linear-gradient(90deg, #b87333, #c8a070);
     }
     hr.section-divider {
@@ -175,6 +180,16 @@
         height: 1px;
         background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(92, 64, 51, 0.75), rgba(0, 0, 0, 0));
         margin: 25px 0;
+    }
+    .visitor-stats-filters button {
+        margin: 5px;
+    }
+    .visitor-stats-display {
+        margin-top: 15px;
+        font-size: 18px;
+    }
+    .visitor-stats-display p {
+        margin: 5px 0;
     }
     @media (min-width: 768px) {
       .sidebar {
@@ -184,14 +199,14 @@
         top: 0;
         right: 0;
         padding-top: 20px;
-        display: block; /* Revert to block for vertical layout on larger screens */
+        display: block; 
       }
       .sidebar a {
         display: block;
         text-align: right;
-        padding: 10px 20px; /* Revert padding for vertical layout */
-        font-size: 16px; /* Revert font size */
-        margin: 5px 0; /* Revert margin for vertical layout */
+        padding: 10px 15px; 
+        font-size: 14px; 
+        margin: 5px 0; 
       }
       .content {
         margin-right: 250px; 
@@ -220,27 +235,24 @@
     <div class="sidebar">
       <a href="#" onclick="showSection('code', this)" class="active">إدارة رموز القبائل</a>
       <a href="#" onclick="showSection('history', this)">إدارة معلومات القبيلة</a>
-      <a href="#" onclick="showSection('siteVisitors', this)">زوار الموقع (<span id="siteVisitorCount">0</span>)</a>
+      <a href="#" onclick="showSection('siteVisitors', this)">زوار الموقع (<span id="siteVisitorCountSidebar">0</span>)</a>
     </div>
     <div class="content">
       <h2>مرحباً بك في لوحة التحكم</h2>
       
       <div id="section-code" class="form-section">
         <h3>إدارة رموز القبائل</h3>
-        
         <h4>إضافة رمز قبيلة جديد</h4>
         <label for="tribeNameCode">اسم القبيلة:</label>
         <input type="text" id="tribeNameCode">
         <label for="tribeCode">رمز القبيلة:</label>
         <input type="text" id="tribeCode">
-        <button class="submit-btn" onclick="addCode()"><i class="bx bx-plus-circle"></i> إضافة الرمز</button>
-
+        <button class="submit-btn full-width" onclick="addCode()"><i class="bx bx-plus-circle"></i> إضافة الرمز</button>
         <hr class="section-divider">
-
         <h4>حذف رمز قبيلة موجود</h4>
         <label for="tribeIdentifierDelete">اسم القبيلة أو رمزها للحذف:</label>
         <input type="text" id="tribeIdentifierDelete" placeholder="أدخل اسم القبيلة أو رمزها هنا">
-        <button class="submit-btn delete-btn" onclick="deleteTribe()"><i class="bx bx-trash"></i> حذف الرمز</button>
+        <button class="submit-btn delete-btn full-width" onclick="deleteTribe()"><i class="bx bx-trash"></i> حذف الرمز</button>
       </div>
 
       <div id="section-history" class="form-section" style="display:none;">
@@ -250,34 +262,44 @@
         <input type="text" id="tribeNameHistory">
         <label for="tribeHistory">معلومات وتاريخ القبيلة:</label>
         <textarea id="tribeHistory" rows="5"></textarea>
-        <button class="submit-btn" onclick="addHistory()"><i class="bx bx-plus-circle"></i> إضافة المعلومات</button>
-
+        <button class="submit-btn full-width" onclick="addHistory()"><i class="bx bx-plus-circle"></i> إضافة المعلومات</button>
         <hr class="section-divider">
-
         <h4>حذف معلومات وتاريخ قبيلة</h4>
         <label for="tribeNameDeleteHistory">اسم القبيلة لحذف معلوماتها:</label>
         <input type="text" id="tribeNameDeleteHistory" placeholder="أدخل اسم القبيلة هنا">
-        <button class="submit-btn delete-btn" onclick="deleteHistory()"><i class="bx bx-trash"></i> حذف المعلومات</button>
+        <button class="submit-btn delete-btn full-width" onclick="deleteHistory()"><i class="bx bx-trash"></i> حذف المعلومات</button>
       </div>
 
       <div id="section-siteVisitors" class="form-section" style="display:none;">
-        <h3>زوار الموقع الأساسي</h3>
-        <p>إجمالي عدد زوار الموقع: <strong id="siteTotalVisitorsDisplay">جاري التحميل...</strong></p>
-        <!-- Detailed breakdown or graph can be added here in the future -->
+        <h3>إحصائيات زوار الموقع الأساسي</h3>
+        <div class="visitor-stats-filters">
+          <button class="filter-btn" onclick="displayVisitorStats('total')">إجمالي الزوار</button>
+          <button class="filter-btn" onclick="displayVisitorStats('today')">زوار اليوم</button>
+          <button class="filter-btn" onclick="displayVisitorStats('yesterday')">زوار الأمس</button>
+          <button class="filter-btn" onclick="displayVisitorStats('week')">زوار هذا الأسبوع</button>
+          <button class="filter-btn" onclick="displayVisitorStats('month')">زوار هذا الشهر</button>
+        </div>
+        <div class="visitor-stats-display">
+          <p>الزوار (<span id="visitorStatPeriod"></span>): <strong id="visitorStatCount">جاري التحميل...</strong></p>
+          <p id="visitorStatMessage" style="font-size: 0.9em; color: #777;"></p> 
+        </div>
+        <hr class="section-divider">
+        <h4>إدارة بيانات الزوار</h4>
+        <button class="submit-btn delete-btn" onclick="clearAllVisitorData()"><i class="bx bx-trash"></i> مسح جميع بيانات الزوار</button>
       </div>
 
     </div>
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, writeBatch, doc, getDoc, increment, setDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js"; // Added doc, getDoc, increment, setDoc
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, writeBatch, doc, getDoc, increment, setDoc, Timestamp, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDGLwl69D9W5c03G5WsfU8pahvVHL4zKzs",
       authDomain: "tribes-project-18d2b.firebaseapp.com",
       projectId: "tribes-project-18d2b",
-      storageBucket: "tribes-project-18d2b.appspot.com",
+      storageBucket: "tribes-project-18d2b.appspot.com", 
       messagingSenderId: "375771927234",
       appId: "1:375771927234:web:5fa0ec96fd9c80fce7615b"
     };
@@ -291,6 +313,7 @@
       if (usernameEl.value === "Sahm" && passwordEl.value === "na1000856") {
         document.getElementById("login-screen").style.display = "none";
         document.getElementById("dashboard").style.display = "block";
+        fetchTotalVisitorCountForSidebar(); 
         const firstLink = document.querySelector(".sidebar a[onclick*='code']");
         if (firstLink) {
             showSection('code', firstLink);
@@ -313,7 +336,7 @@
       const sections = {
           'code': document.getElementById("section-code"),
           'history': document.getElementById("section-history"),
-          'siteVisitors': document.getElementById("section-siteVisitors") // Added siteVisitors section
+          'siteVisitors': document.getElementById("section-siteVisitors")
       };
       
       for (const id in sections) {
@@ -322,66 +345,183 @@
           }
       }
       
-      document.querySelectorAll('.sidebar a').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll(".sidebar a").forEach(el => el.classList.remove('active'));
       if(element) {
           element.classList.add('active');
       }
 
       if (sectionId === 'siteVisitors') {
-        fetchSiteVisitorCount();
+        displayVisitorStats('total'); 
       }
     }
 
-    async function fetchSiteVisitorCount() {
-        const countSpan = document.getElementById("siteVisitorCount");
-        const displayStrong = document.getElementById("siteTotalVisitorsDisplay");
-        if (!countSpan || !displayStrong) return;
-
-        countSpan.textContent = "..."; // Loading indicator for sidebar
-        displayStrong.textContent = "جاري التحميل..."; // Loading indicator for section
-
+    async function fetchTotalVisitorCountForSidebar() {
+        const countSpanSidebar = document.getElementById("siteVisitorCountSidebar");
+        if (!countSpanSidebar) return;
+        countSpanSidebar.textContent = "...";
         try {
-            const analyticsRef = doc(db, "siteAnalytics", "totalVisitors");
-            const docSnap = await getDoc(analyticsRef);
+            const totalRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
+            const docSnap = await getDoc(totalRef);
             if (docSnap.exists()) {
-                const count = docSnap.data().count || 0;
-                countSpan.textContent = count;
-                displayStrong.textContent = count;
+                countSpanSidebar.textContent = docSnap.data().count || 0;
             } else {
-                // If the document doesn't exist, initialize it
-                await setDoc(analyticsRef, { count: 0 });
-                countSpan.textContent = "0";
-                displayStrong.textContent = "0";
-                console.log("Site visitor counter initialized in Firestore.");
+                await setDoc(totalRef, { count: 0, firstVisitTimestamp: serverTimestamp(), lastVisitTimestamp: serverTimestamp() });
+                countSpanSidebar.textContent = "0";
             }
         } catch (error) {
-            console.error("Error fetching site visitor count: ", error);
-            countSpan.textContent = "خطأ";
-            displayStrong.textContent = "حدث خطأ أثناء جلب البيانات";
+            console.error("Error fetching total visitor count for sidebar: ", error);
+            countSpanSidebar.textContent = "خطأ";
         }
     }
 
-    // Function to be called on your main website to increment visitor count
-    // This function is for ILLUSTRATIVE PURPOSES for the main site, not for the admin panel itself.
-    /* 
-    async function incrementSiteVisitor() {
-        const analyticsRef = doc(db, "siteAnalytics", "totalVisitors");
+    function getFormattedDate(date) {
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    window.displayVisitorStats = async function(period) {
+        const statPeriodEl = document.getElementById("visitorStatPeriod");
+        const statCountEl = document.getElementById("visitorStatCount");
+        const statMessageEl = document.getElementById("visitorStatMessage");
+        if (!statPeriodEl || !statCountEl || !statMessageEl) return;
+
+        statCountEl.textContent = "جاري التحميل...";
+        statMessageEl.textContent = ""; // Clear previous messages
+        let count = 0;
+        let periodText = "";
+        let siteStartDate = null;
+
         try {
-            await updateDoc(analyticsRef, {
-                count: increment(1)
-            });
-            console.log("Site visitor count incremented.");
-        } catch (error) {
-            // If the document doesn't exist, create it with count 1
-            if (error.code === 'not-found' || error.message.includes('No document to update')) {
-                 await setDoc(analyticsRef, { count: 1 });
-                 console.log("Site visitor counter initialized and incremented.");
-            } else {
-                console.error("Error incrementing site visitor count: ", error);
+            // Get site start date for messaging
+            const totalInfoRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
+            const totalInfoSnap = await getDoc(totalInfoRef);
+            if (totalInfoSnap.exists() && totalInfoSnap.data().firstVisitTimestamp) {
+                siteStartDate = totalInfoSnap.data().firstVisitTimestamp.toDate();
             }
+
+            const today = new Date();
+            const todayDateString = getFormattedDate(today);
+
+            if (period === 'total') {
+                periodText = "الإجمالي";
+                const totalRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
+                const docSnap = await getDoc(totalRef);
+                if (docSnap.exists()) {
+                    count = docSnap.data().count || 0;
+                } else {
+                    await setDoc(totalRef, { count: 0, firstVisitTimestamp: serverTimestamp(), lastVisitTimestamp: serverTimestamp() });
+                    count = 0;
+                }
+            } else if (period === 'today') {
+                periodText = "اليوم";
+                const dailyDocRef = doc(db, "siteAnalyticsByDay", todayDateString);
+                const docSnap = await getDoc(dailyDocRef);
+                if (docSnap.exists()) {
+                    count = docSnap.data().count || 0;
+                }
+            } else if (period === 'yesterday') {
+                periodText = "الأمس";
+                const yesterday = new Date(today);
+                yesterday.setDate(today.getDate() - 1);
+                const yesterdayDateString = getFormattedDate(yesterday);
+                const dailyDocRef = doc(db, "siteAnalyticsByDay", yesterdayDateString);
+                const docSnap = await getDoc(dailyDocRef);
+                if (docSnap.exists()) {
+                    count = docSnap.data().count || 0;
+                } else if (siteStartDate && yesterday < siteStartDate && getFormattedDate(yesterday) !== getFormattedDate(siteStartDate)) {
+                    statMessageEl.textContent = "الموقع لم يكن متاحًا بالأمس.";
+                }
+            } else if (period === 'week') {
+                periodText = "هذا الأسبوع (آخر 7 أيام)";
+                let weekStartDate = new Date(today);
+                weekStartDate.setDate(today.getDate() - 6);
+                let daysInPeriod = 0;
+                for (let i = 0; i < 7; i++) {
+                    const day = new Date(today);
+                    day.setDate(today.getDate() - i);
+                    if (siteStartDate && day < siteStartDate && getFormattedDate(day) !== getFormattedDate(siteStartDate)) {
+                        continue; // Skip days before site start
+                    }
+                    daysInPeriod++;
+                    const dayDateString = getFormattedDate(day);
+                    const dailyDocRef = doc(db, "siteAnalyticsByDay", dayDateString);
+                    const docSnap = await getDoc(dailyDocRef);
+                    if (docSnap.exists()) {
+                        count += (docSnap.data().count || 0);
+                    }
+                }
+                if (siteStartDate && weekStartDate < siteStartDate && daysInPeriod < 7) {
+                     statMessageEl.textContent = ` يتم عرض بيانات ${daysInPeriod} يومًا فقط (منذ بداية الموقع).`;
+                }
+                 if (daysInPeriod === 0 && siteStartDate > today) {
+                    statMessageEl.textContent = "الموقع لم يكن متاحًا خلال هذا الأسبوع.";
+                }
+
+            } else if (period === 'month') {
+                periodText = "هذا الشهر";
+                const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+                let daysInPeriod = 0;
+
+                for (let i = 0; i < today.getDate(); i++) {
+                    const day = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i);
+                     if (siteStartDate && day < siteStartDate && getFormattedDate(day) !== getFormattedDate(siteStartDate)) {
+                        continue; // Skip days before site start
+                    }
+                    daysInPeriod++;
+                    const dayDateString = getFormattedDate(day);
+                    const dailyDocRef = doc(db, "siteAnalyticsByDay", dayDateString);
+                    const docSnap = await getDoc(dailyDocRef);
+                    if (docSnap.exists()) {
+                        count += (docSnap.data().count || 0);
+                    }
+                }
+                if (siteStartDate && firstDayOfMonth < siteStartDate && daysInPeriod < today.getDate()){
+                    statMessageEl.textContent = ` يتم عرض بيانات ${daysInPeriod} يومًا فقط من هذا الشهر (منذ بداية الموقع).`;
+                }
+                if (daysInPeriod === 0 && siteStartDate > today) {
+                     statMessageEl.textContent = "الموقع لم يكن متاحًا خلال هذا الشهر.";
+                }
+            }
+            statPeriodEl.textContent = periodText;
+            statCountEl.textContent = count;
+
+        } catch (error) {
+            console.error(`Error fetching visitor stats for ${period}: `, error);
+            statPeriodEl.textContent = periodText;
+            statCountEl.textContent = "خطأ في جلب البيانات";
+            statMessageEl.textContent = "حدث خطأ أثناء تحميل الإحصائيات.";
         }
     }
-    */
+
+    window.clearAllVisitorData = async function() {
+        const confirmation = confirm("هل أنت متأكد أنك تريد مسح جميع بيانات زوار الموقع؟ هذا الإجراء لا يمكن التراجع عنه وسيعيد جميع العدادات إلى الصفر.");
+        if (!confirmation) return;
+
+        try {
+            const dailyCollectionRef = collection(db, "siteAnalyticsByDay");
+            const dailySnapshot = await getDocs(dailyCollectionRef);
+            const batch = writeBatch(db);
+            dailySnapshot.docs.forEach(doc => {
+                batch.delete(doc.ref);
+            });
+            await batch.commit();
+            console.log("All daily visitor data cleared.");
+
+            const totalRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
+            await setDoc(totalRef, { count: 0, firstVisitTimestamp: serverTimestamp(), lastVisitTimestamp: serverTimestamp() });
+            console.log("Total unique visitors count reset.");
+
+            alert("تم مسح جميع بيانات الزوار بنجاح.");
+            fetchTotalVisitorCountForSidebar();
+            displayVisitorStats('total'); 
+
+        } catch (error) {
+            console.error("Error clearing visitor data: ", error);
+            alert("حدث خطأ أثناء محاولة مسح بيانات الزوار. يرجى مراجعة الكونسول.");
+        }
+    }
 
     window.addCode = async function() {
       const nameEl = document.getElementById("tribeNameCode");
@@ -440,7 +580,6 @@
 
         const qByCode = query(tribesRef, where("code", "==", identifier.toUpperCase()));
         const snapshotByCode = await getDocs(qByCode);
-        
         snapshotByCode.forEach(doc => {
           batch.delete(doc.ref);
           deletedCount++;
@@ -463,15 +602,15 @@
 
         if (deletedCount > 0) {
           await batch.commit();
-          alert(`تم حذف ${deletedCount} من رموز القبائل بنجاح بناءً على المعرف: "${identifier}".`);
+          alert(`تم حذف ${deletedCount} سجل بنجاح بناءً على المعرف: "${identifier}".`);
           identifierEl.value = "";
         } else {
-          alert(`لم يتم العثور على رمز قبيلة بالاسم أو الرمز: "${identifier}".`);
+          alert(`لم يتم العثور على قبيلة بالاسم أو الرمز: "${identifier}".`);
         }
 
       } catch (e) {
-        console.error("خطأ في حذف رمز القبيلة: ", e);
-        alert(`فشلت عملية حذف رمز القبيلة. الخطأ: ${e.message}`);
+        console.error("خطأ في حذف القبيلة: ", e);
+        alert(`فشلت عملية الحذف. الخطأ: ${e.message}`);
       }
     }
 
@@ -512,4 +651,3 @@
   </script>
 </body>
 </html>
-
