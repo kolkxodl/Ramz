@@ -335,6 +335,11 @@
       border-radius: 5px;
       margin-bottom: 10px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      /* تحسين عرض الصور بغض النظر عن أبعادها */
+      object-fit: cover; /* يحافظ على نسبة العرض إلى الارتفاع ويقص الزوائد */
+      width: 100%; /* تأخذ عرض الحاوية بالكامل */
+      max-height: 400px; /* ارتفاع أقصى للصورة */
+      min-height: 250px; /* ارتفاع أدنى للصورة */
     }
     .result .sheikh-box h4 {
       margin: 10px 0;
@@ -573,6 +578,9 @@
       .result .sheikh-box h4 {
         font-size: 16px;
       }
+      .result .sheikh-box img {
+        min-height: 180px; /* ارتفاع أدنى أصغر للشاشات الصغيرة */
+      }
     }
     .popup-modal {
       position: fixed;
@@ -756,18 +764,20 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getFirestore, collection, getDocs, doc, updateDoc, increment, setDoc, serverTimestamp, getDoc, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDGLwl69D9W5c03G5WsfU8pahvVHL4zKzs",
       authDomain: "tribes-project-18d2b.firebaseapp.com",
       projectId: "tribes-project-18d2b",
-      storageBucket: "tribes-project-18d2b.firebasestorage.app",
+      storageBucket: "tribes-project-18d2b.appspot.com",
       messagingSenderId: "375771927234",
       appId: "1:375771927234:web:5fa0ec96fd9c80fce7615b"
     };
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const storage = getStorage(app);
 
     // بيانات شيخ مشايخ دهم الافتراضية (تستخدم إذا لم يتم العثور على بيانات في قاعدة البيانات)
     const defaultSheikhDahmData = {
@@ -935,11 +945,19 @@
       const sheikhImage = document.createElement("img");
       sheikhImage.src = data.imageUrl;
       sheikhImage.alt = "صورة " + data.sheikhName;
-      sheikhImage.onerror = function() {
-        // إذا فشل تحميل الصورة، استخدم صورة بديلة
-        this.src = "images/sheikh_placeholder.jpg";
-        console.log("تعذر تحميل صورة الشيخ، تم استخدام صورة بديلة");
+      
+      // معالجة الصورة عند التحميل
+      sheikhImage.onload = function() {
+        console.log("تم تحميل الصورة بنجاح، الأبعاد: " + this.width + "x" + this.height);
       };
+      
+      // معالجة الخطأ في تحميل الصورة
+      sheikhImage.onerror = function() {
+        console.log("تعذر تحميل صورة الشيخ، تم استخدام صورة بديلة");
+        this.src = "images/sheikh_placeholder.jpg";
+        this.onerror = null; // منع التكرار اللانهائي
+      };
+      
       sheikhBox.appendChild(sheikhImage);
       
       const sheikhName = document.createElement("h4");
