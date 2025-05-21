@@ -738,7 +738,7 @@
         لمتابعة البحث واستكشاف المزيد من رموز القبائل،<br>يرجى دعمنا بمتابعة حسابنا على تيك توك أولاً.
       </p>
       <button id="tiktokFollowBtn" class="popup-btn" style="padding: 12px 25px; font-size: 17px;">
-        <i class=\'bx bxl-tiktok\' style="font-size: 22px; vertical-align: middle; margin-left: 8px;"></i> <!-- Adjusted margin for RTL -->
+        <i class='bx bxl-tiktok' style="font-size: 22px; vertical-align: middle; margin-left: 8px;"></i> <!-- Adjusted margin for RTL -->
         اضغط هنا لمتابعتنا
       </button>
     </div>
@@ -755,7 +755,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, updateDoc, increment, setDoc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"; // Added getDoc
+    import { getFirestore, collection, getDocs, doc, updateDoc, increment, setDoc, serverTimestamp, getDoc, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDGLwl69D9W5c03G5WsfU8pahvVHL4zKzs",
@@ -769,10 +769,11 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // بيانات شيخ مشايخ دهم
-    const sheikhData = {
-      name: "الشيخ محمد بن ناصر الدهمي",
-      imageUrl: "images/sheikh_dahm.jpg" // تم تغيير المسار ليشير إلى مجلد الصور المحلي
+    // بيانات شيخ مشايخ دهم الافتراضية (تستخدم إذا لم يتم العثور على بيانات في قاعدة البيانات)
+    const defaultSheikhDahmData = {
+      tribeName: "دهم",
+      sheikhName: "الشيخ محمد بن ناصر الدهمي",
+      imageUrl: "images/sheikh_dahm.jpg"
     };
 
     // Function to increment site visitor count per session and per day
@@ -805,13 +806,9 @@
                 }
             }
 
-            // Increment total unique visitors (optional, if you still want a simple total)
-            // This part can be removed if daily tracking is sufficient for "total"
+            // Increment total unique visitors
             const totalUniqueVisitorsRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
             try {
-                // Check if a general unique visitor marker exists for this user (e.g., using localStorage for longer persistence)
-                // For simplicity, we\'ll just increment a general counter here, but a more robust unique visitor system might use localStorage or cookies.
-                // This example will increment total on each new session, which is a common way to track "total visits" rather than strictly unique users over all time.
                 await updateDoc(totalUniqueVisitorsRef, {
                     count: increment(1),
                     lastVisitTimestamp: serverTimestamp()
@@ -930,23 +927,28 @@
       }
     }
 
-    // دالة لعرض بطاقة شيخ مشايخ دهم
-    function displaySheikhBox() {
+    // دالة لعرض بطاقة شيخ القبيلة (تم تعديلها لتستقبل البيانات)
+    function displaySheikhBox(data) {
       const sheikhBox = document.createElement("div");
       sheikhBox.className = "sheikh-box";
       
       const sheikhImage = document.createElement("img");
-      sheikhImage.src = sheikhData.imageUrl;
-      sheikhImage.alt = "صورة " + sheikhData.name;
+      sheikhImage.src = data.imageUrl;
+      sheikhImage.alt = "صورة " + data.sheikhName;
+      sheikhImage.onerror = function() {
+        // إذا فشل تحميل الصورة، استخدم صورة بديلة
+        this.src = "images/sheikh_placeholder.jpg";
+        console.log("تعذر تحميل صورة الشيخ، تم استخدام صورة بديلة");
+      };
       sheikhBox.appendChild(sheikhImage);
       
       const sheikhName = document.createElement("h4");
-      sheikhName.textContent = sheikhData.name;
+      sheikhName.textContent = data.sheikhName;
       sheikhBox.appendChild(sheikhName);
       
       resultDiv.appendChild(sheikhBox);
       
-      if (window.clicky) clicky.log("عرض_شيخ_دهم", sheikhData.name);
+      if (window.clicky) clicky.log("عرض_شيخ", data.sheikhName);
     }
 
     if (openSidebar) openSidebar.addEventListener("click", () => { sidebar.classList.toggle("active"); hamburger.classList.toggle("active"); });
@@ -1026,9 +1028,11 @@
         }
     }
 
-    function executeSearchLogic(query) {
+    async function executeSearchLogic(query) {
         const delay = Math.floor(Math.random() * 1000) + 500;
-        setTimeout(function () {
+        
+        // تأخير عرض النتائج
+        setTimeout(async function () {
             loadingDiv.style.display = "none";
             const normalizedQuery = normalizeArabic(query);
             const historyKeyword = "تاريخ ";
@@ -1049,14 +1053,50 @@
                 
                 const normalizedTribeNameForSheikh = normalizeArabic(tribeNameForSheikh);
 
-                // التحقق إذا كانت القبيلة هي دهم
-                if (normalizedTribeNameForSheikh === normalizeArabic("دهم")) {
-                    displaySheikhBox();
-                } else {
-                    // إذا كانت قبيلة أخرى، عرض رسالة عدم وجود شيخ ونافذة منبثقة
-                    displayNotFoundMessage(`لم يتم إضافة شيخ لقبيلة (${tribeNameForSheikh})`);
-                    if (window.clicky) clicky.log("بحث_شيخ_غير_ناجح", tribeNameForSheikh);
-                    setTimeout(() => showPopup(tribeNameForSheikh, "sheikh_popup"), 1500);
+                try {
+                    // حالة خاصة لقبيلة دهم
+                    if (normalizedTribeNameForSheikh === normalizeArabic("دهم")) {
+                        // البحث أولاً في قاعدة البيانات
+                        const sheikhsRef = collection(db, "sheikhs");
+                        const q = query(sheikhsRef, where("tribeName", "==", "دهم"));
+                        const querySnapshot = await getDocs(q);
+
+                        if (!querySnapshot.empty) {
+                            // إذا وجدت بيانات في قاعدة البيانات، استخدمها
+                            const sheikhDoc = querySnapshot.docs[0];
+                            const sheikhDataFromDb = sheikhDoc.data();
+                            displaySheikhBox(sheikhDataFromDb);
+                        } else {
+                            // إذا لم توجد بيانات في قاعدة البيانات، استخدم البيانات الافتراضية
+                            displaySheikhBox(defaultSheikhDahmData);
+                        }
+                    } else {
+                        // البحث عن شيوخ القبائل الأخرى
+                        const sheikhsRef = collection(db, "sheikhs");
+                        const q = query(sheikhsRef, where("tribeName", "==", tribeNameForSheikh));
+                        const querySnapshot = await getDocs(q);
+
+                        if (!querySnapshot.empty) {
+                            // عرض أول شيخ يتم العثور عليه لهذه القبيلة
+                            const sheikhDoc = querySnapshot.docs[0];
+                            const sheikhDataFromDb = sheikhDoc.data();
+                            displaySheikhBox(sheikhDataFromDb);
+                        } else {
+                            // إذا لم يتم العثور على شيخ، عرض رسالة عدم وجود شيخ ونافذة منبثقة
+                            displayNotFoundMessage(`لم يتم إضافة شيخ لقبيلة (${tribeNameForSheikh})`);
+                            if (window.clicky) clicky.log("بحث_شيخ_غير_ناجح", tribeNameForSheikh);
+                            setTimeout(() => showPopup(tribeNameForSheikh, "sheikh_popup"), 1500);
+                        }
+                    }
+                } catch (error) {
+                    console.error("خطأ في البحث عن الشيخ: ", error);
+                    
+                    // في حالة حدوث خطأ مع قبيلة دهم، استخدم البيانات الافتراضية
+                    if (normalizedTribeNameForSheikh === normalizeArabic("دهم")) {
+                        displaySheikhBox(defaultSheikhDahmData);
+                    } else {
+                        displayNotFoundMessage(`حدث خطأ أثناء البحث عن شيخ قبيلة (${tribeNameForSheikh})`);
+                    }
                 }
 
             } else if (normalizedQuery.startsWith(normalizeArabic(historyKeyword)) || normalizedQuery.startsWith(normalizeArabic(infoKeyword))) {
