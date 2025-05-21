@@ -317,6 +317,31 @@
         margin: 0; 
         text-align: center; 
     }
+    /* إضافة نمط لمربع عرض شيخ القبيلة */
+    .result .sheikh-box {
+      background: rgba(253, 248, 240, 0.8);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid #D2B48C;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 0 auto 12px auto; 
+      color: #3E2723;
+      text-align: center;
+    }
+    .result .sheikh-box img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .result .sheikh-box h4 {
+      margin: 10px 0;
+      color: #CD853F;
+      font-size: 18px;
+      text-align: center;
+    }
     .result-table {
       width: 100%;
       border-collapse: separate;
@@ -540,6 +565,14 @@
       .result .history-box h4 {
         font-size: 16px;
       }
+      /* تعديل أنماط مربع الشيخ للشاشات الصغيرة */
+      .result .sheikh-box {
+        font-size: 14px;
+        padding: 10px;
+      }
+      .result .sheikh-box h4 {
+        font-size: 16px;
+      }
     }
     .popup-modal {
       position: fixed;
@@ -736,6 +769,12 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
+    // بيانات شيخ مشايخ دهم
+    const sheikhData = {
+      name: "الشيخ محمد بن ناصر الدهمي",
+      imageUrl: "images/sheikh_dahm.jpg" // تم تغيير المسار ليشير إلى مجلد الصور المحلي
+    };
+
     // Function to increment site visitor count per session and per day
     async function trackVisitor() {
         const sessionKey = "siteVisitedThisSession";
@@ -771,7 +810,7 @@
             const totalUniqueVisitorsRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
             try {
                 // Check if a general unique visitor marker exists for this user (e.g., using localStorage for longer persistence)
-                // For simplicity, we'll just increment a general counter here, but a more robust unique visitor system might use localStorage or cookies.
+                // For simplicity, we\'ll just increment a general counter here, but a more robust unique visitor system might use localStorage or cookies.
                 // This example will increment total on each new session, which is a common way to track "total visits" rather than strictly unique users over all time.
                 await updateDoc(totalUniqueVisitorsRef, {
                     count: increment(1),
@@ -881,12 +920,33 @@
             popupMessage.innerHTML = `لم يتم العثور على معلومات تاريخية للقبيلة (<strong>${query}</strong>). يمكنك التواصل معنا لإضافتها.`;
         } else if (type === "code") {
             popupMessage.innerHTML = `قد يكون رمز (<strong>${query}</strong>) يتبع لقبيلة غير مسجلة في المنصة، يمكنك التواصل معنا في حال أردت إضافته`;
+        } else if (type === "sheikh_popup") { // إضافة حالة جديدة للشيخ
+            popupMessage.innerHTML = `لم يتم العثور على معلومات شيخ للقبيلة (<strong>${query}</strong>). يمكنك التواصل معنا لإضافتها.`;
         } else {
             popupMessage.innerHTML = `قد يكون الرمز لقبيلة (<strong>${query}</strong>) غير مضاف حالياً قم بالتواصل معنا لتعريفه وإضافته في المنصة`;
         }
         popupModal.style.display = "flex";
         if(contactPopupBtn) contactPopupBtn.onclick = function() { window.location.href = "https://wa.me/967738889982"; };
       }
+    }
+
+    // دالة لعرض بطاقة شيخ مشايخ دهم
+    function displaySheikhBox() {
+      const sheikhBox = document.createElement("div");
+      sheikhBox.className = "sheikh-box";
+      
+      const sheikhImage = document.createElement("img");
+      sheikhImage.src = sheikhData.imageUrl;
+      sheikhImage.alt = "صورة " + sheikhData.name;
+      sheikhBox.appendChild(sheikhImage);
+      
+      const sheikhName = document.createElement("h4");
+      sheikhName.textContent = sheikhData.name;
+      sheikhBox.appendChild(sheikhName);
+      
+      resultDiv.appendChild(sheikhBox);
+      
+      if (window.clicky) clicky.log("عرض_شيخ_دهم", sheikhData.name);
     }
 
     if (openSidebar) openSidebar.addEventListener("click", () => { sidebar.classList.toggle("active"); hamburger.classList.toggle("active"); });
@@ -973,8 +1033,33 @@
             const normalizedQuery = normalizeArabic(query);
             const historyKeyword = "تاريخ ";
             const infoKeyword = "معلومات ";
+            const sheikhKeyword = "شيخ ";
+            const sheikhMashayekhKeyword = "شيخ مشايخ ";
 
-            if (normalizedQuery.startsWith(normalizeArabic(historyKeyword)) || normalizedQuery.startsWith(normalizeArabic(infoKeyword))) {
+            // التحقق من البحث عن شيخ قبيلة
+            if (normalizedQuery.startsWith(normalizeArabic(sheikhKeyword)) || 
+                normalizedQuery.startsWith(normalizeArabic(sheikhMashayekhKeyword))) {
+                
+                let tribeNameForSheikh = "";
+                if (normalizedQuery.startsWith(normalizeArabic(sheikhKeyword))) {
+                    tribeNameForSheikh = query.substring(sheikhKeyword.length).trim();
+                } else if (normalizedQuery.startsWith(normalizeArabic(sheikhMashayekhKeyword))) {
+                    tribeNameForSheikh = query.substring(sheikhMashayekhKeyword.length).trim();
+                }
+                
+                const normalizedTribeNameForSheikh = normalizeArabic(tribeNameForSheikh);
+
+                // التحقق إذا كانت القبيلة هي دهم
+                if (normalizedTribeNameForSheikh === normalizeArabic("دهم")) {
+                    displaySheikhBox();
+                } else {
+                    // إذا كانت قبيلة أخرى، عرض رسالة عدم وجود شيخ ونافذة منبثقة
+                    displayNotFoundMessage(`لم يتم إضافة شيخ لقبيلة (${tribeNameForSheikh})`);
+                    if (window.clicky) clicky.log("بحث_شيخ_غير_ناجح", tribeNameForSheikh);
+                    setTimeout(() => showPopup(tribeNameForSheikh, "sheikh_popup"), 1500);
+                }
+
+            } else if (normalizedQuery.startsWith(normalizeArabic(historyKeyword)) || normalizedQuery.startsWith(normalizeArabic(infoKeyword))) {
                 let tribeNameForHistory = "";
                 if (normalizedQuery.startsWith(normalizeArabic(historyKeyword))) {
                     tribeNameForHistory = query.substring(historyKeyword.length).trim();
@@ -1123,4 +1208,3 @@
   </script>
 </body>
 </html>
-
