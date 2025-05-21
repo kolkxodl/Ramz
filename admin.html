@@ -11,917 +11,839 @@
   <style>
     body {
       margin: 0;
-      font-family: "IBM Plex Sans Arabic", sans-serif;          
+      font-family: "IBM Plex Sans Arabic", sans-serif;
       background: linear-gradient(135deg, #FAF3E0, #F2E8D5);
       color: #5C4033;
+      min-height: 100vh;
+      display: flex;
     }
-    #login-screen {
-      background: rgba(255, 255, 255, 0.7);
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
-      margin: 150px auto;
-      max-width: 320px;
-      width: 90%;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
-    #login-screen h2 {
-        margin-bottom: 20px;
-        color: #3E2723;
-        font-family: "IBM Plex Sans Arabic", sans-serif;
-    }
-    #login-screen input, #login-screen button {
-      width: 100%;
-      margin: 12px 0;
-      padding: 12px;
-      border-radius: 30px;
-      border: 1px solid #D2B48C;
-      box-sizing: border-box;
-      border-color: #CD853F;
-      box-shadow: 0 0 8px rgba(205, 133, 63, 0.2);
-      background-color: #fff;
-      color: #3E2723;
-      text-align: center;
-      font-size: 16px;
-      font-family: "IBM Plex Sans Arabic", sans-serif;
-    }
-    #login-screen input:focus, #login-screen button:focus{
-      transition: border-color 0.3s, box-shadow 0.3s;
-      border-color: #b87333; 
-      box-shadow: 0 0 10px rgba(184, 115, 51, 0.5);
-    } 
-    #login-screen button {
-      background: linear-gradient(90deg, #CD853F, #D2B48C);
-      color: #fff;
-      font-size: 18px;
-      cursor: pointer;
-      transition: background 0.3s;
-      border: none;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      font-family: "IBM Plex Sans Arabic", sans-serif;
-    }
-    #login-screen button:hover {
-        background: linear-gradient(90deg, #b87333, #c8a070);
-    }
-    .input-icon-container {
-        position: relative;
-    }
-    .input-icon {
-      position: absolute;
-      top: 50%;
-      right: 20px;
-      transform: translateY(-50%);
-      font-size: 20px;
-      pointer-events: none;
-      color: #D2B48C;
-    } 
-    #dashboard {
-      display: none;
-    }
+    
+    /* القائمة الجانبية */
     .sidebar {
       width: 250px;
+      background: rgba(139, 69, 19, 0.9);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
       height: 100vh;
+      position: fixed;
+      right: 0;
+      top: 0;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .sidebar.collapsed {
+      transform: translateX(250px);
+    }
+    
+    .sidebar-header {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .sidebar-header h2 {
+      color: #fff;
+      margin: 0;
+      font-size: 1.2rem;
+    }
+    
+    .toggle-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    
+    .toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .toggle-btn.active {
+      transform: rotate(180deg);
+    }
+    
+    .sidebar-menu {
+      padding: 20px 0;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+    
+    .sidebar-menu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .sidebar-menu li {
+      margin-bottom: 5px;
+    }
+    
+    .sidebar-menu a {
+      display: block;
+      padding: 12px 20px;
+      color: #fff;
+      text-decoration: none;
+      transition: background 0.3s;
+      border-radius: 4px;
+      margin: 0 10px;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .sidebar-menu a i {
+      margin-left: 10px;
+      font-size: 1.2rem;
+      vertical-align: middle;
+    }
+    
+    .sidebar-footer {
+      padding: 15px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.8rem;
+    }
+    
+    /* المحتوى الرئيسي */
+    .main-content {
+      flex: 1;
+      padding: 20px;
+      margin-right: 250px;
+      transition: margin 0.3s ease;
+    }
+    
+    .main-content.expanded {
+      margin-right: 0;
+    }
+    
+    .mobile-header {
+      display: none;
+      padding: 15px;
+      background: rgba(139, 69, 19, 0.9);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      color: #fff;
       position: fixed;
       top: 0;
       right: 0;
-      background: rgba(139, 69, 19, 0.8);
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
+      left: 0;
+      z-index: 999;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .mobile-toggle {
+      background: none;
+      border: none;
       color: #fff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      padding: 20px 0;
-      text-align: center;
-      display: block;
-      z-index: 100;
-      overflow-y: auto;
+      font-size: 24px;
+      cursor: pointer;
       transition: transform 0.3s ease;
     }
-    .sidebar a {
-      display: block;
-      color: white;
-      padding: 10px 15px;
-      text-decoration: none;
-      font-size: 14px;
-      transition: background-color 0.3s;
-      margin: 5px 0;
-      border-radius: 5px;
-      text-align: right;
-      font-family: "IBM Plex Sans Arabic", sans-serif;
-    }
-    .sidebar a:hover, .sidebar a.active {
-      background-color: rgba(255,255,255,0.2);
-    }
-    .content {
-      margin-right: 250px;
-      padding: 20px;
-      transition: margin-right 0.3s ease;
-    }
-    .content h2, .content h3, .content h4 {
-      color: #3E2723;
-      text-align: center;
-      margin-bottom: 20px;
-      font-family: "IBM Plex Sans Arabic", sans-serif;
-    }
-    .form-section {
-      background-color: rgba(255, 255, 255, 0.8);
-      -webkit-backdrop-filter: blur(5px);
-      backdrop-filter: blur(5px);
-      padding: 25px;
+    
+    /* الأقسام */
+    .section {
+      background: #fff;
       border-radius: 10px;
-      margin-top: 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: none;
     }
-    .form-section label {
-      font-weight: bold;
+    
+    .section.active {
       display: block;
-      margin-top: 15px;
+    }
+    
+    .section h3 {
+      margin-top: 0;
+      color: #3E2723;
+      border-bottom: 2px solid #D2B48C;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+    
+    /* النماذج */
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
       margin-bottom: 5px;
       color: #5C4033;
-      text-align: right;
-      font-family: "IBM Plex Sans Arabic", sans-serif;
+      font-weight: bold;
     }
-    .form-section input[type="text"], .form-section textarea, .form-section input[type="file"] {
+    
+    .form-control {
       width: 100%;
-      padding: 12px;
-      border-radius: 8px;
+      padding: 10px;
       border: 1px solid #D2B48C;
-      box-sizing: border-box;
-      font-size: 16px;
-      background-color: #fff;
-      color: #3E2723;
-      margin-bottom: 15px;
+      border-radius: 5px;
       font-family: "IBM Plex Sans Arabic", sans-serif;
+      color: #3E2723;
+      transition: border-color 0.3s, box-shadow 0.3s;
     }
-    .form-section input[type="text"]:focus, .form-section textarea:focus, .form-section input[type="file"]:focus {
-      border-color: #b87333;
-      box-shadow: 0 0 8px rgba(184, 115, 51, 0.3);
+    
+    .form-control:focus {
+      border-color: #CD853F;
+      box-shadow: 0 0 5px rgba(205, 133, 63, 0.3);
       outline: none;
     }
-    .form-section textarea {
-        resize: vertical;
-        min-height: 100px;
+    
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
     }
-    button.submit-btn, button.filter-btn {
-      width: auto; 
-      min-width: 120px;
-      padding: 10px 20px; 
+    
+    .btn {
+      padding: 10px 20px;
       border: none;
-      border-radius: 20px; 
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    
+    .btn-primary {
       background: linear-gradient(90deg, #CD853F, #D2B48C);
       color: #fff;
-      font-size: 16px; 
-      cursor: pointer;
-      transition: background 0.3s;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      margin: 5px;
-      font-family: "IBM Plex Sans Arabic", sans-serif;
     }
-    button.submit-btn.full-width {
-        width: 100%;
-        margin-top: 10px;
+    
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #D2B48C, #CD853F);
     }
-    button.submit-btn.delete-btn, button.filter-btn.delete-btn {
-        background: linear-gradient(90deg, #c0392b, #e74c3c);
+    
+    .btn-danger {
+      background: linear-gradient(90deg, #d9534f, #c9302c);
+      color: #fff;
     }
-    button.submit-btn.delete-btn:hover, button.filter-btn.delete-btn:hover {
-        background: linear-gradient(90deg, #a52a2a, #c0392b);
+    
+    .btn-danger:hover {
+      background: linear-gradient(90deg, #c9302c, #d9534f);
     }
-    button.submit-btn:hover, button.filter-btn:hover {
-      background: linear-gradient(90deg, #b87333, #c8a070);
-    }
-    hr.section-divider {
-        border: 0;
-        height: 1px;
-        background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(92, 64, 51, 0.75), rgba(0, 0, 0, 0));
-        margin: 25px 0;
-    }
-    .visitor-stats-filters button {
-        margin: 5px;
-    }
-    .visitor-stats-display {
-        margin-top: 15px;
-        font-size: 18px;
-        font-family: "IBM Plex Sans Arabic", sans-serif;
-    }
-    .visitor-stats-display p {
-        margin: 5px 0;
-    }
-    .hamburger-menu {
-      display: none;
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      z-index: 200;
-      background: rgba(139, 69, 19, 0.8);
-      color: white;
-      border: none;
+    
+    /* تحميل الصور */
+    .image-upload {
+      border: 2px dashed #D2B48C;
       border-radius: 5px;
-      padding: 8px 12px;
-      cursor: pointer;
-      font-size: 24px;
-      transition: all 0.3s ease;
-    }
-    .image-preview {
-      max-width: 100%;
-      max-height: 200px;
-      margin: 10px 0;
-      border-radius: 5px;
-      display: none;
-    }
-    .file-upload-wrapper {
-      position: relative;
-      margin-bottom: 15px;
-    }
-    .file-upload-wrapper .file-upload-label {
-      display: block;
-      padding: 12px;
-      background: #f8f8f8;
-      border: 1px dashed #D2B48C;
-      border-radius: 8px;
+      padding: 20px;
       text-align: center;
-      cursor: pointer;
-      color: #5C4033;
-      transition: all 0.3s;
+      margin-bottom: 15px;
+      position: relative;
+      transition: border-color 0.3s;
     }
-    .file-upload-wrapper .file-upload-label:hover {
-      background: #f0f0f0;
+    
+    .image-upload:hover {
       border-color: #CD853F;
     }
-    .file-upload-wrapper input[type="file"] {
+    
+    .image-upload input[type="file"] {
       position: absolute;
-      width: 0.1px;
-      height: 0.1px;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
       opacity: 0;
-      overflow: hidden;
-      z-index: -1;
+      cursor: pointer;
     }
-    .file-upload-wrapper .file-name {
-      margin-top: 5px;
-      font-size: 14px;
+    
+    .image-upload i {
+      font-size: 40px;
+      color: #D2B48C;
+      margin-bottom: 10px;
+    }
+    
+    .image-upload p {
+      margin: 0;
       color: #5C4033;
-      text-align: center;
     }
-    .cors-notice {
-      background-color: #fff3cd;
-      color: #856404;
-      padding: 10px;
+    
+    .image-preview {
+      max-width: 100%;
+      margin-top: 15px;
       border-radius: 5px;
-      margin: 15px 0;
-      font-size: 14px;
-      border: 1px solid #ffeeba;
+      display: none;
+      max-height: 300px;
     }
+    
+    /* رسائل النجاح والخطأ */
+    .alert {
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      display: none;
+    }
+    
+    .alert-success {
+      background-color: #dff0d8;
+      border: 1px solid #d6e9c6;
+      color: #3c763d;
+    }
+    
+    .alert-danger {
+      background-color: #f2dede;
+      border: 1px solid #ebccd1;
+      color: #a94442;
+    }
+    
+    /* تصميم متجاوب */
     @media (max-width: 768px) {
-      .hamburger-menu {
-        display: block;
-      }
       .sidebar {
-        transform: translateX(100%);
+        transform: translateX(250px);
+        width: 250px;
       }
+      
       .sidebar.active {
         transform: translateX(0);
       }
-      .content {
+      
+      .main-content {
         margin-right: 0;
+        padding-top: 70px;
       }
-      #login-screen {
-        margin: 10% auto;
+      
+      .mobile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
+      
+      .mobile-header h2 {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+    }
+    
+    /* تنسيق إضافي لقسم إدارة شيوخ القبائل */
+    #sheikhManagementSection .image-preview-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    #sheikhManagementSection .image-preview {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    /* تنسيق لرسائل النجاح والفشل */
+    .result-message {
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+      display: none;
+    }
+    
+    .success-message {
+      background-color: #dff0d8;
+      border: 1px solid #d6e9c6;
+      color: #3c763d;
+    }
+    
+    .error-message {
+      background-color: #f2dede;
+      border: 1px solid #ebccd1;
+      color: #a94442;
+    }
+    
+    /* تنسيق للمؤشر أثناء التحميل */
+    .loading-spinner {
+      display: none;
+      text-align: center;
+      margin: 15px 0;
+    }
+    
+    .loading-spinner i {
+      font-size: 24px;
+      color: #CD853F;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
-  <div id="login-screen">
-    <h2>تسجيل الدخول إلى لوحة التحكم</h2>
-    <div class="input-icon-container">
-        <i class="bx bx-user input-icon"></i>
-        <input type="text" id="username" placeholder="اسم المستخدم">
+  <!-- القائمة الجانبية -->
+  <div class="sidebar collapsed" id="sidebar">
+    <div class="sidebar-header">
+      <h2>لوحة التحكم</h2>
+      <button class="toggle-btn" id="sidebarToggle">
+        <i class="bx bx-x"></i>
+      </button>
     </div>
-    <div class="input-icon-container">
-        <i class="bx bx-lock input-icon"></i>
-        <input type="password" id="password" placeholder="كلمة المرور" enterkeyhint="go">
+    <div class="sidebar-menu">
+      <ul>
+        <li><a href="#" data-section="tribeCodeSection" class="active"><i class="bx bx-hash"></i> إدارة رموز القبائل</a></li>
+        <li><a href="#" data-section="tribeHistorySection"><i class="bx bx-book-open"></i> إدارة معلومات القبائل</a></li>
+        <li><a href="#" data-section="sheikhManagementSection"><i class="bx bx-user"></i> إدارة شيوخ القبائل</a></li>
+        <li><a href="#" data-section="deleteCodeSection"><i class="bx bx-trash"></i> حذف رموز القبائل</a></li>
+        <li><a href="#" data-section="deleteHistorySection"><i class="bx bx-trash-alt"></i> حذف معلومات القبائل</a></li>
+      </ul>
     </div>
-    <button onclick="checkLogin()"> <i class="bx bx-log-in-circle"></i> دخول</button>
+    <div class="sidebar-footer">
+      تم التطوير بواسطة سهم الحميقاني
+    </div>
   </div>
-
-  <div id="dashboard">
-    <button class="hamburger-menu" id="toggleSidebar">
+  
+  <!-- رأس الصفحة للجوال -->
+  <div class="mobile-header">
+    <h2>لوحة تحكم رموز القبائل</h2>
+    <button class="mobile-toggle" id="mobileToggle">
       <i class="bx bx-menu"></i>
     </button>
-    
-    <div class="sidebar" id="sidebar">
-      <a href="#" onclick="showSection('code', this)">إدارة رموز القبائل</a>
-      <a href="#" onclick="showSection('history', this)">إدارة معلومات القبيلة</a>
-      <a href="#" onclick="showSection('sheikh', this)">إدارة شيوخ القبائل</a>
-      <a href="#" onclick="showSection('siteVisitors', this)">زوار الموقع (<span id="siteVisitorCountSidebar">0</span>)</a>
+  </div>
+  
+  <!-- المحتوى الرئيسي -->
+  <div class="main-content expanded" id="mainContent">
+    <!-- قسم إدارة رموز القبائل -->
+    <div class="section active" id="tribeCodeSection">
+      <h3>إضافة رمز قبيلة</h3>
+      <div class="alert alert-success" id="tribeCodeSuccess">تم إضافة رمز القبيلة بنجاح!</div>
+      <div class="alert alert-danger" id="tribeCodeError">حدث خطأ أثناء إضافة رمز القبيلة.</div>
+      <form id="tribeCodeForm">
+        <div class="form-group">
+          <label for="tribeCode">رمز القبيلة</label>
+          <input type="text" class="form-control" id="tribeCode" placeholder="مثال: 711" required>
+        </div>
+        <div class="form-group">
+          <label for="tribeName">اسم القبيلة</label>
+          <input type="text" class="form-control" id="tribeName" placeholder="مثال: دهم" required>
+        </div>
+        <button type="submit" class="btn btn-primary">إضافة الرمز</button>
+      </form>
     </div>
     
-    <div class="content">
-      <h2>مرحباً بك في لوحة التحكم</h2>
+    <!-- قسم إدارة معلومات القبائل -->
+    <div class="section" id="tribeHistorySection">
+      <h3>إضافة معلومات قبيلة</h3>
+      <div class="alert alert-success" id="tribeHistorySuccess">تم إضافة معلومات القبيلة بنجاح!</div>
+      <div class="alert alert-danger" id="tribeHistoryError">حدث خطأ أثناء إضافة معلومات القبيلة.</div>
+      <form id="tribeHistoryForm">
+        <div class="form-group">
+          <label for="historyTribeName">اسم القبيلة</label>
+          <input type="text" class="form-control" id="historyTribeName" placeholder="مثال: دهم" required>
+        </div>
+        <div class="form-group">
+          <label for="tribeHistory">معلومات وتاريخ القبيلة</label>
+          <textarea class="form-control" id="tribeHistory" placeholder="أدخل معلومات وتاريخ القبيلة هنا..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">إضافة المعلومات</button>
+      </form>
+    </div>
+    
+    <!-- قسم إدارة شيوخ القبائل -->
+    <div class="section" id="sheikhManagementSection">
+      <h3>إضافة شيخ قبيلة</h3>
       
-      <div id="section-code" class="form-section">
-        <h3>إدارة رموز القبائل</h3>
-        <h4>إضافة رمز قبيلة جديد</h4>
-        <label for="tribeNameCode">اسم القبيلة:</label>
-        <input type="text" id="tribeNameCode">
-        <label for="tribeCode">رمز القبيلة:</label>
-        <input type="text" id="tribeCode">
-        <button class="submit-btn full-width" onclick="addCode()"><i class="bx bx-plus-circle"></i> إضافة الرمز</button>
-        <hr class="section-divider">
-        <h4>حذف رمز قبيلة موجود</h4>
-        <label for="tribeIdentifierDelete">اسم القبيلة أو رمزها للحذف:</label>
-        <input type="text" id="tribeIdentifierDelete" placeholder="أدخل اسم القبيلة أو رمزها هنا">
-        <button class="submit-btn delete-btn full-width" onclick="deleteTribe()"><i class="bx bx-trash"></i> حذف الرمز</button>
+      <!-- رسائل النجاح والفشل -->
+      <div class="result-message success-message" id="sheikhSuccessMessage">تم إضافة شيخ القبيلة بنجاح! رقم المستند: <span id="documentId"></span></div>
+      <div class="result-message error-message" id="sheikhErrorMessage">حدث خطأ أثناء إضافة شيخ القبيلة. يرجى المحاولة مرة أخرى.</div>
+      
+      <!-- مؤشر التحميل -->
+      <div class="loading-spinner" id="sheikhLoadingSpinner">
+        <i class="bx bx-loader-alt"></i>
+        <p>جاري معالجة الطلب...</p>
       </div>
-
-      <div id="section-history" class="form-section" style="display:none;">
-        <h3>إدارة معلومات وتاريخ القبائل</h3>
-        <h4>إضافة معلومات وتاريخ قبيلة</h4>
-        <label for="tribeNameHistory">اسم القبيلة (يجب أن يكون مطابقًا لاسم قبيلة لها رمز مُضاف):</label>
-        <input type="text" id="tribeNameHistory">
-        <label for="tribeHistory">معلومات وتاريخ القبيلة:</label>
-        <textarea id="tribeHistory" rows="5"></textarea>
-        <button class="submit-btn full-width" onclick="addHistory()"><i class="bx bx-plus-circle"></i> إضافة المعلومات</button>
-        <hr class="section-divider">
-        <h4>حذف معلومات وتاريخ قبيلة</h4>
-        <label for="tribeNameDeleteHistory">اسم القبيلة لحذف معلوماتها:</label>
-        <input type="text" id="tribeNameDeleteHistory" placeholder="أدخل اسم القبيلة هنا">
-        <button class="submit-btn delete-btn full-width" onclick="deleteHistory()"><i class="bx bx-trash"></i> حذف المعلومات</button>
-      </div>
-
-      <!-- قسم إدارة شيوخ القبائل الجديد -->
-      <div id="section-sheikh" class="form-section" style="display:none;">
-        <h3>إدارة شيوخ القبائل</h3>
-        
-        <div class="cors-notice">
-          <strong>ملاحظة هامة:</strong> لتجنب مشكلة CORS عند رفع الصور، يجب تشغيل لوحة التحكم على خادم ويب محلي أو استضافة. 
-          يمكنك استخدام إضافة Live Server في VS Code أو رفع الملف على استضافة.
+      
+      <form id="sheikhForm">
+        <div class="form-group">
+          <label for="sheikhTribeName">اسم القبيلة</label>
+          <input type="text" class="form-control" id="sheikhTribeName" placeholder="مثال: آل حميقان" required>
         </div>
-        
-        <h4>إضافة شيخ قبيلة جديد</h4>
-        <label for="tribeNameSheikh">اسم القبيلة:</label>
-        <input type="text" id="tribeNameSheikh" placeholder="مثال: آل حميقان">
-        
-        <label for="sheikhName">اسم الشيخ:</label>
-        <input type="text" id="sheikhName" placeholder="مثال: الشيخ محمد بن ناصر">
-        
-        <label for="sheikhImage">صورة الشيخ:</label>
-        <div class="file-upload-wrapper">
-          <label for="sheikhImage" class="file-upload-label">
-            <i class="bx bx-upload"></i> اختر صورة
-          </label>
-          <input type="file" id="sheikhImage" accept="image/*" onchange="previewImage(this)">
-          <div class="file-name" id="fileName"></div>
+        <div class="form-group">
+          <label for="sheikhName">اسم الشيخ</label>
+          <input type="text" class="form-control" id="sheikhName" placeholder="مثال: الشيخ محمد بن ناصر" required>
         </div>
-        <img id="imagePreview" class="image-preview" alt="معاينة الصورة">
-        
-        <button class="submit-btn full-width" onclick="addSheikh()"><i class="bx bx-plus-circle"></i> إضافة الشيخ</button>
-        
-        <hr class="section-divider">
-        
-        <h4>حذف شيخ قبيلة</h4>
-        <label for="tribeNameDeleteSheikh">اسم القبيلة لحذف شيخها:</label>
-        <input type="text" id="tribeNameDeleteSheikh" placeholder="أدخل اسم القبيلة هنا">
-        <button class="submit-btn delete-btn full-width" onclick="deleteSheikh()"><i class="bx bx-trash"></i> حذف الشيخ</button>
-      </div>
-
-      <div id="section-siteVisitors" class="form-section" style="display:none;">
-        <h3>إحصائيات زوار الموقع الأساسي</h3>
-        <div class="visitor-stats-filters">
-          <button class="filter-btn" onclick="displayVisitorStats('total')">إجمالي الزوار</button>
-          <button class="filter-btn" onclick="displayVisitorStats('today')">زوار اليوم</button>
-          <button class="filter-btn" onclick="displayVisitorStats('yesterday')">زوار الأمس</button>
-          <button class="filter-btn" onclick="displayVisitorStats('week')">زوار هذا الأسبوع</button>
-          <button class="filter-btn" onclick="displayVisitorStats('month')">زوار هذا الشهر</button>
+        <div class="form-group">
+          <label>صورة الشيخ</label>
+          <div class="image-upload">
+            <i class="bx bx-image-add"></i>
+            <p>انقر لاختيار صورة أو اسحب الصورة هنا</p>
+            <input type="file" id="sheikhImage" accept="image/*">
+          </div>
+          <div class="image-preview-container">
+            <img id="sheikhImagePreview" class="image-preview" alt="معاينة صورة الشيخ">
+          </div>
+          <p class="text-muted">* يفضل استخدام صورة بأبعاد متناسبة (مثل 600×400 بكسل)</p>
         </div>
-        <div class="visitor-stats-display">
-          <p>الزوار (<span id="visitorStatPeriod"></span>): <strong id="visitorStatCount">جاري التحميل...</strong></p>
-          <p id="visitorStatMessage" style="font-size: 0.9em; color: #777;"></p> 
+        <button type="submit" class="btn btn-primary">إضافة الشيخ</button>
+      </form>
+    </div>
+    
+    <!-- قسم حذف رموز القبائل -->
+    <div class="section" id="deleteCodeSection">
+      <h3>حذف رمز قبيلة</h3>
+      <div class="alert alert-success" id="deleteCodeSuccess">تم حذف رمز القبيلة بنجاح!</div>
+      <div class="alert alert-danger" id="deleteCodeError">حدث خطأ أثناء حذف رمز القبيلة.</div>
+      <form id="deleteCodeForm">
+        <div class="form-group">
+          <label for="deleteCode">رمز القبيلة</label>
+          <input type="text" class="form-control" id="deleteCode" placeholder="أدخل رمز القبيلة للحذف" required>
         </div>
-        <hr class="section-divider">
-        <h4>إدارة بيانات الزوار</h4>
-        <button class="submit-btn delete-btn" onclick="clearAllVisitorData()"><i class="bx bx-trash"></i> مسح جميع بيانات الزوار</button>
-      </div>
-
+        <div class="form-group">
+          <label for="deleteCodeTribeName">اسم القبيلة</label>
+          <input type="text" class="form-control" id="deleteCodeTribeName" placeholder="أدخل اسم القبيلة للتأكيد" required>
+        </div>
+        <button type="submit" class="btn btn-danger">حذف الرمز</button>
+      </form>
+    </div>
+    
+    <!-- قسم حذف معلومات القبائل -->
+    <div class="section" id="deleteHistorySection">
+      <h3>حذف معلومات قبيلة</h3>
+      <div class="alert alert-success" id="deleteHistorySuccess">تم حذف معلومات القبيلة بنجاح!</div>
+      <div class="alert alert-danger" id="deleteHistoryError">حدث خطأ أثناء حذف معلومات القبيلة.</div>
+      <form id="deleteHistoryForm">
+        <div class="form-group">
+          <label for="tribeNameDeleteHistory">اسم القبيلة</label>
+          <input type="text" class="form-control" id="tribeNameDeleteHistory" placeholder="أدخل اسم القبيلة لحذف معلوماتها" required>
+        </div>
+        <button type="submit" class="btn btn-danger">حذف المعلومات</button>
+      </form>
     </div>
   </div>
-
+  
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp, query, where, getDocs, deleteDoc, writeBatch, doc, getDoc, increment, setDoc, Timestamp, orderBy, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where, writeBatch, doc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
 
+    // تكوين Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyDGLwl69D9W5c03G5WsfU8pahvVHL4zKzs",
       authDomain: "tribes-project-18d2b.firebaseapp.com",
       projectId: "tribes-project-18d2b",
-      storageBucket: "tribes-project-18d2b.appspot.com", 
+      storageBucket: "tribes-project-18d2b.appspot.com",
       messagingSenderId: "375771927234",
       appId: "1:375771927234:web:5fa0ec96fd9c80fce7615b"
     };
 
+    // تهيئة Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const storage = getStorage(app);
 
-    // تهيئة متغيرات عامة
-    let selectedImageFile = null;
+    // عناصر القائمة الجانبية
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mainContent = document.getElementById('mainContent');
+    const menuLinks = document.querySelectorAll('.sidebar-menu a');
+    const sections = document.querySelectorAll('.section');
 
-    // إضافة الدوال إلى النافذة العامة
-    window.checkLogin = function() {
-      const usernameEl = document.getElementById("username");
-      const passwordEl = document.getElementById("password");
-      if (usernameEl.value === "Sahm" && passwordEl.value === "na1000856") {
-        document.getElementById("login-screen").style.display = "none";
-        document.getElementById("dashboard").style.display = "block";
-        fetchTotalVisitorCountForSidebar(); 
-        const firstLink = document.querySelector(".sidebar a[onclick*='code']");
-        if (firstLink) {
-            showSection('code', firstLink);
-        }
+    // تبديل القائمة الجانبية
+    sidebarToggle.addEventListener('click', toggleSidebar);
+    mobileToggle.addEventListener('click', toggleSidebar);
+
+    function toggleSidebar() {
+      sidebar.classList.toggle('collapsed');
+      sidebar.classList.toggle('active');
+      mainContent.classList.toggle('expanded');
+      
+      // تبديل أيقونة الزر
+      const icon = sidebarToggle.querySelector('i');
+      if (sidebar.classList.contains('collapsed')) {
+        icon.className = 'bx bx-menu';
       } else {
-        alert("بيانات الدخول غير صحيحة!");
-      }
-    }
-    
-    const passwordInput = document.getElementById("password");
-    if (passwordInput) {
-        passwordInput.addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                checkLogin();
-            }
-        });
-    }
-
-    // إضافة وظيفة تبديل القائمة الجانبية للأجهزة المحمولة
-    const toggleSidebarBtn = document.getElementById("toggleSidebar");
-    const sidebar = document.getElementById("sidebar");
-    
-    if (toggleSidebarBtn && sidebar) {
-        toggleSidebarBtn.addEventListener("click", function() {
-            sidebar.classList.toggle("active");
-            // تبديل أيقونة الزر بين البرجر والإغلاق
-            const icon = toggleSidebarBtn.querySelector("i");
-            if (sidebar.classList.contains("active")) {
-                icon.className = "bx bx-x"; // تغيير إلى أيقونة X
-                toggleSidebarBtn.style.background = "rgba(255, 255, 255, 0.2)"; // جعل الخلفية شفافة
-            } else {
-                icon.className = "bx bx-menu"; // العودة إلى أيقونة البرجر
-                toggleSidebarBtn.style.background = "rgba(139, 69, 19, 0.8)"; // إعادة الخلفية الأصلية
-            }
-        });
-    }
-
-    window.showSection = function(sectionId, element) {
-      const sections = {
-          'code': document.getElementById("section-code"),
-          'history': document.getElementById("section-history"),
-          'sheikh': document.getElementById("section-sheikh"),
-          'siteVisitors': document.getElementById("section-siteVisitors")
-      };
-      
-      for (const id in sections) {
-          if (sections[id]) {
-              sections[id].style.display = id === sectionId ? "block" : "none";
-          }
+        icon.className = 'bx bx-x';
       }
       
-      document.querySelectorAll(".sidebar a").forEach(el => el.classList.remove('active'));
-      if(element) {
-          element.classList.add('active');
-      }
-
-      // إغلاق القائمة الجانبية في الأجهزة المحمولة بعد اختيار قسم
-      if (window.innerWidth <= 768 && sidebar) {
-          sidebar.classList.remove("active");
-          // إعادة أيقونة البرجر
-          const icon = toggleSidebarBtn.querySelector("i");
-          icon.className = "bx bx-menu";
-          toggleSidebarBtn.style.background = "rgba(139, 69, 19, 0.8)";
-      }
-
-      if (sectionId === 'siteVisitors') {
-        displayVisitorStats('total'); 
+      // تبديل أيقونة الزر في الهاتف
+      const mobileIcon = mobileToggle.querySelector('i');
+      if (sidebar.classList.contains('active')) {
+        mobileIcon.className = 'bx bx-x';
+      } else {
+        mobileIcon.className = 'bx bx-menu';
       }
     }
 
-    // دالة معاينة الصورة
-    window.previewImage = function(input) {
-      const preview = document.getElementById('imagePreview');
-      const fileNameDisplay = document.getElementById('fileName');
-      
-      if (input.files && input.files[0]) {
-        const file = input.files[0];
-        selectedImageFile = file;
+    // التنقل بين الأقسام
+    menuLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
         
+        // إزالة الفئة النشطة من جميع الروابط
+        menuLinks.forEach(item => item.classList.remove('active'));
+        
+        // إضافة الفئة النشطة للرابط المحدد
+        this.classList.add('active');
+        
+        // إخفاء جميع الأقسام
+        sections.forEach(section => section.classList.remove('active'));
+        
+        // إظهار القسم المحدد
+        const targetSection = document.getElementById(this.getAttribute('data-section'));
+        if (targetSection) {
+          targetSection.classList.add('active');
+        }
+        
+        // إغلاق القائمة الجانبية في الأجهزة المحمولة
+        if (window.innerWidth <= 768) {
+          toggleSidebar();
+        }
+      });
+    });
+
+    // معاينة الصورة
+    const sheikhImage = document.getElementById('sheikhImage');
+    const sheikhImagePreview = document.getElementById('sheikhImagePreview');
+
+    sheikhImage.addEventListener('change', function() {
+      const file = this.files[0];
+      if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
-          preview.src = e.target.result;
-          preview.style.display = 'block';
-          fileNameDisplay.textContent = file.name;
-        }
+          sheikhImagePreview.src = e.target.result;
+          sheikhImagePreview.style.display = 'block';
+        };
         reader.readAsDataURL(file);
-      } else {
-        preview.style.display = 'none';
-        fileNameDisplay.textContent = '';
-        selectedImageFile = null;
       }
-    }
+    });
 
-    // دالة إضافة شيخ قبيلة جديد
-    window.addSheikh = async function() {
-      const tribeNameEl = document.getElementById("tribeNameSheikh");
-      const sheikhNameEl = document.getElementById("sheikhName");
-      const tribeName = tribeNameEl.value.trim();
-      const sheikhName = sheikhNameEl.value.trim();
-      
-      if (!tribeName || !sheikhName || !selectedImageFile) {
-        return alert("يرجى ملء جميع الحقول وتحميل صورة الشيخ.");
-      }
-      
-      try {
-        // رفع الصورة إلى Firebase Storage
-        const storageRef = ref(storage, `sheikh_images/${tribeName}_${Date.now()}`);
-        
-        // إضافة معالجة خطأ CORS
-        try {
-          const uploadTask = await uploadBytes(storageRef, selectedImageFile);
-          const imageUrl = await getDownloadURL(uploadTask.ref);
-          
-          // إضافة بيانات الشيخ إلى Firestore
-          const docRef = await addDoc(collection(db, "sheikhs"), {
-            tribeName: tribeName,
-            sheikhName: sheikhName,
-            imageUrl: imageUrl,
-            imagePath: uploadTask.ref.fullPath,
-            timestamp: serverTimestamp()
-          });
-          
-          alert(`تمت إضافة شيخ القبيلة بنجاح. معرف المستند: ${docRef.id}`);
-          
-          // إعادة تعيين النموذج
-          tribeNameEl.value = "";
-          sheikhNameEl.value = "";
-          document.getElementById('imagePreview').style.display = 'none';
-          document.getElementById('fileName').textContent = '';
-          selectedImageFile = null;
-          document.getElementById('sheikhImage').value = '';
-        } catch (corsError) {
-          console.error("CORS Error:", corsError);
-          alert(`حدث خطأ CORS عند رفع الصورة. يرجى تشغيل لوحة التحكم على خادم ويب محلي أو استضافة لتجنب هذه المشكلة.\n\nتفاصيل الخطأ: ${corsError.message}`);
-        }
-        
-      } catch (e) {
-        console.error("خطأ في إضافة شيخ القبيلة: ", e);
-        alert(`فشلت إضافة شيخ القبيلة. الخطأ: ${e.message}`);
-      }
-    }
+    // نموذج إضافة رمز قبيلة
+    const tribeCodeForm = document.getElementById('tribeCodeForm');
+    const tribeCodeSuccess = document.getElementById('tribeCodeSuccess');
+    const tribeCodeError = document.getElementById('tribeCodeError');
 
-    // دالة حذف شيخ قبيلة
-    window.deleteSheikh = async function() {
-      const tribeNameEl = document.getElementById("tribeNameDeleteSheikh");
-      const tribeName = tribeNameEl.value.trim();
+    tribeCodeForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
       
-      if (!tribeName) {
-        return alert("يرجى إدخال اسم القبيلة لحذف شيخها.");
-      }
+      const code = document.getElementById('tribeCode').value.trim();
+      const name = document.getElementById('tribeName').value.trim();
       
-      const confirmation = confirm(`هل أنت متأكد أنك تريد حذف شيخ قبيلة "${tribeName}"؟ هذا الإجراء لا يمكن التراجع عنه.`);
-      if (!confirmation) return;
+      tribeCodeSuccess.style.display = 'none';
+      tribeCodeError.style.display = 'none';
       
       try {
-        let deletedCount = 0;
-        const sheikhsRef = collection(db, "sheikhs");
-        const batch = writeBatch(db);
-        
-        const qByTribeName = query(sheikhsRef, where("tribeName", "==", tribeName));
-        const snapshot = await getDocs(qByTribeName);
-        
-        // حذف الصور من Storage وبيانات الشيوخ من Firestore
-        const deletePromises = [];
-        
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          if (data.imagePath) {
-            const imageRef = ref(storage, data.imagePath);
-            deletePromises.push(deleteObject(imageRef).catch(error => {
-              console.warn(`لم يتم العثور على الصورة للحذف: ${data.imagePath}`, error);
-            }));
-          }
-          batch.delete(doc.ref);
-          deletedCount++;
-        });
-        
-        // انتظار حذف الصور ثم حذف البيانات
-        await Promise.all(deletePromises);
-        
-        if (deletedCount > 0) {
-          await batch.commit();
-          alert(`تم حذف ${deletedCount} من سجلات شيوخ قبيلة "${tribeName}" بنجاح.`);
-          tribeNameEl.value = "";
-        } else {
-          alert(`لم يتم العثور على شيخ للقبيلة بالاسم: "${tribeName}".`);
-        }
-      } catch (e) {
-        console.error("خطأ في حذف شيخ القبيلة: ", e);
-        alert(`فشلت عملية حذف شيخ القبيلة. الخطأ: ${e.message}`);
-      }
-    }
-
-    async function fetchTotalVisitorCountForSidebar() {
-        const countSpanSidebar = document.getElementById("siteVisitorCountSidebar");
-        if (!countSpanSidebar) return;
-        countSpanSidebar.textContent = "...";
-        try {
-            const totalRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
-            const docSnap = await getDoc(totalRef);
-            if (docSnap.exists()) {
-                countSpanSidebar.textContent = docSnap.data().count || 0;
-            } else {
-                await setDoc(totalRef, { count: 0, firstVisitTimestamp: serverTimestamp(), lastVisitTimestamp: serverTimestamp() });
-                countSpanSidebar.textContent = "0";
-            }
-        } catch (error) {
-            console.error("Error fetching total visitor count for sidebar: ", error);
-            countSpanSidebar.textContent = "خطأ";
-        }
-    }
-
-    function getFormattedDate(date) {
-        const year = date.getFullYear();
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    }
-
-    window.displayVisitorStats = async function(period) {
-        const statPeriodEl = document.getElementById("visitorStatPeriod");
-        const statCountEl = document.getElementById("visitorStatCount");
-        const statMessageEl = document.getElementById("visitorStatMessage");
-        if (!statPeriodEl || !statCountEl || !statMessageEl) return;
-
-        statCountEl.textContent = "جاري التحميل...";
-        statMessageEl.textContent = ""; // Clear previous messages
-        let count = 0;
-        let periodText = "";
-        let siteStartDate = null;
-
-        try {
-            // Get site start date for messaging
-            const totalInfoRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
-            const totalInfoSnap = await getDoc(totalInfoRef);
-            if (totalInfoSnap.exists() && totalInfoSnap.data().firstVisitTimestamp) {
-                siteStartDate = totalInfoSnap.data().firstVisitTimestamp.toDate();
-            }
-
-            const today = new Date();
-            const todayDateString = getFormattedDate(today);
-
-            if (period === 'total') {
-                periodText = "الإجمالي";
-                const totalRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
-                const docSnap = await getDoc(totalRef);
-                if (docSnap.exists()) {
-                    count = docSnap.data().count || 0;
-                } else {
-                    await setDoc(totalRef, { count: 0, firstVisitTimestamp: serverTimestamp(), lastVisitTimestamp: serverTimestamp() });
-                    count = 0;
-                }
-            } else if (period === 'today') {
-                periodText = "اليوم";
-                const dailyDocRef = doc(db, "siteAnalyticsByDay", todayDateString);
-                const docSnap = await getDoc(dailyDocRef);
-                if (docSnap.exists()) {
-                    count = docSnap.data().count || 0;
-                }
-            } else if (period === 'yesterday') {
-                periodText = "الأمس";
-                const yesterday = new Date(today);
-                yesterday.setDate(today.getDate() - 1);
-                const yesterdayDateString = getFormattedDate(yesterday);
-                const dailyDocRef = doc(db, "siteAnalyticsByDay", yesterdayDateString);
-                const docSnap = await getDoc(dailyDocRef);
-                if (docSnap.exists()) {
-                    count = docSnap.data().count || 0;
-                } else if (siteStartDate && yesterday < siteStartDate && getFormattedDate(yesterday) !== getFormattedDate(siteStartDate)) {
-                    statMessageEl.textContent = "الموقع لم يكن متاحًا بالأمس.";
-                }
-            } else if (period === 'week') {
-                periodText = "هذا الأسبوع (آخر 7 أيام)";
-                let weekStartDate = new Date(today);
-                weekStartDate.setDate(today.getDate() - 6);
-                let daysInPeriod = 0;
-                for (let i = 0; i < 7; i++) {
-                    const day = new Date(today);
-                    day.setDate(today.getDate() - i);
-                    if (siteStartDate && day < siteStartDate && getFormattedDate(day) !== getFormattedDate(siteStartDate)) {
-                        continue; // Skip days before site start
-                    }
-                    daysInPeriod++;
-                    const dayDateString = getFormattedDate(day);
-                    const dailyDocRef = doc(db, "siteAnalyticsByDay", dayDateString);
-                    const docSnap = await getDoc(dailyDocRef);
-                    if (docSnap.exists()) {
-                        count += (docSnap.data().count || 0);
-                    }
-                }
-                if (siteStartDate && weekStartDate < siteStartDate && daysInPeriod < 7) {
-                     statMessageEl.textContent = ` يتم عرض بيانات ${daysInPeriod} يومًا فقط (منذ بداية الموقع).`;
-                }
-                 if (daysInPeriod === 0 && siteStartDate > today) {
-                    statMessageEl.textContent = "الموقع لم يكن متاحًا خلال هذا الأسبوع.";
-                }
-
-            } else if (period === 'month') {
-                periodText = "هذا الشهر";
-                const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-                let daysInPeriod = 0;
-
-                for (let i = 0; i < today.getDate(); i++) {
-                    const day = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i);
-                     if (siteStartDate && day < siteStartDate && getFormattedDate(day) !== getFormattedDate(siteStartDate)) {
-                        continue; // Skip days before site start
-                    }
-                    daysInPeriod++;
-                    const dayDateString = getFormattedDate(day);
-                    const dailyDocRef = doc(db, "siteAnalyticsByDay", dayDateString);
-                    const docSnap = await getDoc(dailyDocRef);
-                    if (docSnap.exists()) {
-                        count += (docSnap.data().count || 0);
-                    }
-                }
-                if (siteStartDate && firstDayOfMonth < siteStartDate && daysInPeriod < today.getDate()){
-                    statMessageEl.textContent = ` يتم عرض بيانات ${daysInPeriod} يومًا فقط من هذا الشهر (منذ بداية الموقع).`;
-                }
-                if (daysInPeriod === 0 && siteStartDate > today) {
-                     statMessageEl.textContent = "الموقع لم يكن متاحًا خلال هذا الشهر.";
-                }
-            }
-            statPeriodEl.textContent = periodText;
-            statCountEl.textContent = count;
-
-        } catch (error) {
-            console.error(`Error fetching visitor stats for ${period}: `, error);
-            statPeriodEl.textContent = periodText;
-            statCountEl.textContent = "خطأ في جلب البيانات";
-            statMessageEl.textContent = "حدث خطأ أثناء تحميل الإحصائيات.";
-        }
-    }
-
-    window.clearAllVisitorData = async function() {
-        const confirmation = confirm("هل أنت متأكد أنك تريد مسح جميع بيانات زوار الموقع؟ هذا الإجراء لا يمكن التراجع عنه وسيعيد جميع العدادات إلى الصفر.");
-        if (!confirmation) return;
-
-        try {
-            const dailyCollectionRef = collection(db, "siteAnalyticsByDay");
-            const dailySnapshot = await getDocs(dailyCollectionRef);
-            const batch = writeBatch(db);
-            dailySnapshot.docs.forEach(doc => {
-                batch.delete(doc.ref);
-            });
-            await batch.commit();
-            console.log("All daily visitor data cleared.");
-
-            const totalRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
-            await setDoc(totalRef, { count: 0, firstVisitTimestamp: serverTimestamp(), lastVisitTimestamp: serverTimestamp() });
-            console.log("Total unique visitors count reset.");
-
-            alert("تم مسح جميع بيانات الزوار بنجاح.");
-            fetchTotalVisitorCountForSidebar();
-            displayVisitorStats('total'); 
-
-        } catch (error) {
-            console.error("Error clearing visitor data: ", error);
-            alert("حدث خطأ أثناء محاولة مسح بيانات الزوار. يرجى مراجعة الكونسول.");
-        }
-    }
-
-    window.addCode = async function() {
-      const nameEl = document.getElementById("tribeNameCode");
-      const codeEl = document.getElementById("tribeCode");
-      const name = nameEl.value.trim();
-      const code = codeEl.value.trim().toUpperCase();
-      if (!name || !code) return alert("يرجى ملء جميع الحقول الخاصة برمز القبيلة.");
-      try {
-        const docRef = await addDoc(collection(db, "tribes"), {
-          name: name,
+        await addDoc(collection(db, "tribes"), {
           code: code,
+          name: name,
           timestamp: serverTimestamp()
         });
-        alert(`تمت إضافة رمز القبيلة بنجاح. معرف المستند: ${docRef.id}`);
-        nameEl.value = "";
-        codeEl.value = "";
-      } catch (e) {
-        console.error("خطأ في إضافة رمز القبيلة: ", e);
-        alert(`فشلت إضافة رمز القبيلة. الخطأ: ${e.message}`);
+        
+        tribeCodeSuccess.style.display = 'block';
+        tribeCodeForm.reset();
+        setTimeout(() => { tribeCodeSuccess.style.display = 'none'; }, 5000);
+      } catch (error) {
+        console.error("خطأ في إضافة رمز القبيلة: ", error);
+        tribeCodeError.style.display = 'block';
+        setTimeout(() => { tribeCodeError.style.display = 'none'; }, 5000);
       }
-    }
+    });
 
-    window.addHistory = async function() {
-      const nameEl = document.getElementById("tribeNameHistory");
-      const historyEl = document.getElementById("tribeHistory");
-      const name = nameEl.value.trim();
-      const history = historyEl.value.trim();
-      if (!name || !history) return alert("يرجى ملء جميع الحقول الخاصة بمعلومات القبيلة.");
+    // نموذج إضافة معلومات قبيلة
+    const tribeHistoryForm = document.getElementById('tribeHistoryForm');
+    const tribeHistorySuccess = document.getElementById('tribeHistorySuccess');
+    const tribeHistoryError = document.getElementById('tribeHistoryError');
+
+    tribeHistoryForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('historyTribeName').value.trim();
+      const history = document.getElementById('tribeHistory').value.trim();
+      
+      tribeHistorySuccess.style.display = 'none';
+      tribeHistoryError.style.display = 'none';
+      
       try {
-        const docRef = await addDoc(collection(db, "histories"), {
-          name: name, 
-          history: history.replace(/\n/g, "<br>"),
+        await addDoc(collection(db, "histories"), {
+          name: name,
+          history: history,
           timestamp: serverTimestamp()
         });
-        alert(`تمت إضافة معلومات القبيلة بنجاح. معرف المستند: ${docRef.id}`);
-        nameEl.value = "";
-        historyEl.value = "";
-      } catch (e) {
-        console.error("خطأ في إضافة معلومات القبيلة: ", e);
-        alert(`فشلت إضافة معلومات القبيلة. الخطأ: ${e.message}`);
+        
+        tribeHistorySuccess.style.display = 'block';
+        tribeHistoryForm.reset();
+        setTimeout(() => { tribeHistorySuccess.style.display = 'none'; }, 5000);
+      } catch (error) {
+        console.error("خطأ في إضافة معلومات القبيلة: ", error);
+        tribeHistoryError.style.display = 'block';
+        setTimeout(() => { tribeHistoryError.style.display = 'none'; }, 5000);
       }
-    }
+    });
 
-    window.deleteTribe = async function() {
-      const identifierEl = document.getElementById("tribeIdentifierDelete");
-      const identifier = identifierEl.value.trim();
-      if (!identifier) return alert("يرجى إدخال اسم القبيلة أو رمزها للحذف.");
+    // نموذج إضافة شيخ قبيلة
+    const sheikhForm = document.getElementById('sheikhForm');
+    const sheikhSuccessMessage = document.getElementById('sheikhSuccessMessage');
+    const sheikhErrorMessage = document.getElementById('sheikhErrorMessage');
+    const sheikhLoadingSpinner = document.getElementById('sheikhLoadingSpinner');
+    const documentIdSpan = document.getElementById('documentId');
 
-      const confirmation = confirm(`هل أنت متأكد أنك تريد حذف كل رموز القبائل المطابقة لـ: "${identifier}"؟ هذا الإجراء لا يمكن التراجع عنه.`);
+    sheikhForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const tribeName = document.getElementById('sheikhTribeName').value.trim();
+      const sheikhName = document.getElementById('sheikhName').value.trim();
+      const imageFile = document.getElementById('sheikhImage').files[0];
+      
+      // إخفاء الرسائل وإظهار مؤشر التحميل
+      sheikhSuccessMessage.style.display = 'none';
+      sheikhErrorMessage.style.display = 'none';
+      sheikhLoadingSpinner.style.display = 'block';
+      
+      if (!imageFile) {
+        sheikhErrorMessage.textContent = "يرجى اختيار صورة للشيخ";
+        sheikhErrorMessage.style.display = 'block';
+        sheikhLoadingSpinner.style.display = 'none';
+        return;
+      }
+      
+      try {
+        // تحميل الصورة إلى Firebase Storage
+        const timestamp = new Date().getTime();
+        const imageName = `sheikh_images/${tribeName}_${timestamp}`;
+        const storageRef = ref(storage, imageName);
+        
+        // تحميل الصورة
+        await uploadBytes(storageRef, imageFile);
+        
+        // الحصول على رابط الصورة
+        const imageUrl = await getDownloadURL(storageRef);
+        
+        // إضافة بيانات الشيخ إلى Firestore
+        const docRef = await addDoc(collection(db, "sheikhs"), {
+          tribeName: tribeName,
+          sheikhName: sheikhName,
+          imageUrl: imageUrl,
+          imagePath: imageName,
+          timestamp: serverTimestamp()
+        });
+        
+        // عرض رسالة النجاح مع رقم المستند
+        documentIdSpan.textContent = docRef.id;
+        sheikhSuccessMessage.style.display = 'block';
+        sheikhForm.reset();
+        sheikhImagePreview.style.display = 'none';
+        
+        // إخفاء رسالة النجاح بعد 10 ثوانٍ
+        setTimeout(() => { sheikhSuccessMessage.style.display = 'none'; }, 10000);
+      } catch (error) {
+        console.error("خطأ في إضافة شيخ القبيلة: ", error);
+        sheikhErrorMessage.textContent = `حدث خطأ أثناء إضافة شيخ القبيلة: ${error.message}`;
+        sheikhErrorMessage.style.display = 'block';
+      } finally {
+        // إخفاء مؤشر التحميل
+        sheikhLoadingSpinner.style.display = 'none';
+      }
+    });
+
+    // نموذج حذف رمز قبيلة
+    const deleteCodeForm = document.getElementById('deleteCodeForm');
+    const deleteCodeSuccess = document.getElementById('deleteCodeSuccess');
+    const deleteCodeError = document.getElementById('deleteCodeError');
+
+    deleteCodeForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const code = document.getElementById('deleteCode').value.trim();
+      const tribeName = document.getElementById('deleteCodeTribeName').value.trim();
+      
+      deleteCodeSuccess.style.display = 'none';
+      deleteCodeError.style.display = 'none';
+      
+      const confirmation = confirm(`هل أنت متأكد أنك تريد حذف رمز القبيلة "${code}" (${tribeName})؟ هذا الإجراء لا يمكن التراجع عنه.`);
       if (!confirmation) return;
-
+      
       try {
         let deletedCount = 0;
         const tribesRef = collection(db, "tribes");
         const batch = writeBatch(db);
-
-        const qByCode = query(tribesRef, where("code", "==", identifier.toUpperCase()));
-        const snapshotByCode = await getDocs(qByCode);
-        snapshotByCode.forEach(doc => {
+        
+        const q = query(tribesRef, where("code", "==", code), where("name", "==", tribeName));
+        const snapshot = await getDocs(q);
+        
+        snapshot.forEach(doc => {
           batch.delete(doc.ref);
           deletedCount++;
         });
-
-        if (snapshotByCode.empty) { 
-            const qByName = query(tribesRef, where("name", "==", identifier));
-            const snapshotByName = await getDocs(qByName);
-            snapshotByName.forEach(doc => {
-              let alreadyMarkedForDeletion = false;
-              snapshotByCode.forEach(codeDoc => {
-                  if(codeDoc.id === doc.id) alreadyMarkedForDeletion = true;
-              });
-              if(!alreadyMarkedForDeletion){
-                  batch.delete(doc.ref);
-                  deletedCount++;
-              }
-            });
-        }
-
+        
         if (deletedCount > 0) {
           await batch.commit();
-          alert(`تم حذف ${deletedCount} سجل بنجاح بناءً على المعرف: "${identifier}".`);
-          identifierEl.value = "";
+          deleteCodeSuccess.textContent = `تم حذف ${deletedCount} من سجلات رمز القبيلة "${code}" (${tribeName}) بنجاح.`;
+          deleteCodeSuccess.style.display = 'block';
+          deleteCodeForm.reset();
+          setTimeout(() => { deleteCodeSuccess.style.display = 'none'; }, 5000);
         } else {
-          alert(`لم يتم العثور على قبيلة بالاسم أو الرمز: "${identifier}".`);
+          deleteCodeError.textContent = `لم يتم العثور على رمز القبيلة "${code}" مع الاسم "${tribeName}".`;
+          deleteCodeError.style.display = 'block';
+          setTimeout(() => { deleteCodeError.style.display = 'none'; }, 5000);
         }
-
-      } catch (e) {
-        console.error("خطأ في حذف القبيلة: ", e);
-        alert(`فشلت عملية الحذف. الخطأ: ${e.message}`);
+      } catch (error) {
+        console.error("خطأ في حذف رمز القبيلة: ", error);
+        deleteCodeError.textContent = `فشلت عملية حذف رمز القبيلة. الخطأ: ${error.message}`;
+        deleteCodeError.style.display = 'block';
+        setTimeout(() => { deleteCodeError.style.display = 'none'; }, 5000);
       }
-    }
+    });
 
-    window.deleteHistory = async function() {
-      const nameEl = document.getElementById("tribeNameDeleteHistory");
-      const name = nameEl.value.trim();
-      if (!name) return alert("يرجى إدخال اسم القبيلة لحذف معلوماتها.");
+    // نموذج حذف معلومات قبيلة
+    const deleteHistoryForm = document.getElementById('deleteHistoryForm');
+    const deleteHistorySuccess = document.getElementById('deleteHistorySuccess');
+    const deleteHistoryError = document.getElementById('deleteHistoryError');
 
+    deleteHistoryForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('tribeNameDeleteHistory').value.trim();
+      
+      deleteHistorySuccess.style.display = 'none';
+      deleteHistoryError.style.display = 'none';
+      
       const confirmation = confirm(`هل أنت متأكد أنك تريد حذف جميع معلومات وتاريخ القبيلة "${name}"؟ هذا الإجراء لا يمكن التراجع عنه.`);
       if (!confirmation) return;
-
+      
       try {
         let deletedCount = 0;
         const historiesRef = collection(db, "histories");
         const batch = writeBatch(db);
-
+        
         const qByName = query(historiesRef, where("name", "==", name));
         const snapshotByName = await getDocs(qByName);
-
+        
         snapshotByName.forEach(doc => {
           batch.delete(doc.ref);
           deletedCount++;
         });
-
+        
         if (deletedCount > 0) {
           await batch.commit();
-          alert(`تم حذف ${deletedCount} من سجلات معلومات وتاريخ القبيلة "${name}" بنجاح.`);
-          nameEl.value = ""; 
+          deleteHistorySuccess.textContent = `تم حذف ${deletedCount} من سجلات معلومات وتاريخ القبيلة "${name}" بنجاح.`;
+          deleteHistorySuccess.style.display = 'block';
+          deleteHistoryForm.reset();
+          setTimeout(() => { deleteHistorySuccess.style.display = 'none'; }, 5000);
         } else {
-          alert(`لم يتم العثور على معلومات أو تاريخ للقبيلة بالاسم: "${name}".`);
+          deleteHistoryError.textContent = `لم يتم العثور على معلومات أو تاريخ للقبيلة بالاسم: "${name}".`;
+          deleteHistoryError.style.display = 'block';
+          setTimeout(() => { deleteHistoryError.style.display = 'none'; }, 5000);
         }
-      } catch (e) {
-        console.error("خطأ في حذف معلومات القبيلة: ", e);
-        alert(`فشلت عملية حذف معلومات القبيلة. الخطأ: ${e.message}`);
+      } catch (error) {
+        console.error("خطأ في حذف معلومات القبيلة: ", error);
+        deleteHistoryError.textContent = `فشلت عملية حذف معلومات القبيلة. الخطأ: ${error.message}`;
+        deleteHistoryError.style.display = 'block';
+        setTimeout(() => { deleteHistoryError.style.display = 'none'; }, 5000);
       }
-    }
-
+    });
   </script>
 </body>
 </html>
