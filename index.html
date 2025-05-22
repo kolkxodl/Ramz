@@ -3,67 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>الباحث في رموز القبائل</title>
-  <meta name="description" content="اكتشف رموز القبائل العربية ومعلوماتها التفصيلية وأصولها التاريخية عبر أكبر بااحث متخصص. ابحث بالرمز أو اسم القبيلة الآن واستكشف إرث وتاريخ القبائل في الوطن العربي.">
+  <title>الباحث  في رموز القبائل </title>
   <!-- خط IBM Plex Sans Arabic -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet" />
   <!-- مكتبة أيقونات Boxicons -->
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "الباحث في رموز وأنساب القبائل العربية",
-    "url": "https://kolkxodl.github.io/Ramz/",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://kolkxodl.github.io/Ramz/?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    }
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "ما هو الباحث في رموز القبائل؟",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "هو موقع ويب يتيح لك البحث عن رموز القبائل العربية المختلفة ومعرفة المزيد من المعلومات عنها وعن تاريخها."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "كيف يمكنني البحث عن قبيلة معينة؟",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "يمكنك إدخال رمز القبيلة أو اسمها في شريط البحث الموجود في الصفحة الرئيسية، وسيقوم الموقع بعرض النتائج المطابقة."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "هل المعلومات المتوفرة دقيقة؟",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "نحن نسعى جاهدين لتقديم معلومات دقيقة وموثوقة، ونقوم بتحديث البيانات بشكل دوري. إذا لاحظت أي خطأ، يمكنك التواصل معنا لتصحيحه."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "هل يمكنني إضافة قبيلة غير موجودة؟",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "نعم، إذا لم تجد قبيلة معينة، يمكنك التواصل معنا عبر وسائل التواصل المتاحة لتزويدنا بالمعلومات وسنعمل على إضافتها في أقرب وقت."
-        }
-      }
-    ]
-  }
-  </script>
   <style>
     body {
       background: linear-gradient(135deg, #FAF3E0, #F2E8D5);
@@ -278,76 +224,47 @@
       margin-top: 20px;
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
-      font-size: 18px;
+      /* font-size: 18px; /* Will be set by individual boxes */
       text-align: center; /* Center the result boxes themselves */
       color: #3E2723;
     }
     .result.show {
       opacity: 1;
     }
-     .result .tribe-box {
+    /* Unified style for result boxes based on user's disclaimer */
+    .result .tribe-box,
+    .result .history-box,
+    .result .not-found-message {
       background: rgba(253, 248, 240, 0.8);
       backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
       border: 1px solid #D2B48C;
-      padding: 12px;
+      padding: 12px; /* Slightly reduced padding for smaller feel */
       border-radius: 8px;
-      margin-bottom: 12px;
+      font-size: 15px; /* As per user request */
       color: #3E2723;
-    } 
-    
-    .result .history-box {
-      background: rgba(253, 248, 240, 0.8);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-      border: 1px solid #D2B48C;
-      padding: 12px;
-      border-radius: 8px;
-      margin: 0 auto 12px auto; 
-      color: #3E2723;
-      font-size: 18px; 
+      line-height: 1.7; /* Adjusted from 1.8 for better fit */
+      text-align: center;
+      margin: 0 auto 20px auto; /* Centering block element and margin bottom */
+      max-width: 90%; /* Ensure it doesn't get too wide */
+      word-wrap: break-word;
     }
     .result .history-box h4 {
         margin-bottom: 10px;
         color: #CD853F;
-        font-size: 17px; 
+        font-size: 17px; /* Slightly smaller title */
         text-align: center;
     }
     .result .history-box p {
-        margin: 0; 
-        text-align: center; 
-    }
-    /* إضافة نمط لمربع عرض شيخ القبيلة */
-    .result .sheikh-box {
-      background: rgba(253, 248, 240, 0.8);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
-      border: 1px solid #D2B48C;
-      padding: 15px;
-      border-radius: 8px;
-      margin: 0 auto 12px auto; 
-      color: #3E2723;
-      text-align: center;
-    }
-    .result .sheikh-box img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 5px;
-      margin-bottom: 10px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-    .result .sheikh-box h4 {
-      margin: 10px 0;
-      color: #CD853F;
-      font-size: 18px;
-      text-align: center;
+        margin: 0; /* Remove default p margin if any */
+        text-align: center; /* Center history text as well */
     }
     .result-table {
       width: 100%;
       border-collapse: separate;
       border-spacing: 0;
       margin-top: 20px;
-      font-size: 16px;
+      font-size: 15px; /* Slightly smaller */
       border: none;
       border-radius: 8px;
       overflow: hidden;
@@ -357,7 +274,7 @@
       background-color: #EAD7C0;
     }
     .result-table thead th {
-      padding: 12px;
+      padding: 10px;
       border: none;
       color: #3E2723;
       font-weight: bold;
@@ -369,11 +286,11 @@
       background-color: #F7F1E1;
     }
     .result-table tbody td {
-      padding: 10px;
+      padding: 8px;
       border: none;
       color: #5C4033;
       border-bottom: 1px solid #EFE8DC;
-      text-align: center; 
+      text-align: center; /* Center table cell content */
     }
     .result-table tbody tr:last-child td {
       border-bottom: none;
@@ -557,20 +474,13 @@
       .faq-container h3, .container h2 {
         font-size: 20px;
       }
-      
-      .result .history-box {
-        font-size: 14px; 
+      .result .tribe-box,
+      .result .history-box,
+      .result .not-found-message {
+        font-size: 14px; /* Even smaller on mobile */
         padding: 10px;
       }
       .result .history-box h4 {
-        font-size: 16px;
-      }
-      /* تعديل أنماط مربع الشيخ للشاشات الصغيرة */
-      .result .sheikh-box {
-        font-size: 14px;
-        padding: 10px;
-      }
-      .result .sheikh-box h4 {
         font-size: 16px;
       }
     }
@@ -584,7 +494,7 @@
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 30; /* Default z-index for popups */
+      z-index: 30;
     }
     .popup-content {
       background: rgba(255, 255, 255, 0.8);
@@ -597,11 +507,6 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       animation: popupAnimation 0.5s ease;
     }
-    /* Specific styling for TikTok popup content if needed, otherwise it inherits from .popup-content */
-    .tiktok-popup-content {
-        max-width: 420px; /* Slightly wider for the message */
-    }
-
     @keyframes popupAnimation {
       from { transform: scale(0.8); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
@@ -621,10 +526,6 @@
       color: #fff;
       font-size: 16px;
       transition: background 0.3s;
-      display: inline-flex; /* To allow icon and text alignment */
-      align-items: center;
-      justify-content: center;
-      gap: 8px; /* Gap between icon and text */
     }
     .popup-btn:hover {
       background: linear-gradient(90deg, #D2B48C, #CD853F);
@@ -651,10 +552,10 @@
         <a id="contactLink" href="#">تواصل معنا</a>
         <div id="socialContainer">
           <a href="https://www.tiktok.com/@designer_co?_r=1&_d=ed0h27ak1gi5h5&sec_uid=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&share_author_id=7411089680148710408&sharer_language=ar&source=h5_m&u_code=eg4363i2jmk0je&timestamp=1744307461&user_id=7411089680148710408&sec_user_id=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7489355090459346709&share_link_id=c5287d92-5f28-43a4-a565-c07bf819151f&share_app_id=1233&ugbiz_name=ACCOUNT&ug_btm=b8727%2Cb7360&social_share_type=5&enable_checksum=1" target="_blank"><i class="bx bxl-tiktok"></i></a>
-          <a href="https://youtube.com/@designer_co2?si=0UkuOB6YMiOg1rDY" target="_blank"><i class="bx bxl-youtube"></i></a>
-          <a href="https://wa.me/967738889982" target="_blank"><i class="bx bxl-whatsapp"></i></a>
-          <a href="https://www.facebook.com/share/151kE2vx5T/" target="_blank"><i class="bx bxl-facebook"></i></a>
-          <a href="https://www.instagram.com/designer_co3?igsh=b3VucWs1cDhqc2c1" target="_blank"><i class="bx bxl-instagram"></i></a>
+          <a href="https://youtube.com/@designer_co2?si=0UkuOB6YMiOg1rDY"><i class="bx bxl-youtube"></i></a>
+          <a href="https://wa.me/967738889982"><i class="bx bxl-whatsapp"></i></a>
+          <a href="https://www.facebook.com/share/151kE2vx5T/https://www.facebook.com/share/151kE2vx5T/"><i class="bx bxl-facebook"></i></a>
+          <a href="https://www.instagram.com/designer_co3?igsh=b3VucWs1cDhqc2c1"><i class="bx bxl-instagram"></i></a>
         </div>
       </li>
       <li><a id="aboutLink" href="about.html">حول</a></li>
@@ -662,9 +563,9 @@
     </ul>
   </nav>
   <div class="container">
-    <h2>الباحث في رموز ومعلومات القبائل</h2>
+    <h2>الباحث في رموز القبائل</h2>
     <div class="input-container">
-      <input type="text" id="searchInput" placeholder="أدخل رمز القبيلة او اسمها  "enterkeyhint="go" />
+      <input type="text" id="searchInput" placeholder="أدخل رمز القبيلة، اسمها، أو &#39;تاريخ [اسم القبيلة]&#39;" enterkeyhint="go" />
       <i class="bx bx-search input-icon"></i>
       <i class="bx bx-x clear-icon" id="clearBtn"></i>
     </div>
@@ -719,8 +620,6 @@
       <a href="https://www.instagram.com/designer_co3?igsh=b3VucWs1cDhqc2c1" target="_blank"><i class="bx bxl-instagram"></i></a>
     </div>
   </div>
-
-  <!-- Existing Popup Modal for general messages -->
   <div id="popupModal" class="popup-modal">
     <div class="popup-content">
       <p id="popupMessage"></p>
@@ -730,21 +629,6 @@
       </div>
     </div>
   </div>
-
-  <!-- TikTok Follow Popup Modal -->
-  <div id="tiktokPopupModal" class="popup-modal" style="z-index: 35;"> <!-- Ensure z-index is high enough -->
-    <div class="popup-content tiktok-popup-content">
-      <p id="tiktokPopupMessageText" style="margin-bottom: 20px; color: #3E2723; font-size: 17px; line-height: 1.8;">
-        لمتابعة البحث واستكشاف المزيد من رموز القبائل،<br>يرجى دعمنا بمتابعة حسابنا على تيك توك أولاً.
-      </p>
-      <button id="tiktokFollowBtn" class="popup-btn" style="padding: 12px 25px; font-size: 17px;">
-        <i class=\'bx bxl-tiktok\' style="font-size: 22px; vertical-align: middle; margin-left: 8px;"></i> <!-- Adjusted margin for RTL -->
-        اضغط هنا لمتابعتنا
-      </button>
-    </div>
-  </div>
-  <!-- End TikTok Follow Popup Modal -->
-
   <footer>
     <p>تم تصميمه بواسطة المبرمج <a href="https://wa.me/967738889982">سهم الحميقاني</a></p>
     <p>&copy; حقوق النشر محفوظة</p>
@@ -755,7 +639,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, updateDoc, increment, setDoc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"; // Added getDoc
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDGLwl69D9W5c03G5WsfU8pahvVHL4zKzs",
@@ -768,69 +652,6 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
-    // بيانات شيخ مشايخ دهم
-    const sheikhData = {
-      name: "الشيخ محمد بن ناصر الدهمي",
-      imageUrl: "images/sheikh_dahm.jpg" // تم تغيير المسار ليشير إلى مجلد الصور المحلي
-    };
-
-    // Function to increment site visitor count per session and per day
-    async function trackVisitor() {
-        const sessionKey = "siteVisitedThisSession";
-        const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
-
-        if (!sessionStorage.getItem(sessionKey)) {
-            sessionStorage.setItem(sessionKey, "true");
-
-            // Increment daily visitor count
-            const dailyVisitorRef = doc(db, "siteAnalyticsByDay", today);
-            try {
-                await updateDoc(dailyVisitorRef, {
-                    count: increment(1),
-                    lastVisitTimestamp: serverTimestamp()
-                });
-                console.log(`Daily visitor count for ${today} incremented.`);
-            } catch (error) {
-                if (error.code === "not-found" || (error.message && error.message.includes("No document to update"))) {
-                    await setDoc(dailyVisitorRef, { 
-                        count: 1, 
-                        date: today,
-                        firstVisitTimestamp: serverTimestamp(), 
-                        lastVisitTimestamp: serverTimestamp()
-                    });
-                    console.log(`Daily visitor counter for ${today} initialized and incremented.`);
-                } else {
-                    console.error(`Error incrementing daily visitor count for ${today}: `, error);
-                }
-            }
-
-            // Increment total unique visitors (optional, if you still want a simple total)
-            // This part can be removed if daily tracking is sufficient for "total"
-            const totalUniqueVisitorsRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
-            try {
-                // Check if a general unique visitor marker exists for this user (e.g., using localStorage for longer persistence)
-                // For simplicity, we\'ll just increment a general counter here, but a more robust unique visitor system might use localStorage or cookies.
-                // This example will increment total on each new session, which is a common way to track "total visits" rather than strictly unique users over all time.
-                await updateDoc(totalUniqueVisitorsRef, {
-                    count: increment(1),
-                    lastVisitTimestamp: serverTimestamp()
-                });
-                 console.log("Total unique visitor sessions count incremented.");
-            } catch (error) {
-                 if (error.code === "not-found" || (error.message && error.message.includes("No document to update"))) {
-                    await setDoc(totalUniqueVisitorsRef, { 
-                        count: 1, 
-                        firstVisitTimestamp: serverTimestamp(), 
-                        lastVisitTimestamp: serverTimestamp()
-                    });
-                    console.log("Total unique visitor sessions counter initialized.");
-                } else {
-                    console.error("Error incrementing total unique visitor sessions count: ", error);
-                }
-            }
-        }
-    }
 
     const hardcodedTribes = {
       "715": [{ name: "لقموش" }], "202": [{ name: "ردفان" }], "917": [{ name: "العوالق" }],
@@ -897,12 +718,6 @@
     const contactPopupBtn = document.getElementById("contactBtn");
     const faqQuestions = document.querySelectorAll(".faq-question");
 
-    // TikTok Popup Elements and Variables
-    const tiktokPopupModal = document.getElementById("tiktokPopupModal");
-    const tiktokFollowBtn = document.getElementById("tiktokFollowBtn");
-    const TIKTOK_ACCOUNT_URL = "https://www.tiktok.com/@designer_co?_r=1&_d=ed0h27ak1gi5h5&sec_uid=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&share_author_id=7411089680148710408&sharer_language=ar&source=h5_m&u_code=eg4363i2jmk0je&timestamp=1744307461&user_id=7411089680148710408&sec_user_id=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7489355090459346709&share_link_id=c5287d92-5f28-43a4-a565-c07bf819151f&share_app_id=1233&ugbiz_name=ACCOUNT&ug_btm=b8727%2Cb7360&social_share_type=5&enable_checksum=1";
-    let currentSearchQuery = null; 
-
     function fadeOutAndRedirect(url) {
       document.body.classList.add("fade-out");
       setTimeout(function() { window.location.href = url; }, 500);
@@ -916,37 +731,16 @@
       const popupModal = document.getElementById("popupModal");
       const popupMessage = document.getElementById("popupMessage");
       if (popupModal && popupMessage) {
-        if (type === "history_popup") { 
+        if (type === "history_popup") { // Differentiated popup type
             popupMessage.innerHTML = `لم يتم العثور على معلومات تاريخية للقبيلة (<strong>${query}</strong>). يمكنك التواصل معنا لإضافتها.`;
         } else if (type === "code") {
             popupMessage.innerHTML = `قد يكون رمز (<strong>${query}</strong>) يتبع لقبيلة غير مسجلة في المنصة، يمكنك التواصل معنا في حال أردت إضافته`;
-        } else if (type === "sheikh_popup") { // إضافة حالة جديدة للشيخ
-            popupMessage.innerHTML = `لم يتم العثور على معلومات شيخ للقبيلة (<strong>${query}</strong>). يمكنك التواصل معنا لإضافتها.`;
         } else {
             popupMessage.innerHTML = `قد يكون الرمز لقبيلة (<strong>${query}</strong>) غير مضاف حالياً قم بالتواصل معنا لتعريفه وإضافته في المنصة`;
         }
         popupModal.style.display = "flex";
         if(contactPopupBtn) contactPopupBtn.onclick = function() { window.location.href = "https://wa.me/967738889982"; };
       }
-    }
-
-    // دالة لعرض بطاقة شيخ مشايخ دهم
-    function displaySheikhBox() {
-      const sheikhBox = document.createElement("div");
-      sheikhBox.className = "sheikh-box";
-      
-      const sheikhImage = document.createElement("img");
-      sheikhImage.src = sheikhData.imageUrl;
-      sheikhImage.alt = "صورة " + sheikhData.name;
-      sheikhBox.appendChild(sheikhImage);
-      
-      const sheikhName = document.createElement("h4");
-      sheikhName.textContent = sheikhData.name;
-      sheikhBox.appendChild(sheikhName);
-      
-      resultDiv.appendChild(sheikhBox);
-      
-      if (window.clicky) clicky.log("عرض_شيخ_دهم", sheikhData.name);
     }
 
     if (openSidebar) openSidebar.addEventListener("click", () => { sidebar.classList.toggle("active"); hamburger.classList.toggle("active"); });
@@ -957,31 +751,15 @@
     if (orderLink) orderLink.addEventListener("click", function(event) { event.preventDefault(); fadeOutAndRedirect(this.href); });
     if (searchInput) searchInput.addEventListener("input", function () { if (searchInput.value.trim().length > 0) { inputIcon.style.display = "none"; clearIcon.style.display = "block"; } else { inputIcon.style.display = "block"; clearIcon.style.display = "none"; } });
     if (clearIcon) clearIcon.addEventListener("click", function () { searchInput.value = ""; inputIcon.style.display = "block"; clearIcon.style.display = "none"; searchInput.focus(); resultDiv.innerHTML = ""; resultDiv.classList.remove("show"); });
-    
     if (searchBtn) searchBtn.addEventListener("click", performSearch);
     if (searchInput) searchInput.addEventListener("keydown", function (e) { if (e.key === "Enter") performSearch(); });
-    
     if (cancelPopupBtn) cancelPopupBtn.addEventListener("click", function() { document.getElementById("popupModal").style.display = "none"; });
     if (adTelegramBtn) adTelegramBtn.addEventListener("click", function() { window.location.href = "https://wa.me/967738889982"; });
     faqQuestions.forEach((question) => { question.addEventListener("click", function () { const answer = this.nextElementSibling; const icon = this.querySelector(".faq-icon"); const isActive = this.classList.contains("active"); faqQuestions.forEach(q => { if (q !== this && q.classList.contains("active")) { q.classList.remove("active"); q.nextElementSibling.style.display = "none"; const otherIcon = q.querySelector(".faq-icon"); if (otherIcon) otherIcon.classList.replace("bx-chevron-up", "bx-chevron-down"); } }); if (isActive) { answer.style.display = "none"; this.classList.remove("active"); if (icon) icon.classList.replace("bx-chevron-up", "bx-chevron-down"); } else { answer.style.display = "block"; this.classList.add("active"); if (icon) icon.classList.replace("bx-chevron-down", "bx-chevron-up"); } }); });
 
-    // TikTok Follow Button Logic
-    if (tiktokFollowBtn) {
-      tiktokFollowBtn.addEventListener("click", () => {
-        window.open(TIKTOK_ACCOUNT_URL, "_blank");
-        localStorage.setItem("tiktokFollowed", "true");
-        if (tiktokPopupModal) tiktokPopupModal.style.display = "none";
-        
-        if (currentSearchQuery) {
-          initiateSearchProcess(currentSearchQuery);
-        }
-      });
-    }
-
     function displayNotFoundMessage(messageContent) {
         const messageBox = document.createElement("div");
-        messageBox.className = "tribe-box"; 
-        messageBox.style.color = "#3E2723"; 
+        messageBox.className = "not-found-message"; // Use the unified class
         messageBox.textContent = messageContent;
         resultDiv.appendChild(messageBox);
     }
@@ -989,41 +767,25 @@
     function performSearch() {
       if (!searchInput || !resultDiv || !loadingDiv) return;
       const query = searchInput.value.trim();
-      currentSearchQuery = query; 
-
       if (!query) {
         displayNotFoundMessage("يرجى ملء خانة البحث");
         resultDiv.classList.add("show");
         return;
       }
+      if (window.clicky) clicky.log("بحث_موقع", query);
+      resultDiv.classList.remove("show");
+      resultDiv.innerHTML = "";
+      loadingDiv.style.display = "flex";
 
-      if (!localStorage.getItem("tiktokFollowed")) {
-        if (tiktokPopupModal) {
-            tiktokPopupModal.style.display = "flex";
-        }
-        return; 
+      if (Object.keys(combinedTribesData).length === 0 && tribeInfoData.length === 0) {
+          loadAndMergeData().then(() => executeSearchLogic(query)).catch(error => {
+              loadingDiv.style.display = "none";
+              displayNotFoundMessage("فشل تحميل البيانات، يرجى المحاولة مرة أخرى.");
+              resultDiv.classList.add("show");
+          });
+      } else {
+          executeSearchLogic(query);
       }
-
-      initiateSearchProcess(currentSearchQuery);
-    }
-
-    function initiateSearchProcess(queryToSearch) {
-        if (!queryToSearch) return; 
-
-        if (window.clicky) clicky.log("بحث_موقع", queryToSearch);
-        resultDiv.classList.remove("show");
-        resultDiv.innerHTML = "";
-        loadingDiv.style.display = "flex";
-
-        if (Object.keys(combinedTribesData).length === 0 && tribeInfoData.length === 0) {
-            loadAndMergeData().then(() => executeSearchLogic(queryToSearch)).catch(error => {
-                loadingDiv.style.display = "none";
-                displayNotFoundMessage("فشل تحميل البيانات، يرجى المحاولة مرة أخرى.");
-                resultDiv.classList.add("show");
-            });
-        } else {
-            executeSearchLogic(queryToSearch);
-        }
     }
 
     function executeSearchLogic(query) {
@@ -1033,33 +795,8 @@
             const normalizedQuery = normalizeArabic(query);
             const historyKeyword = "تاريخ ";
             const infoKeyword = "معلومات ";
-            const sheikhKeyword = "شيخ ";
-            const sheikhMashayekhKeyword = "شيخ مشايخ ";
 
-            // التحقق من البحث عن شيخ قبيلة
-            if (normalizedQuery.startsWith(normalizeArabic(sheikhKeyword)) || 
-                normalizedQuery.startsWith(normalizeArabic(sheikhMashayekhKeyword))) {
-                
-                let tribeNameForSheikh = "";
-                if (normalizedQuery.startsWith(normalizeArabic(sheikhKeyword))) {
-                    tribeNameForSheikh = query.substring(sheikhKeyword.length).trim();
-                } else if (normalizedQuery.startsWith(normalizeArabic(sheikhMashayekhKeyword))) {
-                    tribeNameForSheikh = query.substring(sheikhMashayekhKeyword.length).trim();
-                }
-                
-                const normalizedTribeNameForSheikh = normalizeArabic(tribeNameForSheikh);
-
-                // التحقق إذا كانت القبيلة هي دهم
-                if (normalizedTribeNameForSheikh === normalizeArabic("دهم")) {
-                    displaySheikhBox();
-                } else {
-                    // إذا كانت قبيلة أخرى، عرض رسالة عدم وجود شيخ ونافذة منبثقة
-                    displayNotFoundMessage(`لم يتم إضافة شيخ لقبيلة (${tribeNameForSheikh})`);
-                    if (window.clicky) clicky.log("بحث_شيخ_غير_ناجح", tribeNameForSheikh);
-                    setTimeout(() => showPopup(tribeNameForSheikh, "sheikh_popup"), 1500);
-                }
-
-            } else if (normalizedQuery.startsWith(normalizeArabic(historyKeyword)) || normalizedQuery.startsWith(normalizeArabic(infoKeyword))) {
+            if (normalizedQuery.startsWith(normalizeArabic(historyKeyword)) || normalizedQuery.startsWith(normalizeArabic(infoKeyword))) {
                 let tribeNameForHistory = "";
                 if (normalizedQuery.startsWith(normalizeArabic(historyKeyword))) {
                     tribeNameForHistory = query.substring(historyKeyword.length).trim();
@@ -1159,9 +896,7 @@
                 const data = doc.data();
                 if (data.code && data.name) {
                     if (!firebaseFetchedTribes[data.code]) firebaseFetchedTribes[data.code] = [];
-                    if (!firebaseFetchedTribes[data.code].some(e => e.name === data.name)) {
-                        firebaseFetchedTribes[data.code].push({ name: data.name });
-                    }
+                    if (!firebaseFetchedTribes[data.code].some(e => e.name === data.name)) firebaseFetchedTribes[data.code].push({ name: data.name });
                 }
             });
         } catch (error) {
@@ -1171,17 +906,7 @@
         let newMergedData = JSON.parse(JSON.stringify(hardcodedTribes));
         for (const codeKey in firebaseFetchedTribes) {
             if (firebaseFetchedTribes.hasOwnProperty(codeKey)) {
-                if (newMergedData.hasOwnProperty(codeKey)) {
-                    const existingTribes = newMergedData[codeKey]; 
-                    const firebaseTribesForCode = firebaseFetchedTribes[codeKey]; 
-                    firebaseTribesForCode.forEach(fbTribe => {
-                        if (!existingTribes.some(existingTribe => existingTribe.name === fbTribe.name)) {
-                            existingTribes.push(fbTribe);
-                        }
-                    });
-                } else {
-                    newMergedData[codeKey] = firebaseFetchedTribes[codeKey];
-                }
+                newMergedData[codeKey] = firebaseFetchedTribes[codeKey]; // Firebase data takes precedence
             }
         }
         combinedTribesData = newMergedData;
@@ -1203,8 +928,7 @@
 
     window.addEventListener("DOMContentLoaded", async () => {
         await loadAndMergeData();
-        await trackVisitor(); // Call the function to track visitor on page load
     });
   </script>
 </body>
-            </html>
+  </html>
