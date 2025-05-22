@@ -322,7 +322,7 @@
     
     .form-control:focus {
       border-color: #CD853F;
-      box-shadow: 0 0 5px rgba(205, 133, 63, 0.3);
+      box-shadow: 0 0 5px rgba(205, 133, 63, 0.3); 
       outline: none;
     }
     
@@ -755,6 +755,24 @@
         height: 40px;
       }
     }
+    
+    /* مؤشر التقدم للرفع */
+    .upload-progress {
+      display: none;
+      margin-top: 10px;
+      width: 100%;
+      background-color: #e0e0e0;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+    
+    .upload-progress-bar {
+      height: 10px;
+      width: 0%;
+      background-color: #CD853F;
+      border-radius: 5px;
+      transition: width 0.3s ease;
+    }
   </style>
 </head>
 <body>
@@ -931,14 +949,18 @@
           <div class="image-upload">
             <i class="bx bx-image-add"></i>
             <p>انقر لاختيار صورة أو اسحب الصورة هنا</p>
-            <input type="file" id="sheikhImage" accept="image/*">
+            <input type="file" id="sheikhImage" accept="image/jpeg, image/png, image/webp">
           </div>
           <div class="image-preview-container">
             <img id="sheikhImagePreview" class="image-preview" alt="معاينة صورة الشيخ">
           </div>
-          <p class="text-muted">* يفضل استخدام صورة بأبعاد متناسبة (مثل 600×400 بكسل)</p>
+          <p class="text-muted" id="imageInfo"></p>
+          <!-- مؤشر التقدم للرفع -->
+          <div class="upload-progress" id="uploadProgress">
+            <div class="upload-progress-bar" id="uploadProgressBar"></div>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary">إضافة الشيخ</button>
+        <button type="submit" class="btn btn-primary" id="addSheikhBtn">إضافة الشيخ</button>
       </form>
     </div>
     
@@ -1031,7 +1053,7 @@
       <hr class="section-divider">
       
       <h4>إدارة بيانات الزوار</h4>
-      <button class="btn btn-danger" onclick="clearAllVisitorData()"><i class="bx bx-trash"></i> مسح جميع بيانات الزوار</button>
+      <button class="btn btn-danger" onclick="clearAllVisitorData()" id="clearVisitorsBtn"><i class="bx bx-trash"></i> مسح جميع بيانات الزوار</button>
     </div>
   </div>
   
@@ -1039,7 +1061,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, query, where, writeBatch, doc, deleteDoc, serverTimestamp, orderBy, limit, getDoc, setDoc, Timestamp, increment } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
+    import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js"; // Import uploadBytesResumable
 
     // تكوين Firebase
     const firebaseConfig = {
@@ -1097,7 +1119,7 @@
         document.querySelector('.mobile-header').style.display = 'flex';
       }
       loadDashboardData();
-      loadSheikhsList();
+      // loadSheikhsList(); // لا يتم تحميل القائمة هنا لتجنب الأخطاء المحتملة
       fetchTotalVisitorCountForSidebar();
     }
     
@@ -1196,18 +1218,51 @@
     });
 
     // معاينة الصورة
-    const sheikhImage = document.getElementById('sheikhImage');
+    const sheikhImageInput = document.getElementById('sheikhImage');
     const sheikhImagePreview = document.getElementById('sheikhImagePreview');
+    const imageInfo = document.getElementById('imageInfo');
+    const MAX_IMAGE_SIZE_MB = 5; // تحديد الحد الأقصى لحجم الصورة بالميجابايت
+    let selectedImageFile = null;
 
-    sheikhImage.addEventListener('change', function() {
+    sheikhImageInput.addEventListener('change', function() {
       const file = this.files[0];
       if (file) {
+        // التحقق من نوع الملف
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+        if (!allowedTypes.includes(file.type)) {
+          imageInfo.textContent = 'صيغة الصورة غير مدعومة. يرجى اختيار JPEG, PNG, أو WebP.';
+          imageInfo.style.color = 'red';
+          sheikhImagePreview.style.display = 'none';
+          selectedImageFile = null;
+          this.value = ''; // مسح الملف المختار
+          return;
+        }
+
+        // التحقق من حجم الملف
+        const fileSizeMB = file.size / 1024 / 1024;
+        if (fileSizeMB > MAX_IMAGE_SIZE_MB) {
+          imageInfo.textContent = `حجم الصورة كبير جداً (${fileSizeMB.toFixed(2)} MB). الحد الأقصى هو ${MAX_IMAGE_SIZE_MB} MB.`;
+          imageInfo.style.color = 'red';
+          sheikhImagePreview.style.display = 'none';
+          selectedImageFile = null;
+          this.value = ''; // مسح الملف المختار
+          return;
+        }
+
+        // عرض معاينة الصورة ومعلومات الحجم
         const reader = new FileReader();
         reader.onload = function(e) {
           sheikhImagePreview.src = e.target.result;
           sheikhImagePreview.style.display = 'block';
+          imageInfo.textContent = `حجم الصورة: ${fileSizeMB.toFixed(2)} MB`;
+          imageInfo.style.color = '#5C4033'; // اللون الافتراضي
+          selectedImageFile = file; // تخزين الملف المختار
         };
         reader.readAsDataURL(file);
+      } else {
+        sheikhImagePreview.style.display = 'none';
+        imageInfo.textContent = '';
+        selectedImageFile = null;
       }
     });
 
@@ -1297,74 +1352,192 @@
     const sheikhErrorMessage = document.getElementById('sheikhErrorMessage');
     const sheikhLoadingSpinner = document.getElementById('sheikhLoadingSpinner');
     const documentIdSpan = document.getElementById('documentId');
+    const uploadProgress = document.getElementById('uploadProgress');
+    const uploadProgressBar = document.getElementById('uploadProgressBar');
+    const addSheikhBtn = document.getElementById('addSheikhBtn');
+
+    // دالة لضغط الصورة باستخدام Canvas
+    function compressImage(file, quality = 0.7, maxWidth = 1024) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = event => {
+          const img = new Image();
+          img.src = event.target.result;
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+
+            // تغيير حجم الصورة إذا كانت أكبر من الحد الأقصى للعرض
+            if (width > maxWidth) {
+              height *= maxWidth / width;
+              width = maxWidth;
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // تحويل الصورة إلى Blob
+            canvas.toBlob(blob => {
+              if (blob) {
+                // إنشاء ملف جديد من Blob المضغوط
+                const compressedFile = new File([blob], file.name, {
+                  type: 'image/jpeg', // دائماً حفظ بصيغة JPEG للضغط
+                  lastModified: Date.now()
+                });
+                console.log(`Original size: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
+                console.log(`Compressed size: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`);
+                resolve(compressedFile);
+              } else {
+                reject(new Error('فشل ضغط الصورة.'));
+              }
+            }, 'image/jpeg', quality);
+          };
+          img.onerror = error => reject(error);
+        };
+        reader.onerror = error => reject(error);
+      });
+    }
 
     sheikhForm.addEventListener('submit', async function(e) {
       e.preventDefault();
       
       const tribeName = document.getElementById('sheikhTribeName').value.trim();
       const sheikhName = document.getElementById('sheikhName').value.trim();
-      const imageFile = document.getElementById('sheikhImage').files[0];
       
       // إخفاء الرسائل وإظهار مؤشر التحميل
       sheikhSuccessMessage.style.display = 'none';
       sheikhErrorMessage.style.display = 'none';
       sheikhLoadingSpinner.style.display = 'block';
+      uploadProgress.style.display = 'none'; // إخفاء شريط التقدم في البداية
+      uploadProgressBar.style.width = '0%';
+      addSheikhBtn.disabled = true; // تعطيل زر الإضافة أثناء الرفع
       
-      // إظهار مؤشر "جار المعالجة"
-      processingIndicator.style.display = 'flex';
-      
-      if (!imageFile) {
-        sheikhErrorMessage.textContent = "يرجى اختيار صورة للشيخ";
+      if (!selectedImageFile) {
+        sheikhErrorMessage.textContent = "يرجى اختيار صورة للشيخ أولاً.";
         sheikhErrorMessage.style.display = 'block';
         sheikhLoadingSpinner.style.display = 'none';
-        processingIndicator.style.display = 'none';
+        addSheikhBtn.disabled = false;
         return;
       }
       
       try {
+        // ضغط الصورة قبل الرفع
+        processingIndicator.style.display = 'flex'; // إظهار مؤشر المعالجة العام
+        processingIndicator.querySelector('p').textContent = 'جارٍ ضغط الصورة...';
+        let fileToUpload;
+        try {
+          fileToUpload = await compressImage(selectedImageFile, 0.7, 1024); // جودة 70% وعرض أقصى 1024px
+        } catch (compressionError) {
+          console.error("خطأ في ضغط الصورة: ", compressionError);
+          sheikhErrorMessage.textContent = `فشل ضغط الصورة: ${compressionError.message}. حاول مرة أخرى أو استخدم صورة أخرى.`;
+          throw compressionError; // إيقاف العملية إذا فشل الضغط
+        }
+        processingIndicator.querySelector('p').textContent = 'جارٍ رفع الصورة...';
+
         // تحميل الصورة إلى Firebase Storage
         const timestamp = new Date().getTime();
-        const imageName = `sheikh_images/${tribeName}_${timestamp}`;
+        const imageName = `sheikh_images/${tribeName}_${timestamp}.jpg`; // استخدام امتداد jpg دائماً بعد الضغط
         const storageRef = ref(storage, imageName);
         
-        // تحميل الصورة
-        await uploadBytes(storageRef, imageFile);
+        // استخدام uploadBytesResumable لمراقبة التقدم
+        const uploadTask = uploadBytesResumable(storageRef, fileToUpload);
         
-        // الحصول على رابط الصورة
-        const imageUrl = await getDownloadURL(storageRef);
-        
-        // إضافة بيانات الشيخ إلى Firestore
-        const docRef = await addDoc(collection(db, "sheikhs"), {
-          tribeName: tribeName,
-          sheikhName: sheikhName,
-          imageUrl: imageUrl,
-          imagePath: imageName,
-          timestamp: serverTimestamp()
-        });
-        
-        // عرض رسالة النجاح مع رقم المستند
-        documentIdSpan.textContent = docRef.id;
-        sheikhSuccessMessage.style.display = 'block';
-        sheikhForm.reset();
-        sheikhImagePreview.style.display = 'none';
-        
-        // إخفاء رسالة النجاح بعد 10 ثوانٍ
-        setTimeout(() => { sheikhSuccessMessage.style.display = 'none'; }, 10000);
-        
-        // تحديث قائمة الشيوخ
-        loadSheikhsList();
-        
-        // تحديث بيانات لوحة المعلومات
-        loadDashboardData();
+        uploadProgress.style.display = 'block'; // إظهار شريط التقدم
+
+        uploadTask.on('state_changed', 
+          (snapshot) => {
+            // مراقبة تقدم الرفع
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            uploadProgressBar.style.width = progress + '%';
+            console.log('Upload is ' + progress + '% done');
+            processingIndicator.querySelector('p').textContent = `جارٍ رفع الصورة... ${Math.round(progress)}%`;
+          }, 
+          (error) => {
+            // معالجة أخطاء الرفع
+            console.error("خطأ في رفع الصورة: ", error);
+            let errorMessage = "حدث خطأ غير معروف أثناء رفع الصورة.";
+            switch (error.code) {
+              case 'storage/unauthorized':
+                errorMessage = "خطأ في الصلاحيات: ليس لديك إذن لرفع الملفات.";
+                break;
+              case 'storage/canceled':
+                errorMessage = "تم إلغاء عملية رفع الصورة.";
+                break;
+              case 'storage/unknown':
+                errorMessage = "حدث خطأ غير معروف في التخزين، يرجى المحاولة مرة أخرى.";
+                break;
+              case 'storage/retry-limit-exceeded':
+                errorMessage = "تم تجاوز مهلة الرفع. قد يكون الاتصال بالإنترنت ضعيفًا أو حجم الصورة كبيرًا جدًا. حاول مرة أخرى.";
+                break;
+              case 'storage/network-error': // إضافة حالة خطأ الشبكة
+                errorMessage = "حدث خطأ في الشبكة أثناء الرفع. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.";
+                break;
+            }
+            sheikhErrorMessage.textContent = `فشل رفع الصورة: ${errorMessage} (${error.code})`;
+            sheikhErrorMessage.style.display = 'block';
+            sheikhLoadingSpinner.style.display = 'none';
+            uploadProgress.style.display = 'none';
+            processingIndicator.style.display = 'none';
+            addSheikhBtn.disabled = false;
+          },
+          async () => {
+            // اكتمل الرفع بنجاح
+            processingIndicator.querySelector('p').textContent = 'جارٍ حفظ البيانات...';
+            try {
+              const imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+              
+              // إضافة بيانات الشيخ إلى Firestore
+              const docRef = await addDoc(collection(db, "sheikhs"), {
+                tribeName: tribeName,
+                sheikhName: sheikhName,
+                imageUrl: imageUrl,
+                imagePath: imageName, // حفظ مسار الصورة للحذف لاحقًا
+                timestamp: serverTimestamp()
+              });
+              
+              // عرض رسالة النجاح مع رقم المستند
+              documentIdSpan.textContent = docRef.id;
+              sheikhSuccessMessage.style.display = 'block';
+              sheikhForm.reset();
+              sheikhImagePreview.style.display = 'none';
+              imageInfo.textContent = '';
+              selectedImageFile = null;
+              
+              // إخفاء رسالة النجاح بعد 10 ثوانٍ
+              setTimeout(() => { sheikhSuccessMessage.style.display = 'none'; }, 10000);
+              
+              // تحديث قائمة الشيوخ (إذا كانت موجودة)
+              // loadSheikhsList(); 
+              
+              // تحديث بيانات لوحة المعلومات
+              loadDashboardData();
+            } catch (dbError) {
+              console.error("خطأ في حفظ بيانات الشيخ في Firestore: ", dbError);
+              sheikhErrorMessage.textContent = `نجح رفع الصورة ولكن فشل حفظ البيانات: ${dbError.message}`;
+              sheikhErrorMessage.style.display = 'block';
+            } finally {
+              sheikhLoadingSpinner.style.display = 'none';
+              uploadProgress.style.display = 'none';
+              processingIndicator.style.display = 'none';
+              addSheikhBtn.disabled = false;
+            }
+          }
+        );
       } catch (error) {
-        console.error("خطأ في إضافة شيخ القبيلة: ", error);
-        sheikhErrorMessage.textContent = `حدث خطأ أثناء إضافة شيخ القبيلة: ${error.message}`;
+        // معالجة الأخطاء العامة (مثل خطأ الضغط)
+        console.error("خطأ عام في إضافة شيخ القبيلة: ", error);
+        if (!sheikhErrorMessage.textContent) { // لا تعرض رسالة خطأ عامة إذا تم عرض خطأ محدد بالفعل
+            sheikhErrorMessage.textContent = `حدث خطأ: ${error.message}`;
+        }
         sheikhErrorMessage.style.display = 'block';
-      } finally {
-        // إخفاء مؤشر التحميل
         sheikhLoadingSpinner.style.display = 'none';
-        // إخفاء مؤشر "جار المعالجة"
+        uploadProgress.style.display = 'none';
         processingIndicator.style.display = 'none';
+        addSheikhBtn.disabled = false;
       }
     });
 
@@ -1386,6 +1559,7 @@
       
       // إظهار مؤشر "جار المعالجة"
       processingIndicator.style.display = 'flex';
+      processingIndicator.querySelector('p').textContent = 'جارٍ حذف شيخ القبيلة...';
       
       try {
         let deletedCount = 0;
@@ -1411,12 +1585,14 @@
           await batch.commit();
           
           // حذف الصور من Storage
+          processingIndicator.querySelector('p').textContent = 'جارٍ حذف الصور...';
           for (const path of imagePaths) {
             try {
               const imageRef = ref(storage, path);
               await deleteObject(imageRef);
             } catch (error) {
               console.error(`خطأ في حذف الصورة ${path}:`, error);
+              // استمر في العملية حتى لو فشل حذف صورة واحدة
             }
           }
           
@@ -1427,8 +1603,8 @@
           
           // تحديث بيانات لوحة المعلومات
           loadDashboardData();
-          // تحديث قائمة الشيوخ
-          loadSheikhsList();
+          // تحديث قائمة الشيوخ (إذا كانت موجودة)
+          // loadSheikhsList();
         } else {
           deleteSheikhError.textContent = `لم يتم العثور على شيوخ للقبيلة "${tribeName}".`;
           deleteSheikhError.style.display = 'block';
@@ -1464,6 +1640,7 @@
       
       // إظهار مؤشر "جار المعالجة"
       processingIndicator.style.display = 'flex';
+      processingIndicator.querySelector('p').textContent = 'جارٍ حذف الرمز...';
       
       try {
         let deletedCount = 0;
@@ -1521,6 +1698,7 @@
       
       // إظهار مؤشر "جار المعالجة"
       processingIndicator.style.display = 'flex';
+      processingIndicator.querySelector('p').textContent = 'جارٍ حذف المعلومات...';
       
       try {
         let deletedCount = 0;
@@ -1560,7 +1738,8 @@
       }
     });
     
-    // تحميل قائمة شيوخ القبائل
+    // تحميل قائمة شيوخ القبائل (تم التعليق عليها مؤقتًا)
+    /*
     async function loadSheikhsList() {
       const sheikhsTableBody = document.getElementById('sheikhsTableBody');
       const sheikhsListLoadingSpinner = document.getElementById('sheikhsListLoadingSpinner');
@@ -1618,8 +1797,10 @@
         }
       }
     }
+    */
     
-    // حذف شيخ قبيلة
+    // حذف شيخ قبيلة (تم التعليق عليه مؤقتًا)
+    /*
     async function deleteSheikhHandler() {
       const sheikhId = this.getAttribute('data-id');
       const imagePath = this.getAttribute('data-image');
@@ -1637,6 +1818,7 @@
       
       // إظهار مؤشر "جار المعالجة"
       processingIndicator.style.display = 'flex';
+      processingIndicator.querySelector('p').textContent = 'جارٍ حذف الشيخ...';
       
       try {
         // حذف المستند من Firestore
@@ -1668,6 +1850,7 @@
         processingIndicator.style.display = 'none';
       }
     }
+    */
     
     // تحميل بيانات لوحة المعلومات
     async function loadDashboardData() {
@@ -1864,11 +2047,16 @@
     
     // مسح جميع بيانات الزوار
     window.clearAllVisitorData = async function() {
+      const clearButton = document.getElementById('clearVisitorsBtn');
+      if (!clearButton) return;
+      
       const confirmation = confirm("هل أنت متأكد أنك تريد مسح جميع بيانات زوار الموقع؟ هذا الإجراء لا يمكن التراجع عنه وسيعيد جميع العدادات إلى الصفر.");
       if (!confirmation) return;
       
       // إظهار مؤشر "جار المعالجة"
       processingIndicator.style.display = 'flex';
+      processingIndicator.querySelector('p').textContent = 'جارٍ مسح بيانات الزوار...';
+      clearButton.disabled = true;
       
       try {
         const dailyCollectionRef = collection(db, "siteAnalyticsByDay");
@@ -1896,6 +2084,7 @@
       } finally {
         // إخفاء مؤشر "جار المعالجة"
         processingIndicator.style.display = 'none';
+        clearButton.disabled = false;
       }
     }
     
