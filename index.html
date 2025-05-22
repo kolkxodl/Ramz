@@ -317,6 +317,38 @@
         margin: 0; 
         text-align: center; 
     }
+    /* إضافة تنسيق لمربع عرض شيخ القبيلة */
+    .result .sheikh-box {
+      background: rgba(253, 248, 240, 0.8);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid #D2B48C;
+      padding: 12px;
+      border-radius: 8px;
+      margin: 0 auto 12px auto; 
+      color: #3E2723;
+      font-size: 18px;
+      text-align: center;
+    }
+    .result .sheikh-box .sheikh-image-container {
+      width: 100%;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: center;
+    }
+    .result .sheikh-box .sheikh-image {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+    .result .sheikh-box .sheikh-name {
+      color: #D4AF37; /* لون ذهبي */
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 8px;
+      text-align: center;
+    }
     .result-table {
       width: 100%;
       border-collapse: separate;
@@ -540,6 +572,9 @@
       .result .history-box h4 {
         font-size: 16px;
       }
+      .result .sheikh-box .sheikh-name {
+        font-size: 16px;
+      }
     }
     .popup-modal {
       position: fixed;
@@ -705,7 +740,7 @@
         لمتابعة البحث واستكشاف المزيد من رموز القبائل،<br>يرجى دعمنا بمتابعة حسابنا على تيك توك أولاً.
       </p>
       <button id="tiktokFollowBtn" class="popup-btn" style="padding: 12px 25px; font-size: 17px;">
-        <i class=\'bx bxl-tiktok\' style="font-size: 22px; vertical-align: middle; margin-left: 8px;"></i> <!-- Adjusted margin for RTL -->
+        <i class='bx bxl-tiktok' style="font-size: 22px; vertical-align: middle; margin-left: 8px;"></i> <!-- Adjusted margin for RTL -->
         اضغط هنا لمتابعتنا
       </button>
     </div>
@@ -722,7 +757,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getFirestore, collection, getDocs, doc, updateDoc, increment, setDoc, serverTimestamp, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"; // Added getDoc
+    import { getFirestore, collection, getDocs, doc, updateDoc, increment, setDoc, serverTimestamp, getDoc, query, where, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js"; // Added query, where, limit
 
     const firebaseConfig = {
       apiKey: "AIzaSyDGLwl69D9W5c03G5WsfU8pahvVHL4zKzs",
@@ -836,6 +871,7 @@
 
     let combinedTribesData = {};
     let tribeInfoData = [];
+    let sheikhsData = []; // إضافة مصفوفة لتخزين بيانات شيوخ القبائل
 
     const searchInput = document.getElementById("searchInput");
     const resultDiv = document.getElementById("result");
@@ -881,6 +917,8 @@
             popupMessage.innerHTML = `لم يتم العثور على معلومات تاريخية للقبيلة (<strong>${query}</strong>). يمكنك التواصل معنا لإضافتها.`;
         } else if (type === "code") {
             popupMessage.innerHTML = `قد يكون رمز (<strong>${query}</strong>) يتبع لقبيلة غير مسجلة في المنصة، يمكنك التواصل معنا في حال أردت إضافته`;
+        } else if (type === "sheikh_popup") {
+            popupMessage.innerHTML = `لم يتم العثور على شيخ لقبيلة (<strong>${query}</strong>). يمكنك التواصل معنا لإضافته.`;
         } else {
             popupMessage.innerHTML = `قد يكون الرمز لقبيلة (<strong>${query}</strong>) غير مضاف حالياً قم بالتواصل معنا لتعريفه وإضافته في المنصة`;
         }
@@ -955,7 +993,7 @@
         resultDiv.innerHTML = "";
         loadingDiv.style.display = "flex";
 
-        if (Object.keys(combinedTribesData).length === 0 && tribeInfoData.length === 0) {
+        if (Object.keys(combinedTribesData).length === 0 && tribeInfoData.length === 0 && sheikhsData.length === 0) {
             loadAndMergeData().then(() => executeSearchLogic(queryToSearch)).catch(error => {
                 loadingDiv.style.display = "none";
                 displayNotFoundMessage("فشل تحميل البيانات، يرجى المحاولة مرة أخرى.");
@@ -973,6 +1011,7 @@
             const normalizedQuery = normalizeArabic(query);
             const historyKeyword = "تاريخ ";
             const infoKeyword = "معلومات ";
+            const sheikhKeyword = "شيخ "; // إضافة كلمة مفتاحية للبحث عن شيخ القبيلة
 
             if (normalizedQuery.startsWith(normalizeArabic(historyKeyword)) || normalizedQuery.startsWith(normalizeArabic(infoKeyword))) {
                 let tribeNameForHistory = "";
@@ -1000,6 +1039,48 @@
                     displayNotFoundMessage(`لم يتم اضافه معلومات (${tribeNameForHistory})`);
                     if (window.clicky) clicky.log("بحث_تاريخ_غير_ناجح", tribeNameForHistory);
                     setTimeout(() => showPopup(tribeNameForHistory, "history_popup"), 1500);
+                }
+            } else if (normalizedQuery.startsWith(normalizeArabic(sheikhKeyword))) {
+                // منطق البحث عن شيخ القبيلة
+                let tribeNameForSheikh = query.substring(sheikhKeyword.length).trim();
+                const normalizedTribeNameForSheikh = normalizeArabic(tribeNameForSheikh);
+                
+                // البحث عن شيخ القبيلة في البيانات المحملة
+                const foundSheikh = sheikhsData.find(sheikh => normalizeArabic(sheikh.tribeName) === normalizedTribeNameForSheikh);
+                
+                if (foundSheikh) {
+                    if (window.clicky) clicky.log("نتيجة_بحث_شيخ", tribeNameForSheikh);
+                    
+                    // إنشاء مربع عرض شيخ القبيلة
+                    const sheikhBox = document.createElement("div");
+                    sheikhBox.className = "sheikh-box";
+                    
+                    // إضافة حاوية الصورة
+                    const imageContainer = document.createElement("div");
+                    imageContainer.className = "sheikh-image-container";
+                    
+                    // إضافة صورة الشيخ
+                    const sheikhImage = document.createElement("img");
+                    sheikhImage.className = "sheikh-image";
+                    sheikhImage.src = foundSheikh.imageUrl;
+                    sheikhImage.alt = `شيخ قبيلة ${foundSheikh.tribeName}`;
+                    sheikhImage.onerror = function() {
+                        this.src = "https://via.placeholder.com/300x200?text=صورة+غير+متوفرة";
+                    };
+                    imageContainer.appendChild(sheikhImage);
+                    sheikhBox.appendChild(imageContainer);
+                    
+                    // إضافة اسم الشيخ بلون ذهبي
+                    const sheikhName = document.createElement("div");
+                    sheikhName.className = "sheikh-name";
+                    sheikhName.textContent = foundSheikh.sheikhName;
+                    sheikhBox.appendChild(sheikhName);
+                    
+                    resultDiv.appendChild(sheikhBox);
+                } else {
+                    displayNotFoundMessage(`لم يتم العثور على شيخ قبيلة (${tribeNameForSheikh})`);
+                    if (window.clicky) clicky.log("بحث_شيخ_غير_ناجح", tribeNameForSheikh);
+                    setTimeout(() => showPopup(tribeNameForSheikh, "sheikh_popup"), 1500);
                 }
             } else {
                 if (/^\d+$|^(?:[A-Z]-?\d+)$/i.test(query)) {
@@ -1114,6 +1195,26 @@
         } catch (historyError) {
             console.error("فشل تحميل بيانات تاريخ القبائل:", historyError);
         }
+
+        // تحميل بيانات شيوخ القبائل
+        sheikhsData.length = 0;
+        try {
+            const sheikhsCollectionRef = collection(db, "sheikhs");
+            const sheikhsSnapshot = await getDocs(sheikhsCollectionRef);
+            sheikhsSnapshot.forEach((doc) => {
+                const data = doc.data();
+                if(data.tribeName && data.sheikhName && data.imageUrl) {
+                    sheikhsData.push({
+                        tribeName: data.tribeName,
+                        sheikhName: data.sheikhName,
+                        imageUrl: data.imageUrl
+                    });
+                }
+            });
+            console.log("تم تحميل بيانات شيوخ القبائل:", sheikhsData.length, "إدخالات.");
+        } catch (sheikhsError) {
+            console.error("فشل تحميل بيانات شيوخ القبائل:", sheikhsError);
+        }
     }
 
     window.addEventListener("DOMContentLoaded", async () => {
@@ -1123,4 +1224,3 @@
   </script>
 </body>
 </html>
-
