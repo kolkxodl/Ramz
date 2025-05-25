@@ -343,7 +343,7 @@
       object-fit: contain;
     }
     .result .sheikh-box .sheikh-name {
-      color: #D4AF37; /* لون ذهبي */
+      color: #CD853F; /* Golden color - Updated */
       font-weight: bold;
       font-size: 18px;
       margin-top: 8px;
@@ -906,7 +906,7 @@
     }
 
     function normalizeArabic(text) {
-      return text.toLowerCase().replace(/[إأآا]/g, "ا").replace(/ة/g, "ه").replace(/[ىئ]/g, "ي").replace(/[\u064B-\u0652]/g, "").trim();
+      return text.toLowerCase().replace(/[إأآا]/g, "ا").replace(/ة/g, "ه").replace(/[ىئ]/g, "ي").replace(/["\u064B-\u0652]/g, "").trim();
     }
     
     function showPopup(query, type = "tribe") {
