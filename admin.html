@@ -50,12 +50,19 @@
       color: #3E2723;
       text-align: center;
       font-size: 16px;
+      /* font-family: "IBM Plex Sans Arabic", sans-serif; */ /* Reverted: Font inherited from body */
     }
     
     #login-screen input:focus, #login-screen button:focus {
       transition: border-color 0.3s, box-shadow 0.3s;
       border-color: #b87333; 
       box-shadow: 0 0 10px rgba(184, 115, 51, 0.5);
+    }
+
+    /* تطبيق الخط على placeholder في شاشة تسجيل الدخول */
+    #login-screen input::placeholder {
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+      color: #A08C7D; /* لون placeholder مقترح */
     }
     
     #login-screen button {
@@ -66,6 +73,7 @@
       transition: background 0.3s;
       border: none;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      font-family: "IBM Plex Sans Arabic", sans-serif; /* Ensure font is applied */
     }
     
     #login-screen button:hover {
@@ -201,8 +209,9 @@
       margin-right: 0;
     }
     
+    /* رأس الصفحة للجوال */
     .mobile-header {
-      display: none;
+      display: none; /* Hidden by default */
       padding: 15px;
       background: rgba(139, 69, 19, 0.9);
       -webkit-backdrop-filter: blur(10px);
@@ -248,7 +257,7 @@
       left: 0;
       z-index: 999;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-      display: flex;
+      display: none; /* Hidden by default */
       justify-content: space-between;
       align-items: center;
       transition: right 0.3s ease;
@@ -310,14 +319,22 @@
       font-family: "IBM Plex Sans Arabic", sans-serif;
     }
     
+    .form-group label.label-highlight {
+      color: #CD853F; /* Golden color - Reverted, no longer used here */
+    }
+    
     .form-control {
-      width: 100%;
+      width: 95%; /* تم تقصير العرض قليلاً */
       padding: 10px;
       border: 1px solid #D2B48C;
       border-radius: 5px;
       font-family: "IBM Plex Sans Arabic", sans-serif;
       color: #3E2723;
       transition: border-color 0.3s, box-shadow 0.3s;
+      box-sizing: border-box; /* Added for better width control */
+      margin-right: auto; /* Center align if needed */
+      margin-left: auto; /* Center align if needed */
+      display: block; /* Ensure it takes block space */
     }
     
     .form-control:focus {
@@ -377,6 +394,11 @@
       margin-bottom: 15px;
       position: relative;
       transition: border-color 0.3s;
+      width: 95%; /* Match form control width */
+      box-sizing: border-box; /* Added for better width control */
+      margin-right: auto;
+      margin-left: auto;
+      display: block;
     }
     
     .image-upload:hover {
@@ -420,6 +442,10 @@
       margin-bottom: 15px;
       display: none;
       font-family: "IBM Plex Sans Arabic", sans-serif;
+      width: 95%; /* Match form control width */
+      box-sizing: border-box; /* Added for better width control */
+      margin-right: auto;
+      margin-left: auto;
     }
     
     .alert-success {
@@ -451,7 +477,7 @@
       }
       
       .mobile-header {
-        display: flex;
+        /* Display handled by JS */
         justify-content: space-between;
         align-items: center;
       }
@@ -463,7 +489,7 @@
       }
       
       .fixed-header {
-        display: none;
+        display: none !important; /* Ensure fixed header is never shown on mobile */
       }
       
       .stats-container {
@@ -472,6 +498,10 @@
       
       .stat-card {
         margin-bottom: 10px;
+      }
+      
+      .form-control, .image-upload, .alert {
+          width: 100%; /* Full width on mobile */
       }
     }
     
@@ -492,9 +522,11 @@
     .result-message {
       padding: 15px;
       border-radius: 5px;
-      margin: 15px 0;
+      margin: 15px auto; /* Center align */
       display: none;
       font-family: "IBM Plex Sans Arabic", sans-serif;
+      width: 95%; /* Match form control width */
+      box-sizing: border-box;
     }
     
     .success-message {
@@ -611,11 +643,13 @@
       height: 60px;
       border-radius: 50%;
       object-fit: cover;
+      vertical-align: middle; /* Align image nicely */
     }
     
     .sheikhs-table .action-buttons {
       display: flex;
       gap: 5px;
+      justify-content: center; /* Center buttons */
     }
     
     .sheikhs-table .action-buttons button {
@@ -705,123 +739,70 @@
     hr.section-divider {
       border: 0;
       height: 1px;
-      background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(92, 64, 51, 0.75), rgba(0, 0, 0, 0));
-      margin: 25px 0;
+      background-image: linear-gradient(to right, rgba(139, 69, 19, 0), rgba(139, 69, 19, 0.3), rgba(139, 69, 19, 0));
+      margin: 30px 0;
     }
     
-    /* تنسيق لقسم حذف شيخ القبيلة */
-    #deleteSheikhSection {
-      margin-top: 20px;
-    }
-    
-    #deleteSheikhSection h3 {
-      margin-top: 0;
-      color: #3E2723;
-      border-bottom: 2px solid #D2B48C;
-      padding-bottom: 10px;
-      margin-bottom: 20px;
-      font-family: "IBM Plex Sans Arabic", sans-serif;
-    }
-    
-    /* تعديلات إضافية للجوال */
-    @media (max-width: 768px) {
-      .mobile-toggle {
-        position: relative;
-        z-index: 1001;
-      }
-      
-      .visitor-stats-filters {
-        flex-direction: column;
-      }
-      
-      .filter-btn {
+    /* Overlay for sidebar on mobile */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
-      }
-      
-      .chart-container {
-        height: 250px;
-      }
-      
-      .sheikhs-table {
-        font-size: 0.9rem;
-      }
-      
-      .sheikhs-table th, .sheikhs-table td {
-        padding: 8px;
-      }
-      
-      .sheikhs-table .sheikh-image {
-        width: 40px;
-        height: 40px;
-      }
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 998; /* Below sidebar */
     }
-    
-    /* مؤشر التقدم للرفع */
-    .upload-progress {
-      display: none;
-      margin-top: 10px;
-      width: 100%;
-      background-color: #e0e0e0;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-    
-    .upload-progress-bar {
-      height: 10px;
-      width: 0%;
-      background-color: #CD853F;
-      border-radius: 5px;
-      transition: width 0.3s ease;
-    }
+
   </style>
 </head>
 <body>
-  <!-- مؤشر "جار المعالجة" -->
-  <div class="processing-indicator" id="processingIndicator">
-    <div class="spinner"></div>
-    <p>جار المعالجة...</p>
-  </div>
-
-  <!-- صفحة تسجيل الدخول -->
+  <!-- شاشة تسجيل الدخول -->
   <div id="login-screen">
-    <h2>تسجيل الدخول إلى لوحة التحكم</h2>
+    <h2>تسجيل الدخول للوحة التحكم</h2>
     <div class="input-icon-container">
+      <input type="text" id="username" placeholder="اسم المستخدم" required>
       <i class="bx bx-user input-icon"></i>
-      <input type="text" id="username" placeholder="اسم المستخدم">
     </div>
     <div class="input-icon-container">
-      <i class="bx bx-lock input-icon"></i>
-      <input type="password" id="password" placeholder="كلمة المرور" enterkeyhint="go">
+      <input type="password" id="password" placeholder="كلمة المرور" required>
+      <i class="bx bx-lock-alt input-icon"></i>
     </div>
-    <button id="loginButton"><i class="bx bx-log-in-circle"></i> دخول</button>
+    <button id="loginButton">دخول</button>
   </div>
 
   <!-- القائمة الجانبية -->
-  <div class="sidebar collapsed" id="sidebar" style="display: none;">
+  <div class="sidebar collapsed" id="sidebar" style="display: none;"> <!-- Hidden by default -->
     <div class="sidebar-header">
       <h2>لوحة التحكم</h2>
       <button class="toggle-btn" id="sidebarToggle">
-        <i class="bx bx-x"></i>
+        <i class="bx bx-menu"></i>
       </button>
     </div>
     <div class="sidebar-menu">
       <ul>
-        <li><a href="#" data-section="dashboardSection"><i class="bx bx-home"></i> الرئيسية</a></li>
-        <li><a href="#" data-section="tribeCodeSection"><i class="bx bx-hash"></i> إدارة رموز القبائل</a></li>
-        <li><a href="#" data-section="tribeHistorySection"><i class="bx bx-book-open"></i> إدارة معلومات القبائل</a></li>
-        <li><a href="#" data-section="sheikhManagementSection"><i class="bx bx-user"></i> إدارة شيوخ القبائل</a></li>
-        <li><a href="#" data-section="deleteSheikhSection"><i class="bx bx-user-x"></i> حذف شيخ قبيلة</a></li>
-        <li><a href="#" data-section="deleteCodeSection"><i class="bx bx-trash"></i> حذف رموز القبائل</a></li>
-        <li><a href="#" data-section="deleteHistorySection"><i class="bx bx-trash-alt"></i> حذف معلومات القبائل</a></li>
-        <li><a href="#" data-section="visitorStatsSection"><i class="bx bx-bar-chart-alt-2"></i> زوار الموقع (<span id="siteVisitorCountSidebar">0</span>)</a></li>
+        <li><a href="#" data-section="dashboardSection" class="active"><i class="bx bxs-dashboard"></i> لوحة المعلومات</a></li>
+        <li><a href="#" data-section="addTribeSection"><i class="bx bx-plus-circle"></i> إضافة قبيلة</a></li>
+        <li><a href="#" data-section="deleteTribeSection"><i class="bx bx-trash"></i> حذف قبيلة</a></li>
+        <li><a href="#" data-section="addHistorySection"><i class="bx bx-book-add"></i> إضافة معلومات قبيلة</a></li>
+        <li><a href="#" data-section="deleteHistorySection"><i class="bx bx-book-alt"></i> حذف معلومات قبيلة</a></li>
+        <li><a href="#" data-section="sheikhManagementSection"><i class="bx bx-user-pin"></i> إدارة شيوخ القبائل</a></li>
+        <li><a href="#" data-section="deleteSheikhSection"><i class="bx bx-user-minus"></i> حذف شيخ قبيلة</a></li>
+        <li><a href="#" data-section="visitorStatsSection"><i class="bx bx-line-chart"></i> إحصائيات الزوار</a></li>
         <li><a href="#" id="logoutLink"><i class="bx bx-log-out"></i> تسجيل الخروج</a></li>
       </ul>
     </div>
     <div class="sidebar-footer">
-      تم التطوير بواسطة سهم الحميقاني
+      &copy; 2024 - رموز القبائل
+      <br>
+      <span id="sidebarVisitorCount"></span>
     </div>
   </div>
   
+  <!-- Overlay for mobile sidebar -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
   <!-- رأس الصفحة للجوال -->
   <div class="mobile-header" style="display: none;">
     <h2>لوحة تحكم رموز القبائل</h2>
@@ -829,24 +810,31 @@
       <i class="bx bx-menu"></i>
     </button>
   </div>
-  
+
   <!-- الهيدر الثابت -->
-  <div class="fixed-header expanded" id="fixedHeader" style="display: none;">
-    <h2 class="header-title">لوحة تحكم رموز القبائل</h2>
+  <div class="fixed-header" id="fixedHeader">
+    <h2 class="header-title" id="headerTitle">لوحة المعلومات</h2>
     <div class="header-actions">
-      <button class="btn btn-secondary" id="logoutHeaderBtn">
-        <i class="bx bx-log-out"></i> تسجيل الخروج
-      </button>
+      <button class="btn btn-secondary" id="logoutHeaderBtn"><i class="bx bx-log-out"></i> خروج</button>
     </div>
   </div>
-  
+
   <!-- المحتوى الرئيسي -->
-  <div class="main-content expanded" id="mainContent" style="display: none;">
-    <!-- قسم الرئيسية -->
+  <div class="main-content" id="mainContent" style="display: none;"> <!-- Hidden by default -->
+    <!-- قسم لوحة المعلومات -->
     <div class="section active" id="dashboardSection">
       <h3>لوحة المعلومات الرئيسية</h3>
-      
       <div class="stats-container">
+        <div class="stat-card">
+          <h4>إجمالي القبائل</h4>
+          <div class="stat-value" id="totalTribes">0</div>
+          <div class="stat-label">المضافة في النظام</div>
+        </div>
+        <div class="stat-card">
+          <h4>إجمالي الشيوخ</h4>
+          <div class="stat-value" id="totalSheikhs">0</div>
+          <div class="stat-label">المضافين في النظام</div>
+        </div>
         <div class="stat-card">
           <h4>إجمالي الزوار</h4>
           <div class="stat-value" id="totalVisitors">0</div>
@@ -857,85 +845,57 @@
           <div class="stat-value" id="todayVisitors">0</div>
           <div class="stat-label">خلال 24 ساعة</div>
         </div>
-        <div class="stat-card">
-          <h4>زوار الأسبوع</h4>
-          <div class="stat-value" id="weekVisitors">0</div>
-          <div class="stat-label">آخر 7 أيام</div>
-        </div>
-        <div class="stat-card">
-          <h4>زوار الشهر</h4>
-          <div class="stat-value" id="monthVisitors">0</div>
-          <div class="stat-label">آخر 30 يوم</div>
-        </div>
       </div>
-      
-      <div class="stats-container">
-        <div class="stat-card">
-          <h4>عدد رموز القبائل</h4>
-          <div class="stat-value" id="totalTribeCodes">0</div>
-        </div>
-        <div class="stat-card">
-          <h4>عدد معلومات القبائل</h4>
-          <div class="stat-value" id="totalTribeHistories">0</div>
-        </div>
-        <div class="stat-card">
-          <h4>عدد شيوخ القبائل</h4>
-          <div class="stat-value" id="totalSheikhs">0</div>
-        </div>
-      </div>
+      <hr class="section-divider">
+      <h4>أحدث الإضافات</h4>
+      <p>سيتم عرض أحدث القبائل والشيوخ المضافين هنا قريباً.</p>
     </div>
-    
-    <!-- قسم إدارة رموز القبائل -->
-    <div class="section" id="tribeCodeSection">
-      <h3>إضافة رمز قبيلة</h3>
-      <div class="alert alert-success" id="tribeCodeSuccess">تم إضافة رمز القبيلة بنجاح!</div>
-      <div class="alert alert-danger" id="tribeCodeError">حدث خطأ أثناء إضافة رمز القبيلة.</div>
-      <form id="tribeCodeForm">
-        <div class="form-group">
-          <label for="tribeCode">رمز القبيلة</label>
-          <input type="text" class="form-control" id="tribeCode" placeholder="مثال: 711" required>
-        </div>
+
+    <!-- قسم إضافة قبيلة -->
+    <div class="section" id="addTribeSection">
+      <h3>إضافة قبيلة جديدة</h3>
+      <div class="alert alert-success" id="addTribeSuccess">تمت إضافة القبيلة بنجاح!</div>
+      <div class="alert alert-danger" id="addTribeError">حدث خطأ أثناء إضافة القبيلة.</div>
+      <form id="addTribeForm">
         <div class="form-group">
           <label for="tribeName">اسم القبيلة</label>
-          <input type="text" class="form-control" id="tribeName" placeholder="مثال: دهم" required>
-        </div>
-        <button type="submit" class="btn btn-primary">إضافة الرمز</button>
-      </form>
-    </div>
-    
-    <!-- قسم إدارة معلومات القبائل -->
-    <div class="section" id="tribeHistorySection">
-      <h3>إضافة معلومات قبيلة</h3>
-      <div class="alert alert-success" id="tribeHistorySuccess">تم إضافة معلومات القبيلة بنجاح!</div>
-      <div class="alert alert-danger" id="tribeHistoryError">حدث خطأ أثناء إضافة معلومات القبيلة.</div>
-      <form id="tribeHistoryForm">
-        <div class="form-group">
-          <label for="historyTribeName">اسم القبيلة</label>
-          <input type="text" class="form-control" id="historyTribeName" placeholder="مثال: دهم" required>
+          <input type="text" class="form-control" id="tribeName" placeholder="مثال: عتيبة" required>
         </div>
         <div class="form-group">
-          <label for="tribeHistory">معلومات وتاريخ القبيلة</label>
-          <textarea class="form-control" id="tribeHistory" placeholder="أدخل معلومات وتاريخ القبيلة هنا..." required></textarea>
+          <label for="tribeCode">رمز القبيلة</label>
+          <input type="text" class="form-control" id="tribeCode" placeholder="مثال: 511" required>
         </div>
-        <button type="submit" class="btn btn-primary">إضافة المعلومات</button>
+        <div class="form-group">
+          <label for="tribeOrigin">أصل القبيلة</label>
+          <input type="text" class="form-control" id="tribeOrigin" placeholder="مثال: قبيلة هوازنية عدنانية">
+        </div>
+        <button type="submit" class="btn btn-primary">إضافة القبيلة</button>
       </form>
     </div>
-    
+
+    <!-- قسم حذف قبيلة -->
+    <div class="section" id="deleteTribeSection">
+      <h3>حذف قبيلة</h3>
+      <div class="alert alert-success" id="deleteTribeSuccess">تم حذف القبيلة بنجاح!</div>
+      <div class="alert alert-danger" id="deleteTribeError">حدث خطأ أثناء حذف القبيلة.</div>
+      <form id="deleteTribeForm">
+        <div class="form-group">
+          <label for="tribeNameToDelete">اسم القبيلة</label>
+          <input type="text" class="form-control" id="tribeNameToDelete" placeholder="أدخل اسم القبيلة المراد حذفها" required>
+        </div>
+        <button type="submit" class="btn btn-danger">حذف القبيلة</button>
+      </form>
+    </div>
+
     <!-- قسم إدارة شيوخ القبائل -->
     <div class="section" id="sheikhManagementSection">
       <h3>إدارة شيوخ القبائل</h3>
+      <div class="result-message success-message" id="sheikhSuccessMessage"></div>
+      <div class="result-message error-message" id="sheikhErrorMessage"></div>
+      <div class="loading-spinner" id="sheikhLoadingSpinner"><i class="bx bx-loader-alt"></i></div>
       
-      <!-- رسائل النجاح والفشل -->
-      <div class="result-message success-message" id="sheikhSuccessMessage">تم إضافة شيخ القبيلة بنجاح! رقم المستند: <span id="documentId"></span></div>
-      <div class="result-message error-message" id="sheikhErrorMessage">حدث خطأ أثناء إضافة شيخ القبيلة. يرجى المحاولة مرة أخرى.</div>
-      
-      <!-- مؤشر التحميل -->
-      <div class="loading-spinner" id="sheikhLoadingSpinner">
-        <i class="bx bx-loader-alt"></i>
-        <p>جار معالجة الطلب...</p>
-      </div>
-      
-      <form id="sheikhForm">
+      <form id="addSheikhForm">
+        <h4>إضافة شيخ جديد</h4>
         <div class="form-group">
           <label for="sheikhTribeName">اسم القبيلة</label>
           <input type="text" class="form-control" id="sheikhTribeName" placeholder="مثال: آل حميقان" required>
@@ -947,55 +907,75 @@
         <div class="form-group">
           <label>صورة الشيخ</label>
           <div class="image-upload">
-            <i class="bx bx-image-add"></i>
-            <p>انقر لاختيار صورة أو اسحب الصورة هنا</p>
-            <input type="file" id="sheikhImage" accept="image/jpeg, image/png, image/webp">
+            <input type="file" id="sheikhImage" accept="image/*">
+            <i class="bx bx-cloud-upload"></i>
+            <p>اسحب الصورة إلى هنا أو انقر للاختيار</p>
+            <p id="imageInfo" style="font-size: 0.8em; color: #777; margin-top: 5px;"></p>
           </div>
           <div class="image-preview-container">
-            <img id="sheikhImagePreview" class="image-preview" alt="معاينة صورة الشيخ">
-          </div>
-          <p class="text-muted" id="imageInfo"></p>
-          <!-- مؤشر التقدم للرفع -->
-          <div class="upload-progress" id="uploadProgress">
-            <div class="upload-progress-bar" id="uploadProgressBar"></div>
+              <img id="sheikhImagePreview" class="image-preview" alt="معاينة الصورة">
           </div>
         </div>
-        <button type="submit" class="btn btn-primary" id="addSheikhBtn">إضافة الشيخ</button>
+        <button type="submit" class="btn btn-primary">إضافة الشيخ</button>
       </form>
+      
+      <hr class="section-divider">
+      
+      <h4>قائمة الشيوخ الحاليين</h4>
+      <div style="overflow-x: auto;"> <!-- Add scroll for small screens -->
+          <table class="sheikhs-table" id="sheikhsListTable">
+              <thead>
+                  <tr>
+                      <th>الصورة</th>
+                      <th>اسم الشيخ</th>
+                      <th>اسم القبيلة</th>
+                      <th>إجراءات</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <!-- سيتم ملء الصفوف هنا بواسطة JavaScript -->
+              </tbody>
+          </table>
+      </div>
     </div>
-    
+
     <!-- قسم حذف شيخ قبيلة -->
     <div class="section" id="deleteSheikhSection">
       <h3>حذف شيخ قبيلة</h3>
-      <div class="alert alert-success" id="deleteSheikhSuccess">تم حذف شيخ القبيلة بنجاح!</div>
-      <div class="alert alert-danger" id="deleteSheikhError">حدث خطأ أثناء حذف شيخ القبيلة.</div>
+      <div class="alert alert-success" id="deleteSheikhSuccess">تم حذف الشيخ بنجاح!</div>
+      <div class="alert alert-danger" id="deleteSheikhError">حدث خطأ أثناء حذف الشيخ.</div>
       <form id="deleteSheikhForm">
         <div class="form-group">
-          <label for="deleteSheikhTribeName">اسم القبيلة</label>
-          <input type="text" class="form-control" id="deleteSheikhTribeName" placeholder="أدخل اسم القبيلة لحذف شيخها" required>
+          <label for="sheikhTribeNameToDelete">اسم القبيلة</label>
+          <input type="text" class="form-control" id="sheikhTribeNameToDelete" placeholder="أدخل اسم قبيلة الشيخ المراد حذفه" required>
         </div>
         <button type="submit" class="btn btn-danger">حذف شيخ القبيلة</button>
       </form>
     </div>
-    
-    <!-- قسم حذف رموز القبائل -->
-    <div class="section" id="deleteCodeSection">
-      <h3>حذف رمز قبيلة</h3>
-      <div class="alert alert-success" id="deleteCodeSuccess">تم حذف رمز القبيلة بنجاح!</div>
-      <div class="alert alert-danger" id="deleteCodeError">حدث خطأ أثناء حذف رمز القبيلة.</div>
-      <form id="deleteCodeForm">
+
+    <!-- قسم إضافة معلومات القبائل -->
+    <div class="section" id="addHistorySection">
+      <h3>إضافة معلومات تاريخية لقبيلة</h3>
+      <div class="alert alert-success" id="addHistorySuccess">تمت إضافة المعلومات بنجاح!</div>
+      <div class="alert alert-danger" id="addHistoryError">حدث خطأ أثناء إضافة المعلومات.</div>
+      <form id="addHistoryForm">
         <div class="form-group">
-          <label for="deleteCode">رمز القبيلة</label>
-          <input type="text" class="form-control" id="deleteCode" placeholder="أدخل رمز القبيلة للحذف" required>
+          <label for="historyTribeName">اسم القبيلة</label>
+          <input type="text" class="form-control" id="historyTribeName" placeholder="اسم القبيلة التي ستضيف لها المعلومات" required>
         </div>
-        <div class="form-group">
-          <label for="deleteCodeTribeName">اسم القبيلة</label>
-          <input type="text" class="form-control" id="deleteCodeTribeName" placeholder="أدخل اسم القبيلة للتأكيد" required>
+        <div id="historyDetailsContainer">
+          <div class="form-group history-detail-item">
+            <label>العنصر 1</label>
+            <input type="text" class="form-control history-key" placeholder="مثال: أبرز المعارك" required>
+            <textarea class="form-control history-value" placeholder="تفاصيل العنصر..." required></textarea>
+          </div>
         </div>
-        <button type="submit" class="btn btn-danger">حذف الرمز</button>
+        <button type="button" class="btn btn-secondary" id="addHistoryDetailBtn" style="margin-bottom: 15px;">إضافة عنصر آخر</button>
+        <br>
+        <button type="submit" class="btn btn-primary">حفظ المعلومات</button>
       </form>
     </div>
-    
+
     <!-- قسم حذف معلومات القبائل -->
     <div class="section" id="deleteHistorySection">
       <h3>حذف معلومات قبيلة</h3>
@@ -1015,11 +995,11 @@
       <h3>إحصائيات زوار الموقع</h3>
       
       <div class="visitor-stats-filters">
-        <button class="filter-btn" onclick="displayVisitorStats('total')">إجمالي الزوار</button>
-        <button class="filter-btn" onclick="displayVisitorStats('today')">زوار اليوم</button>
-        <button class="filter-btn" onclick="displayVisitorStats('yesterday')">زوار الأمس</button>
-        <button class="filter-btn" onclick="displayVisitorStats('week')">زوار هذا الأسبوع</button>
-        <button class="filter-btn" onclick="displayVisitorStats('month')">زوار هذا الشهر</button>
+        <button class="filter-btn" onclick="displayVisitorStats(\'total\')">إجمالي الزوار</button>
+        <button class="filter-btn" onclick="displayVisitorStats(\'today\')">زوار اليوم</button>
+        <button class="filter-btn" onclick="displayVisitorStats(\'yesterday\')">زوار الأمس</button>
+        <button class="filter-btn" onclick="displayVisitorStats(\'week\')">زوار هذا الأسبوع</button>
+        <button class="filter-btn" onclick="displayVisitorStats(\'month\')">زوار هذا الشهر</button>
       </div>
       
       <div class="visitor-stats-display">
@@ -1057,18 +1037,26 @@
     </div>
   </div>
   
+  <!-- مؤشر المعالجة -->
+  <div class="processing-indicator" id="processingIndicator">
+      <div class="spinner"></div>
+      <p>جاري المعالجة...</p>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, query, where, writeBatch, doc, deleteDoc, serverTimestamp, orderBy, limit, getDoc, setDoc, Timestamp, increment } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-    import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js"; // Import uploadBytesResumable
+    // إزالة استيراد Firebase Storage
+    // import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
 
     // تكوين Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyDGLwl69D9W5c03G5WsfU8pahvVHL4zKzs",
       authDomain: "tribes-project-18d2b.firebaseapp.com",
       projectId: "tribes-project-18d2b",
-      storageBucket: "tribes-project-18d2b.appspot.com",
+      // إزالة storageBucket لأنه لم يعد مستخدماً
+      // storageBucket: "tribes-project-18d2b.appspot.com",
       messagingSenderId: "375771927234",
       appId: "1:375771927234:web:5fa0ec96fd9c80fce7615b"
     };
@@ -1076,23 +1064,27 @@
     // تهيئة Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const storage = getStorage(app);
+    // إزالة تهيئة Storage
+    // const storage = getStorage(app);
 
-    // عناصر القائمة الجانبية
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const mobileToggle = document.getElementById('mobileToggle');
-    const mainContent = document.getElementById('mainContent');
-    const fixedHeader = document.getElementById('fixedHeader');
-    const menuLinks = document.querySelectorAll('.sidebar-menu a');
-    const sections = document.querySelectorAll('.section');
-    const processingIndicator = document.getElementById('processingIndicator');
-    const loginScreen = document.getElementById('login-screen');
+    // عناصر الواجهة
+    const sidebar = document.getElementById(\'sidebar\');
+    const sidebarToggle = document.getElementById(\'sidebarToggle\');
+    const mobileToggle = document.getElementById(\'mobileToggle\');
+    const mainContent = document.getElementById(\'mainContent\');
+    const fixedHeader = document.getElementById(\'fixedHeader\');
+    const mobileHeader = document.querySelector(\".mobile-header\");
+    const menuLinks = document.querySelectorAll(\".sidebar-menu a\");
+    const sections = document.querySelectorAll(\".section\");
+    const processingIndicator = document.getElementById(\'processingIndicator\');
+    const loginScreen = document.getElementById(\'login-screen\');
+    const headerTitle = document.getElementById(\'headerTitle\');
+    const sidebarOverlay = document.getElementById(\'sidebarOverlay\');
     
     // عناصر تسجيل الدخول
-    const loginButton = document.getElementById('loginButton');
-    const logoutLink = document.getElementById('logoutLink');
-    const logoutHeaderBtn = document.getElementById('logoutHeaderBtn');
+    const loginButton = document.getElementById(\'loginButton\');
+    const logoutLink = document.getElementById(\'logoutLink\');
+    const logoutHeaderBtn = document.getElementById(\'logoutHeaderBtn\');
     
     // التحقق من حالة تسجيل الدخول
     function checkLoginStatus() {
@@ -1102,33 +1094,55 @@
     
     // عرض نموذج تسجيل الدخول
     function showLoginForm() {
-      loginScreen.style.display = 'block';
-      mainContent.style.display = 'none';
-      sidebar.style.display = 'none';
-      fixedHeader.style.display = 'none';
-      document.querySelector('.mobile-header').style.display = 'none';
+      loginScreen.style.display = \'block\';
+      mainContent.style.display = \'none\';
+      sidebar.style.display = \'none\';
+      fixedHeader.style.display = \'none\';
+      mobileHeader.style.display = \'none\';
+      sidebarOverlay.style.display = \'none\';
+      sidebar.classList.add(\'collapsed\'); // Ensure sidebar is collapsed
+      sidebar.classList.remove(\'active\');
+      mainContent.classList.remove(\'expanded\');
+      fixedHeader.classList.remove(\'expanded\');
     }
     
     // عرض لوحة التحكم
     function showDashboard() {
-      loginScreen.style.display = 'none';
-      mainContent.style.display = 'block';
-      sidebar.style.display = 'flex';
-      fixedHeader.style.display = 'flex';
+      loginScreen.style.display = \'none\';
+      mainContent.style.display = \'block\';
+      sidebar.style.display = \'flex\'; // Show sidebar
+      
+      // Handle header display based on screen size
       if (window.innerWidth <= 768) {
-        document.querySelector('.mobile-header').style.display = 'flex';
+        mobileHeader.style.display = \'flex\';
+        fixedHeader.style.display = \'none\';
+      } else {
+        mobileHeader.style.display = \'none\';
+        fixedHeader.style.display = \'flex\';
       }
+      
       loadDashboardData();
-      // loadSheikhsList(); // لا يتم تحميل القائمة هنا لتجنب الأخطاء المحتملة
       fetchTotalVisitorCountForSidebar();
+      // Ensure sidebar starts collapsed on desktop
+      if (window.innerWidth > 768) {
+          sidebar.classList.add(\'collapsed\');
+          sidebar.classList.remove(\'active\');
+          mainContent.classList.remove(\'expanded\');
+          fixedHeader.classList.remove(\'expanded\');
+      } else {
+          // On mobile, ensure it starts collapsed but ready to be toggled
+          sidebar.classList.add(\'collapsed\');
+          sidebar.classList.remove(\'active\');
+      }
+      updateHeaderIcons(); // Update icons based on initial state
     }
     
     // معالجة تسجيل الدخول
-    loginButton.addEventListener('click', function() {
+    loginButton.addEventListener(\'click\', function() {
       const username = document.getElementById("username").value.trim();
       const password = document.getElementById("password").value.trim();
       
-      // هذه بيانات تسجيل الدخول البسيطة - في الإنتاج يجب استخدام طريقة أكثر أمانًا
+      // بيانات تسجيل دخول بسيطة
       if (username === "Sahm" && password === "na1000856") {
         showDashboard();
       } else {
@@ -1151,1044 +1165,804 @@
       showLoginForm();
     }
     
-    logoutLink.addEventListener('click', function(e) {
+    logoutLink.addEventListener(\'click\', function(e) {
       e.preventDefault();
       handleLogout();
     });
     
-    logoutHeaderBtn.addEventListener('click', handleLogout);
+    logoutHeaderBtn.addEventListener(\'click\', handleLogout);
 
     // تبديل القائمة الجانبية
-    sidebarToggle.addEventListener('click', toggleSidebar);
-    mobileToggle.addEventListener('click', toggleSidebar);
+    sidebarToggle.addEventListener(\'click\', toggleSidebar);
+    mobileToggle.addEventListener(\'click\', toggleSidebar);
+    sidebarOverlay.addEventListener(\'click\', toggleSidebar); // Close on overlay click
 
     function toggleSidebar() {
-      sidebar.classList.toggle('collapsed');
-      sidebar.classList.toggle('active');
-      mainContent.classList.toggle('expanded');
-      fixedHeader.classList.toggle('expanded');
+      const isCollapsed = sidebar.classList.toggle(\'collapsed\');
+      sidebar.classList.toggle(\'active\', !isCollapsed);
+      mainContent.classList.toggle(\'expanded\', isCollapsed);
+      fixedHeader.classList.toggle(\'expanded\', isCollapsed);
       
-      // تبديل أيقونة الزر
-      const icon = sidebarToggle.querySelector('i');
-      if (sidebar.classList.contains('collapsed')) {
-        icon.className = 'bx bx-menu';
-      } else {
-        icon.className = 'bx bx-x';
+      // Show/hide overlay on mobile
+      if (window.innerWidth <= 768) {
+          sidebarOverlay.style.display = isCollapsed ? \'none\' : \'block\';
       }
       
-      // تبديل أيقونة الزر في الهاتف
-      const mobileIcon = mobileToggle.querySelector('i');
-      if (sidebar.classList.contains('active')) {
-        mobileIcon.className = 'bx bx-x';
-      } else {
-        mobileIcon.className = 'bx bx-menu';
-      }
+      updateHeaderIcons();
+    }
+    
+    function updateHeaderIcons() {
+        const isCollapsed = sidebar.classList.contains(\'collapsed\');
+        // Update desktop toggle icon
+        const desktopIcon = sidebarToggle.querySelector(\'i\');
+        if (desktopIcon) {
+            desktopIcon.className = isCollapsed ? \'bx bx-menu\' : \'bx bx-x\';
+        }
+        // Update mobile toggle icon
+        const mobileIcon = mobileToggle.querySelector(\'i\');
+        if (mobileIcon) {
+            mobileIcon.className = isCollapsed ? \'bx bx-menu\' : \'bx bx-x\';
+        }
     }
 
     // التنقل بين الأقسام
     menuLinks.forEach(link => {
-      if (link.id !== 'logoutLink') {
-        link.addEventListener('click', function(e) {
+      if (link.id !== \'logoutLink\') {
+        link.addEventListener(\'click\', function(e) {
           e.preventDefault();
           
           // إزالة الفئة النشطة من جميع الروابط
-          menuLinks.forEach(item => item.classList.remove('active'));
-          
-          // إضافة الفئة النشطة للرابط المحدد
-          this.classList.add('active');
+          menuLinks.forEach(item => item.classList.remove(\'active\'));
+          // إضافة الفئة النشطة للرابط الحالي
+          this.classList.add(\'active\');
           
           // إخفاء جميع الأقسام
-          sections.forEach(section => section.classList.remove('active'));
+          sections.forEach(section => section.classList.remove(\'active\'));
           
-          // إظهار القسم المحدد
-          const targetSection = document.getElementById(this.getAttribute('data-section'));
+          // إظهار القسم المستهدف
+          const sectionId = this.getAttribute(\'data-section\');
+          const targetSection = document.getElementById(sectionId);
           if (targetSection) {
-            targetSection.classList.add('active');
-            
-            // إذا كان القسم هو إحصائيات الزوار، قم بتحديث البيانات
-            if (targetSection.id === 'visitorStatsSection') {
-              loadVisitorStats();
-              displayVisitorStats('total');
+            targetSection.classList.add(\'active\');
+            // تحديث عنوان الهيدر
+            headerTitle.textContent = this.textContent.trim();
+            // تحميل البيانات الخاصة بالقسم إذا لزم الأمر
+            if (sectionId === \'sheikhManagementSection\') {
+                loadSheikhs();
+            } else if (sectionId === \'dashboardSection\') {
+                loadDashboardData();
+            } else if (sectionId === \'visitorStatsSection\') {
+                displayVisitorStats(\'total\'); // Load total stats by default
             }
           }
           
-          // لا تغلق القائمة الجانبية في الأجهزة المحمولة عند التنقل بين الأقسام
+          // إغلاق القائمة الجانبية تلقائياً بعد اختيار قسم (خاصة في الجوال)
+          if (window.innerWidth <= 768 && !sidebar.classList.contains(\'collapsed\')) {
+            toggleSidebar();
+          }
         });
+      }
+    });
+
+    // إضافة مستمع لإغلاق القائمة عند النقر خارجها (باستثناء زر التبديل)
+    document.addEventListener(\'click\', function(event) {
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnDesktopToggle = sidebarToggle.contains(event.target);
+      const isClickOnMobileToggle = mobileToggle.contains(event.target);
+      const isSidebarActive = sidebar.classList.contains(\'active\');
+
+      if (!isClickInsideSidebar && !isClickOnDesktopToggle && !isClickOnMobileToggle && isSidebarActive) {
+          // Don\'t close if click is on toggles
+          if (window.innerWidth > 768) { // Only close on outside click on desktop if active
+             toggleSidebar();
+          }
+          // Mobile closing is handled by overlay click
       }
     });
 
     // معاينة الصورة
-    const sheikhImageInput = document.getElementById('sheikhImage');
-    const sheikhImagePreview = document.getElementById('sheikhImagePreview');
-    const imageInfo = document.getElementById('imageInfo');
+    const sheikhImageInput = document.getElementById(\'sheikhImage\');
+    const sheikhImagePreview = document.getElementById(\'sheikhImagePreview\');
+    const imageInfo = document.getElementById(\'imageInfo\');
     const MAX_IMAGE_SIZE_MB = 5; // تحديد الحد الأقصى لحجم الصورة بالميجابايت
-    let selectedImageFile = null;
+    let imageDataUrl = null; // لتخزين بيانات الصورة كـ Base64
 
-    sheikhImageInput.addEventListener('change', function() {
-      const file = this.files[0];
+    sheikhImageInput.addEventListener(\'change\', function(event) {
+      const file = event.target.files[0];
       if (file) {
-        // التحقق من نوع الملف
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-        if (!allowedTypes.includes(file.type)) {
-          imageInfo.textContent = 'صيغة الصورة غير مدعومة. يرجى اختيار JPEG, PNG, أو WebP.';
-          imageInfo.style.color = 'red';
-          sheikhImagePreview.style.display = 'none';
-          selectedImageFile = null;
-          this.value = ''; // مسح الملف المختار
-          return;
-        }
-
-        // التحقق من حجم الملف
+        // التحقق من حجم الصورة
         const fileSizeMB = file.size / 1024 / 1024;
         if (fileSizeMB > MAX_IMAGE_SIZE_MB) {
-          imageInfo.textContent = `حجم الصورة كبير جداً (${fileSizeMB.toFixed(2)} MB). الحد الأقصى هو ${MAX_IMAGE_SIZE_MB} MB.`;
-          imageInfo.style.color = 'red';
-          sheikhImagePreview.style.display = 'none';
-          selectedImageFile = null;
-          this.value = ''; // مسح الملف المختار
-          return;
+            showSheikhMessage(`حجم الصورة يتجاوز الحد المسموح به (${MAX_IMAGE_SIZE_MB} ميجابايت).`, \'error\');
+            sheikhImageInput.value = \'\'; // مسح اختيار الملف
+            sheikhImagePreview.style.display = \'none\';
+            imageInfo.textContent = \'\';
+            imageDataUrl = null;
+            return;
         }
 
-        // عرض معاينة الصورة ومعلومات الحجم
         const reader = new FileReader();
         reader.onload = function(e) {
           sheikhImagePreview.src = e.target.result;
-          sheikhImagePreview.style.display = 'block';
-          imageInfo.textContent = `حجم الصورة: ${fileSizeMB.toFixed(2)} MB`;
-          imageInfo.style.color = '#5C4033'; // اللون الافتراضي
-          selectedImageFile = file; // تخزين الملف المختار
-        };
+          sheikhImagePreview.style.display = \'block\';
+          imageDataUrl = e.target.result; // تخزين بيانات الصورة
+          imageInfo.textContent = `اسم الملف: ${file.name}, الحجم: ${(fileSizeMB).toFixed(2)} ميجابايت`;
+        }
         reader.readAsDataURL(file);
       } else {
-        sheikhImagePreview.style.display = 'none';
-        imageInfo.textContent = '';
-        selectedImageFile = null;
+          sheikhImagePreview.style.display = \'none\';
+          imageInfo.textContent = \'\';
+          imageDataUrl = null;
       }
     });
 
-    // نموذج إضافة رمز قبيلة
-    const tribeCodeForm = document.getElementById('tribeCodeForm');
-    const tribeCodeSuccess = document.getElementById('tribeCodeSuccess');
-    const tribeCodeError = document.getElementById('tribeCodeError');
-
-    tribeCodeForm.addEventListener('submit', async function(e) {
+    // إضافة شيخ جديد
+    const addSheikhForm = document.getElementById(\'addSheikhForm\');
+    addSheikhForm.addEventListener(\'submit\', async function(e) {
       e.preventDefault();
-      
-      const code = document.getElementById('tribeCode').value.trim();
-      const name = document.getElementById('tribeName').value.trim();
-      
-      tribeCodeSuccess.style.display = 'none';
-      tribeCodeError.style.display = 'none';
-      
-      // إظهار مؤشر "جار المعالجة"
-      processingIndicator.style.display = 'flex';
-      
-      try {
-        await addDoc(collection(db, "tribes"), {
-          code: code,
-          name: name,
-          timestamp: serverTimestamp()
-        });
-        
-        tribeCodeSuccess.style.display = 'block';
-        tribeCodeForm.reset();
-        setTimeout(() => { tribeCodeSuccess.style.display = 'none'; }, 5000);
-        
-        // تحديث بيانات لوحة المعلومات
-        loadDashboardData();
-      } catch (error) {
-        console.error("خطأ في إضافة رمز القبيلة: ", error);
-        tribeCodeError.style.display = 'block';
-        setTimeout(() => { tribeCodeError.style.display = 'none'; }, 5000);
-      } finally {
-        // إخفاء مؤشر "جار المعالجة"
-        processingIndicator.style.display = 'none';
-      }
-    });
+      showProcessingIndicator(true, \'sheikhLoadingSpinner\');
+      hideSheikhMessages();
 
-    // نموذج إضافة معلومات قبيلة
-    const tribeHistoryForm = document.getElementById('tribeHistoryForm');
-    const tribeHistorySuccess = document.getElementById('tribeHistorySuccess');
-    const tribeHistoryError = document.getElementById('tribeHistoryError');
+      const tribeName = document.getElementById(\'sheikhTribeName\').value.trim();
+      const sheikhName = document.getElementById(\'sheikhName\').value.trim();
 
-    tribeHistoryForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      
-      const name = document.getElementById('historyTribeName').value.trim();
-      const history = document.getElementById('tribeHistory').value.trim();
-      
-      tribeHistorySuccess.style.display = 'none';
-      tribeHistoryError.style.display = 'none';
-      
-      // إظهار مؤشر "جار المعالجة"
-      processingIndicator.style.display = 'flex';
-      
-      try {
-        await addDoc(collection(db, "histories"), {
-          name: name,
-          history: history.replace(/\n/g, "<br>"),
-          timestamp: serverTimestamp()
-        });
-        
-        tribeHistorySuccess.style.display = 'block';
-        tribeHistoryForm.reset();
-        setTimeout(() => { tribeHistorySuccess.style.display = 'none'; }, 5000);
-        
-        // تحديث بيانات لوحة المعلومات
-        loadDashboardData();
-      } catch (error) {
-        console.error("خطأ في إضافة معلومات القبيلة: ", error);
-        tribeHistoryError.style.display = 'block';
-        setTimeout(() => { tribeHistoryError.style.display = 'none'; }, 5000);
-      } finally {
-        // إخفاء مؤشر "جار المعالجة"
-        processingIndicator.style.display = 'none';
-      }
-    });
-
-    // نموذج إضافة شيخ قبيلة
-    const sheikhForm = document.getElementById('sheikhForm');
-    const sheikhSuccessMessage = document.getElementById('sheikhSuccessMessage');
-    const sheikhErrorMessage = document.getElementById('sheikhErrorMessage');
-    const sheikhLoadingSpinner = document.getElementById('sheikhLoadingSpinner');
-    const documentIdSpan = document.getElementById('documentId');
-    const uploadProgress = document.getElementById('uploadProgress');
-    const uploadProgressBar = document.getElementById('uploadProgressBar');
-    const addSheikhBtn = document.getElementById('addSheikhBtn');
-
-    // دالة لضغط الصورة باستخدام Canvas
-    function compressImage(file, quality = 0.7, maxWidth = 1024) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = event => {
-          const img = new Image();
-          img.src = event.target.result;
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            let width = img.width;
-            let height = img.height;
-
-            // تغيير حجم الصورة إذا كانت أكبر من الحد الأقصى للعرض
-            if (width > maxWidth) {
-              height *= maxWidth / width;
-              width = maxWidth;
-            }
-
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
-
-            // تحويل الصورة إلى Blob
-            canvas.toBlob(blob => {
-              if (blob) {
-                // إنشاء ملف جديد من Blob المضغوط
-                const compressedFile = new File([blob], file.name, {
-                  type: 'image/jpeg', // دائماً حفظ بصيغة JPEG للضغط
-                  lastModified: Date.now()
-                });
-                console.log(`Original size: ${(file.size / 1024 / 1024).toFixed(2)} MB`);
-                console.log(`Compressed size: ${(compressedFile.size / 1024 / 1024).toFixed(2)} MB`);
-                resolve(compressedFile);
-              } else {
-                reject(new Error('فشل ضغط الصورة.'));
-              }
-            }, 'image/jpeg', quality);
-          };
-          img.onerror = error => reject(error);
-        };
-        reader.onerror = error => reject(error);
-      });
-    }
-
-    sheikhForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      
-      const tribeName = document.getElementById('sheikhTribeName').value.trim();
-      const sheikhName = document.getElementById('sheikhName').value.trim();
-      
-      // إخفاء الرسائل وإظهار مؤشر التحميل
-      sheikhSuccessMessage.style.display = 'none';
-      sheikhErrorMessage.style.display = 'none';
-      sheikhLoadingSpinner.style.display = 'block';
-      uploadProgress.style.display = 'none'; // إخفاء شريط التقدم في البداية
-      uploadProgressBar.style.width = '0%';
-      addSheikhBtn.disabled = true; // تعطيل زر الإضافة أثناء الرفع
-      
-      if (!selectedImageFile) {
-        sheikhErrorMessage.textContent = "يرجى اختيار صورة للشيخ أولاً.";
-        sheikhErrorMessage.style.display = 'block';
-        sheikhLoadingSpinner.style.display = 'none';
-        addSheikhBtn.disabled = false;
+      if (!tribeName || !sheikhName || !imageDataUrl) {
+        showSheikhMessage(\'الرجاء ملء جميع الحقول واختيار صورة.\', \'error\');
+        showProcessingIndicator(false, \'sheikhLoadingSpinner\');
         return;
       }
-      
+
       try {
-        // ضغط الصورة قبل الرفع
-        processingIndicator.style.display = 'flex'; // إظهار مؤشر المعالجة العام
-        processingIndicator.querySelector('p').textContent = 'جارٍ ضغط الصورة...';
-        let fileToUpload;
-        try {
-          fileToUpload = await compressImage(selectedImageFile, 0.7, 1024); // جودة 70% وعرض أقصى 1024px
-        } catch (compressionError) {
-          console.error("خطأ في ضغط الصورة: ", compressionError);
-          sheikhErrorMessage.textContent = `فشل ضغط الصورة: ${compressionError.message}. حاول مرة أخرى أو استخدم صورة أخرى.`;
-          throw compressionError; // إيقاف العملية إذا فشل الضغط
-        }
-        processingIndicator.querySelector('p').textContent = 'جارٍ رفع الصورة...';
-
-        // تحميل الصورة إلى Firebase Storage
-        const timestamp = new Date().getTime();
-        const imageName = `sheikh_images/${tribeName}_${timestamp}.jpg`; // استخدام امتداد jpg دائماً بعد الضغط
-        const storageRef = ref(storage, imageName);
-        
-        // استخدام uploadBytesResumable لمراقبة التقدم
-        const uploadTask = uploadBytesResumable(storageRef, fileToUpload);
-        
-        uploadProgress.style.display = 'block'; // إظهار شريط التقدم
-
-        uploadTask.on('state_changed', 
-          (snapshot) => {
-            // مراقبة تقدم الرفع
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            uploadProgressBar.style.width = progress + '%';
-            console.log('Upload is ' + progress + '% done');
-            processingIndicator.querySelector('p').textContent = `جارٍ رفع الصورة... ${Math.round(progress)}%`;
-          }, 
-          (error) => {
-            // معالجة أخطاء الرفع
-            console.error("خطأ في رفع الصورة: ", error);
-            let errorMessage = "حدث خطأ غير معروف أثناء رفع الصورة.";
-            switch (error.code) {
-              case 'storage/unauthorized':
-                errorMessage = "خطأ في الصلاحيات: ليس لديك إذن لرفع الملفات.";
-                break;
-              case 'storage/canceled':
-                errorMessage = "تم إلغاء عملية رفع الصورة.";
-                break;
-              case 'storage/unknown':
-                errorMessage = "حدث خطأ غير معروف في التخزين، يرجى المحاولة مرة أخرى.";
-                break;
-              case 'storage/retry-limit-exceeded':
-                errorMessage = "تم تجاوز مهلة الرفع. قد يكون الاتصال بالإنترنت ضعيفًا أو حجم الصورة كبيرًا جدًا. حاول مرة أخرى.";
-                break;
-              case 'storage/network-error': // إضافة حالة خطأ الشبكة
-                errorMessage = "حدث خطأ في الشبكة أثناء الرفع. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.";
-                break;
-            }
-            sheikhErrorMessage.textContent = `فشل رفع الصورة: ${errorMessage} (${error.code})`;
-            sheikhErrorMessage.style.display = 'block';
-            sheikhLoadingSpinner.style.display = 'none';
-            uploadProgress.style.display = 'none';
-            processingIndicator.style.display = 'none';
-            addSheikhBtn.disabled = false;
-          },
-          async () => {
-            // اكتمل الرفع بنجاح
-            processingIndicator.querySelector('p').textContent = 'جارٍ حفظ البيانات...';
-            try {
-              const imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
-              
-              // إضافة بيانات الشيخ إلى Firestore
-              const docRef = await addDoc(collection(db, "sheikhs"), {
-                tribeName: tribeName,
-                sheikhName: sheikhName,
-                imageUrl: imageUrl,
-                imagePath: imageName, // حفظ مسار الصورة للحذف لاحقًا
-                timestamp: serverTimestamp()
-              });
-              
-              // عرض رسالة النجاح مع رقم المستند
-              documentIdSpan.textContent = docRef.id;
-              sheikhSuccessMessage.style.display = 'block';
-              sheikhForm.reset();
-              sheikhImagePreview.style.display = 'none';
-              imageInfo.textContent = '';
-              selectedImageFile = null;
-              
-              // إخفاء رسالة النجاح بعد 10 ثوانٍ
-              setTimeout(() => { sheikhSuccessMessage.style.display = 'none'; }, 10000);
-              
-              // تحديث قائمة الشيوخ (إذا كانت موجودة)
-              // loadSheikhsList(); 
-              
-              // تحديث بيانات لوحة المعلومات
-              loadDashboardData();
-            } catch (dbError) {
-              console.error("خطأ في حفظ بيانات الشيخ في Firestore: ", dbError);
-              sheikhErrorMessage.textContent = `نجح رفع الصورة ولكن فشل حفظ البيانات: ${dbError.message}`;
-              sheikhErrorMessage.style.display = 'block';
-            } finally {
-              sheikhLoadingSpinner.style.display = 'none';
-              uploadProgress.style.display = 'none';
-              processingIndicator.style.display = 'none';
-              addSheikhBtn.disabled = false;
-            }
-          }
-        );
-      } catch (error) {
-        // معالجة الأخطاء العامة (مثل خطأ الضغط)
-        console.error("خطأ عام في إضافة شيخ القبيلة: ", error);
-        if (!sheikhErrorMessage.textContent) { // لا تعرض رسالة خطأ عامة إذا تم عرض خطأ محدد بالفعل
-            sheikhErrorMessage.textContent = `حدث خطأ: ${error.message}`;
-        }
-        sheikhErrorMessage.style.display = 'block';
-        sheikhLoadingSpinner.style.display = 'none';
-        uploadProgress.style.display = 'none';
-        processingIndicator.style.display = 'none';
-        addSheikhBtn.disabled = false;
-      }
-    });
-
-    // نموذج حذف شيخ قبيلة
-    const deleteSheikhForm = document.getElementById('deleteSheikhForm');
-    const deleteSheikhSuccess = document.getElementById('deleteSheikhSuccess');
-    const deleteSheikhError = document.getElementById('deleteSheikhError');
-
-    deleteSheikhForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      
-      const tribeName = document.getElementById('deleteSheikhTribeName').value.trim();
-      
-      deleteSheikhSuccess.style.display = 'none';
-      deleteSheikhError.style.display = 'none';
-      
-      const confirmation = confirm(`هل أنت متأكد أنك تريد حذف شيخ القبيلة "${tribeName}"؟ هذا الإجراء لا يمكن التراجع عنه.`);
-      if (!confirmation) return;
-      
-      // إظهار مؤشر "جار المعالجة"
-      processingIndicator.style.display = 'flex';
-      processingIndicator.querySelector('p').textContent = 'جارٍ حذف شيخ القبيلة...';
-      
-      try {
-        let deletedCount = 0;
+        // التحقق مما إذا كان الشيخ موجودًا بالفعل لهذه القبيلة
         const sheikhsRef = collection(db, "sheikhs");
-        const batch = writeBatch(db);
-        
         const q = query(sheikhsRef, where("tribeName", "==", tribeName));
-        const snapshot = await getDocs(q);
+        const querySnapshot = await getDocs(q);
         
-        // جمع مسارات الصور للحذف لاحقًا
-        const imagePaths = [];
-        
-        snapshot.forEach(doc => {
-          const sheikh = doc.data();
-          if (sheikh.imagePath) {
-            imagePaths.push(sheikh.imagePath);
-          }
-          batch.delete(doc.ref);
-          deletedCount++;
-        });
-        
-        if (deletedCount > 0) {
-          await batch.commit();
-          
-          // حذف الصور من Storage
-          processingIndicator.querySelector('p').textContent = 'جارٍ حذف الصور...';
-          for (const path of imagePaths) {
-            try {
-              const imageRef = ref(storage, path);
-              await deleteObject(imageRef);
-            } catch (error) {
-              console.error(`خطأ في حذف الصورة ${path}:`, error);
-              // استمر في العملية حتى لو فشل حذف صورة واحدة
+        if (!querySnapshot.empty) {
+            // إذا كانت القبيلة موجودة، تحقق من اسم الشيخ
+            let sheikhExists = false;
+            querySnapshot.forEach(doc => {
+                if (doc.data().sheikhName === sheikhName) {
+                    sheikhExists = true;
+                }
+            });
+            if (sheikhExists) {
+                showSheikhMessage(\'هذا الشيخ مضاف بالفعل لهذه القبيلة.\', \'error\');
+                showProcessingIndicator(false, \'sheikhLoadingSpinner\');
+                return;
             }
-          }
-          
-          deleteSheikhSuccess.textContent = `تم حذف ${deletedCount} من شيوخ القبيلة "${tribeName}" بنجاح.`;
-          deleteSheikhSuccess.style.display = 'block';
-          deleteSheikhForm.reset();
-          setTimeout(() => { deleteSheikhSuccess.style.display = 'none'; }, 5000);
-          
-          // تحديث بيانات لوحة المعلومات
-          loadDashboardData();
-          // تحديث قائمة الشيوخ (إذا كانت موجودة)
-          // loadSheikhsList();
-        } else {
-          deleteSheikhError.textContent = `لم يتم العثور على شيوخ للقبيلة "${tribeName}".`;
-          deleteSheikhError.style.display = 'block';
-          setTimeout(() => { deleteSheikhError.style.display = 'none'; }, 5000);
+            // يمكنك هنا أن تقرر ما إذا كنت تريد تحديث الشيخ الحالي أو منع إضافة شيخ آخر لنفس القبيلة
+            // حاليًا، سيتم إضافة شيخ جديد حتى لو كانت القبيلة موجودة ولكن باسم شيخ مختلف
         }
+
+        // إضافة الشيخ الجديد
+        await addDoc(collection(db, "sheikhs"), {
+          tribeName: tribeName,
+          sheikhName: sheikhName,
+          imageUrl: imageDataUrl, // حفظ الصورة كـ Base64
+          addedAt: serverTimestamp()
+        });
+        showSheikhMessage(\'تمت إضافة الشيخ بنجاح!\', \'success\');
+        addSheikhForm.reset();
+        sheikhImagePreview.style.display = \'none\';
+        imageInfo.textContent = \'\';
+        imageDataUrl = null;
+        loadSheikhs(); // إعادة تحميل قائمة الشيوخ
+        fetchDashboardCounts(); // تحديث العدادات في لوحة المعلومات
       } catch (error) {
-        console.error("خطأ في حذف شيخ القبيلة: ", error);
-        deleteSheikhError.textContent = `فشلت عملية حذف شيخ القبيلة. الخطأ: ${error.message}`;
-        deleteSheikhError.style.display = 'block';
-        setTimeout(() => { deleteSheikhError.style.display = 'none'; }, 5000);
+        console.error("خطأ في إضافة الشيخ: ", error);
+        showSheikhMessage(\'حدث خطأ أثناء إضافة الشيخ.\', \'error\');
       } finally {
-        // إخفاء مؤشر "جار المعالجة"
-        processingIndicator.style.display = 'none';
+        showProcessingIndicator(false, \'sheikhLoadingSpinner\');
       }
     });
+    
+    // تحميل قائمة الشيوخ
+    async function loadSheikhs() {
+        const tableBody = document.getElementById(\'sheikhsListTable\').querySelector(\'tbody\');
+        tableBody.innerHTML = \'<tr><td colspan="4" style="text-align:center;">جاري تحميل الشيوخ...</td></tr>\'; // Show loading state
+        
+        try {
+            const sheikhsRef = collection(db, "sheikhs");
+            const q = query(sheikhsRef, orderBy("addedAt", "desc")); // Order by newest first
+            const querySnapshot = await getDocs(q);
+            
+            tableBody.innerHTML = \'\'; // Clear loading/previous state
+            if (querySnapshot.empty) {
+                tableBody.innerHTML = \'<tr><td colspan="4" style="text-align:center;">لا يوجد شيوخ مضافون حالياً.</td></tr>\';
+                return;
+            }
+            
+            querySnapshot.forEach((doc) => {
+                const sheikh = doc.data();
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td><img src="${sheikh.imageUrl}" alt="صورة الشيخ" class="sheikh-image"></td>
+                    <td>${sheikh.sheikhName}</td>
+                    <td>${sheikh.tribeName}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn btn-danger btn-sm" onclick="deleteSheikh(\'${doc.id}\', \'${sheikh.tribeName}\', \'${sheikh.sheikhName}\')"><i class="bx bx-trash"></i> حذف</button>
+                            <!-- Add edit button functionality later if needed -->
+                            <!-- <button class="btn btn-secondary btn-sm"><i class="bx bx-edit"></i> تعديل</button> -->
+                        </div>
+                    </td>
+                `;
+            });
+        } catch (error) {
+            console.error("Error loading sheikhs: ", error);
+            tableBody.innerHTML = \'<tr><td colspan="4" style="text-align:center;">حدث خطأ أثناء تحميل قائمة الشيوخ.</td></tr>\';
+        }
+    }
+    
+    // جعل دالة الحذف متاحة عالميًا
+    window.deleteSheikh = async function(docId, tribeName, sheikhName) {
+        if (!confirm(`هل أنت متأكد من رغبتك في حذف الشيخ \'${sheikhName}\' من قبيلة \'${tribeName}\'؟`)) {
+            return;
+        }
+        
+        showProcessingIndicator(true, \'sheikhLoadingSpinner\');
+        hideSheikhMessages();
+        
+        try {
+            const sheikhDocRef = doc(db, "sheikhs", docId);
+            await deleteDoc(sheikhDocRef);
+            showSheikhMessage(\'تم حذف الشيخ بنجاح.\', \'success\');
+            loadSheikhs(); // Reload the list
+            fetchDashboardCounts(); // Update dashboard counts
+        } catch (error) {
+            console.error("Error deleting sheikh: ", error);
+            showSheikhMessage(\'حدث خطأ أثناء حذف الشيخ.\', \'error\');
+        } finally {
+            showProcessingIndicator(false, \'sheikhLoadingSpinner\');
+        }
+    }
+    
+    // عرض وإخفاء رسائل قسم الشيوخ
+    function showSheikhMessage(message, type) {
+        const successMsg = document.getElementById(\'sheikhSuccessMessage\');
+        const errorMsg = document.getElementById(\'sheikhErrorMessage\');
+        if (type === \'success\') {
+            successMsg.textContent = message;
+            successMsg.style.display = \'block\';
+            errorMsg.style.display = \'none\';
+        } else {
+            errorMsg.textContent = message;
+            errorMsg.style.display = \'block\';
+            successMsg.style.display = \'none\';
+        }
+    }
 
-    // نموذج حذف رمز قبيلة
-    const deleteCodeForm = document.getElementById('deleteCodeForm');
-    const deleteCodeSuccess = document.getElementById('deleteCodeSuccess');
-    const deleteCodeError = document.getElementById('deleteCodeError');
+    function hideSheikhMessages() {
+        document.getElementById(\'sheikhSuccessMessage\').style.display = \'none\';
+        document.getElementById(\'sheikhErrorMessage\').style.display = \'none\';
+    }
 
-    deleteCodeForm.addEventListener('submit', async function(e) {
+    // عرض وإخفاء مؤشر المعالجة العام أو الخاص بقسم
+    function showProcessingIndicator(show, spinnerId = null) {
+        const indicator = spinnerId ? document.getElementById(spinnerId) : processingIndicator;
+        if (indicator) {
+            indicator.style.display = show ? (spinnerId ? \'block\' : \'flex\') : \'none\';
+        }
+    }
+
+    // إضافة قبيلة
+    const addTribeForm = document.getElementById(\'addTribeForm\');
+    addTribeForm.addEventListener(\'submit\', async function(e) {
       e.preventDefault();
+      showProcessingIndicator(true);
+      hideAlerts(\'addTribe\');
       
-      const code = document.getElementById('deleteCode').value.trim();
-      const tribeName = document.getElementById('deleteCodeTribeName').value.trim();
-      
-      deleteCodeSuccess.style.display = 'none';
-      deleteCodeError.style.display = 'none';
-      
-      const confirmation = confirm(`هل أنت متأكد أنك تريد حذف رمز القبيلة "${code}" (${tribeName})؟ هذا الإجراء لا يمكن التراجع عنه.`);
-      if (!confirmation) return;
-      
-      // إظهار مؤشر "جار المعالجة"
-      processingIndicator.style.display = 'flex';
-      processingIndicator.querySelector('p').textContent = 'جارٍ حذف الرمز...';
-      
+      const name = document.getElementById(\'tribeName\').value.trim();
+      const code = document.getElementById(\'tribeCode\').value.trim();
+      const origin = document.getElementById(\'tribeOrigin\').value.trim();
+
+      if (!name || !code) {
+        showAlert(\'addTribeError\', \'الرجاء إدخال اسم القبيلة ورمزها.\');
+        showProcessingIndicator(false);
+        return;
+      }
+
       try {
-        let deletedCount = 0;
+        // التحقق من عدم وجود القبيلة أو الرمز مسبقًا
         const tribesRef = collection(db, "tribes");
-        const batch = writeBatch(db);
+        const qName = query(tribesRef, where("name", "==", name));
+        const qCode = query(tribesRef, where("code", "==", code));
         
-        const q = query(tribesRef, where("code", "==", code), where("name", "==", tribeName));
-        const snapshot = await getDocs(q);
+        const nameSnapshot = await getDocs(qName);
+        const codeSnapshot = await getDocs(qCode);
         
-        snapshot.forEach(doc => {
-          batch.delete(doc.ref);
-          deletedCount++;
-        });
-        
-        if (deletedCount > 0) {
-          await batch.commit();
-          deleteCodeSuccess.textContent = `تم حذف ${deletedCount} من سجلات رمز القبيلة "${code}" (${tribeName}) بنجاح.`;
-          deleteCodeSuccess.style.display = 'block';
-          deleteCodeForm.reset();
-          setTimeout(() => { deleteCodeSuccess.style.display = 'none'; }, 5000);
-          
-          // تحديث بيانات لوحة المعلومات
-          loadDashboardData();
-        } else {
-          deleteCodeError.textContent = `لم يتم العثور على رمز القبيلة "${code}" مع الاسم "${tribeName}".`;
-          deleteCodeError.style.display = 'block';
-          setTimeout(() => { deleteCodeError.style.display = 'none'; }, 5000);
+        if (!nameSnapshot.empty) {
+            showAlert(\'addTribeError\', \'اسم القبيلة موجود بالفعل.\');
+            showProcessingIndicator(false);
+            return;
         }
+        if (!codeSnapshot.empty) {
+            showAlert(\'addTribeError\', \'رمز القبيلة مستخدم بالفعل.\');
+            showProcessingIndicator(false);
+            return;
+        }
+
+        await addDoc(collection(db, "tribes"), {
+          name: name,
+          code: code,
+          origin: origin,
+          addedAt: serverTimestamp()
+        });
+        showAlert(\'addTribeSuccess\', \'تمت إضافة القبيلة بنجاح!\');
+        addTribeForm.reset();
+        fetchDashboardCounts(); // تحديث العدادات
       } catch (error) {
-        console.error("خطأ في حذف رمز القبيلة: ", error);
-        deleteCodeError.textContent = `فشلت عملية حذف رمز القبيلة. الخطأ: ${error.message}`;
-        deleteCodeError.style.display = 'block';
-        setTimeout(() => { deleteCodeError.style.display = 'none'; }, 5000);
+        console.error("خطأ في إضافة القبيلة: ", error);
+        showAlert(\'addTribeError\', \'حدث خطأ أثناء إضافة القبيلة.\');
       } finally {
-        // إخفاء مؤشر "جار المعالجة"
-        processingIndicator.style.display = 'none';
+        showProcessingIndicator(false);
       }
     });
 
-    // نموذج حذف معلومات قبيلة
-    const deleteHistoryForm = document.getElementById('deleteHistoryForm');
-    const deleteHistorySuccess = document.getElementById('deleteHistorySuccess');
-    const deleteHistoryError = document.getElementById('deleteHistoryError');
-
-    deleteHistoryForm.addEventListener('submit', async function(e) {
+    // حذف قبيلة
+    const deleteTribeForm = document.getElementById(\'deleteTribeForm\');
+    deleteTribeForm.addEventListener(\'submit\', async function(e) {
       e.preventDefault();
+      showProcessingIndicator(true);
+      hideAlerts(\'deleteTribe\');
       
-      const name = document.getElementById('tribeNameDeleteHistory').value.trim();
-      
-      deleteHistorySuccess.style.display = 'none';
-      deleteHistoryError.style.display = 'none';
-      
-      const confirmation = confirm(`هل أنت متأكد أنك تريد حذف جميع معلومات وتاريخ القبيلة "${name}"؟ هذا الإجراء لا يمكن التراجع عنه.`);
-      if (!confirmation) return;
-      
-      // إظهار مؤشر "جار المعالجة"
-      processingIndicator.style.display = 'flex';
-      processingIndicator.querySelector('p').textContent = 'جارٍ حذف المعلومات...';
-      
+      const nameToDelete = document.getElementById(\'tribeNameToDelete\').value.trim();
+      if (!nameToDelete) {
+        showAlert(\'deleteTribeError\', \'الرجاء إدخال اسم القبيلة للحذف.\');
+        showProcessingIndicator(false);
+        return;
+      }
+
+      if (!confirm(`هل أنت متأكد من رغبتك في حذف قبيلة \'${nameToDelete}\'؟ سيتم حذف جميع المعلومات المرتبطة بها (التاريخ، الشيوخ).`)) {
+          showProcessingIndicator(false);
+          return;
+      }
+
       try {
-        let deletedCount = 0;
-        const historiesRef = collection(db, "histories");
-        const batch = writeBatch(db);
-        
-        const qByName = query(historiesRef, where("name", "==", name));
-        const snapshotByName = await getDocs(qByName);
-        
-        snapshotByName.forEach(doc => {
-          batch.delete(doc.ref);
-          deletedCount++;
-        });
-        
-        if (deletedCount > 0) {
-          await batch.commit();
-          deleteHistorySuccess.textContent = `تم حذف ${deletedCount} من سجلات معلومات وتاريخ القبيلة "${name}" بنجاح.`;
-          deleteHistorySuccess.style.display = 'block';
-          deleteHistoryForm.reset();
-          setTimeout(() => { deleteHistorySuccess.style.display = 'none'; }, 5000);
-          
-          // تحديث بيانات لوحة المعلومات
-          loadDashboardData();
+        const tribesRef = collection(db, "tribes");
+        const q = query(tribesRef, where("name", "==", nameToDelete));
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+          showAlert(\'deleteTribeError\', \'لم يتم العثور على قبيلة بهذا الاسم.\');
         } else {
-          deleteHistoryError.textContent = `لم يتم العثور على معلومات أو تاريخ للقبيلة بالاسم: "${name}".`;
-          deleteHistoryError.style.display = 'block';
-          setTimeout(() => { deleteHistoryError.style.display = 'none'; }, 5000);
+          const batch = writeBatch(db);
+          querySnapshot.forEach((doc) => {
+            batch.delete(doc.ref);
+          });
+          
+          // حذف المعلومات التاريخية المرتبطة
+          const historyRef = collection(db, "tribeHistory");
+          const qHistory = query(historyRef, where("tribeName", "==", nameToDelete));
+          const historySnapshot = await getDocs(qHistory);
+          historySnapshot.forEach((doc) => {
+              batch.delete(doc.ref);
+          });
+          
+          // حذف الشيوخ المرتبطين
+          const sheikhsRef = collection(db, "sheikhs");
+          const qSheikhs = query(sheikhsRef, where("tribeName", "==", nameToDelete));
+          const sheikhsSnapshot = await getDocs(qSheikhs);
+          sheikhsSnapshot.forEach((doc) => {
+              batch.delete(doc.ref);
+          });
+
+          await batch.commit();
+          showAlert(\'deleteTribeSuccess\', \'تم حذف القبيلة وجميع المعلومات المرتبطة بها بنجاح!\');
+          deleteTribeForm.reset();
+          fetchDashboardCounts(); // تحديث العدادات
+          loadSheikhs(); // تحديث قائمة الشيوخ إذا كانت مفتوحة
         }
       } catch (error) {
-        console.error("خطأ في حذف معلومات القبيلة: ", error);
-        deleteHistoryError.textContent = `فشلت عملية حذف معلومات القبيلة. الخطأ: ${error.message}`;
-        deleteHistoryError.style.display = 'block';
-        setTimeout(() => { deleteHistoryError.style.display = 'none'; }, 5000);
+        console.error("خطأ في حذف القبيلة: ", error);
+        showAlert(\'deleteTribeError\', \'حدث خطأ أثناء حذف القبيلة.\');
       } finally {
-        // إخفاء مؤشر "جار المعالجة"
-        processingIndicator.style.display = 'none';
+        showProcessingIndicator(false);
       }
     });
     
-    // تحميل قائمة شيوخ القبائل (تم التعليق عليها مؤقتًا)
-    /*
-    async function loadSheikhsList() {
-      const sheikhsTableBody = document.getElementById('sheikhsTableBody');
-      const sheikhsListLoadingSpinner = document.getElementById('sheikhsListLoadingSpinner');
-      
-      if (!sheikhsTableBody || !sheikhsListLoadingSpinner) return;
-      
-      // إظهار مؤشر التحميل
-      sheikhsListLoadingSpinner.style.display = 'block';
-      
-      try {
-        // تفريغ الجدول
-        sheikhsTableBody.innerHTML = '';
-        
-        // استعلام عن شيوخ القبائل مرتبة حسب تاريخ الإضافة
-        const sheikhsRef = collection(db, "sheikhs");
-        const q = query(sheikhsRef, orderBy("timestamp", "desc"));
-        const snapshot = await getDocs(q);
-        
-        if (snapshot.empty) {
-          sheikhsTableBody.innerHTML = '<tr><td colspan="5" style="text-align: center;">لا توجد بيانات</td></tr>';
-        } else {
-          snapshot.forEach(doc => {
-            const sheikh = doc.data();
-            const timestamp = sheikh.timestamp ? new Date(sheikh.timestamp.toDate()) : new Date();
-            const formattedDate = timestamp.toLocaleDateString('ar-SA');
-            
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td><img src="${sheikh.imageUrl}" alt="${sheikh.sheikhName}" class="sheikh-image"></td>
-              <td>${sheikh.tribeName}</td>
-              <td>${sheikh.sheikhName}</td>
-              <td>${formattedDate}</td>
-              <td class="action-buttons">
-                <button class="btn btn-danger delete-sheikh" data-id="${doc.id}" data-image="${sheikh.imagePath}">حذف</button>
-              </td>
-            `;
-            
-            sheikhsTableBody.appendChild(row);
-          });
-          
-          // إضافة مستمعي الأحداث لأزرار الحذف
-          document.querySelectorAll('.delete-sheikh').forEach(button => {
-            button.addEventListener('click', deleteSheikhHandler);
-          });
-        }
-      } catch (error) {
-        console.error("خطأ في تحميل قائمة شيوخ القبائل: ", error);
-        if (sheikhsTableBody) {
-          sheikhsTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: red;">حدث خطأ أثناء تحميل البيانات: ${error.message}</td></tr>`;
-        }
-      } finally {
-        // إخفاء مؤشر التحميل
-        if (sheikhsListLoadingSpinner) {
-          sheikhsListLoadingSpinner.style.display = 'none';
-        }
-      }
-    }
-    */
+    // إضافة معلومات تاريخية
+    const addHistoryForm = document.getElementById(\'addHistoryForm\');
+    const historyDetailsContainer = document.getElementById(\'historyDetailsContainer\');
+    const addHistoryDetailBtn = document.getElementById(\'addHistoryDetailBtn\');
+    let detailCounter = 1;
+
+    addHistoryDetailBtn.addEventListener(\'click\', () => {
+        detailCounter++;
+        const newItem = document.createElement(\'div\');
+        newItem.classList.add(\'form-group\', \'history-detail-item\');
+        newItem.innerHTML = `
+            <label>العنصر ${detailCounter}</label>
+            <input type="text" class="form-control history-key" placeholder="عنوان العنصر ${detailCounter}" required>
+            <textarea class="form-control history-value" placeholder="تفاصيل العنصر ${detailCounter}..." required></textarea>
+            <button type="button" class="btn btn-danger btn-sm remove-detail-btn" style="margin-top: 5px;">إزالة</button>
+        `;
+        historyDetailsContainer.appendChild(newItem);
+    });
     
-    // حذف شيخ قبيلة (تم التعليق عليه مؤقتًا)
-    /*
-    async function deleteSheikhHandler() {
-      const sheikhId = this.getAttribute('data-id');
-      const imagePath = this.getAttribute('data-image');
-      const sheikhDeleteSuccessMessage = document.getElementById('sheikhDeleteSuccessMessage');
-      const sheikhDeleteErrorMessage = document.getElementById('sheikhDeleteErrorMessage');
-      
-      if (!sheikhDeleteSuccessMessage || !sheikhDeleteErrorMessage) return;
-      
-      const confirmation = confirm("هل أنت متأكد أنك تريد حذف هذا الشيخ؟ هذا الإجراء لا يمكن التراجع عنه.");
-      if (!confirmation) return;
-      
-      // إخفاء الرسائل
-      sheikhDeleteSuccessMessage.style.display = 'none';
-      sheikhDeleteErrorMessage.style.display = 'none';
-      
-      // إظهار مؤشر "جار المعالجة"
-      processingIndicator.style.display = 'flex';
-      processingIndicator.querySelector('p').textContent = 'جارٍ حذف الشيخ...';
-      
-      try {
-        // حذف المستند من Firestore
-        await deleteDoc(doc(db, "sheikhs", sheikhId));
-        
-        // حذف الصورة من Storage
-        if (imagePath) {
-          const imageRef = ref(storage, imagePath);
-          await deleteObject(imageRef);
-        }
-        
-        // عرض رسالة النجاح
-        sheikhDeleteSuccessMessage.textContent = "تم حذف شيخ القبيلة بنجاح!";
-        sheikhDeleteSuccessMessage.style.display = 'block';
-        setTimeout(() => { sheikhDeleteSuccessMessage.style.display = 'none'; }, 5000);
-        
-        // إعادة تحميل قائمة الشيوخ
-        loadSheikhsList();
-        
-        // تحديث بيانات لوحة المعلومات
-        loadDashboardData();
-      } catch (error) {
-        console.error("خطأ في حذف شيخ القبيلة: ", error);
-        sheikhDeleteErrorMessage.textContent = `حدث خطأ أثناء حذف شيخ القبيلة: ${error.message}`;
-        sheikhDeleteErrorMessage.style.display = 'block';
-        setTimeout(() => { sheikhDeleteErrorMessage.style.display = 'none'; }, 5000);
-      } finally {
-        // إخفاء مؤشر "جار المعالجة"
-        processingIndicator.style.display = 'none';
-      }
-    }
-    */
-    
-    // تحميل بيانات لوحة المعلومات
-    async function loadDashboardData() {
-      try {
-        // عدد رموز القبائل
-        const tribesSnapshot = await getDocs(collection(db, "tribes"));
-        const totalTribesEl = document.getElementById('totalTribeCodes');
-        if (totalTribesEl) {
-          totalTribesEl.textContent = tribesSnapshot.size;
-        }
-        
-        // عدد معلومات القبائل
-        const historiesSnapshot = await getDocs(collection(db, "histories"));
-        const totalHistoriesEl = document.getElementById('totalTribeHistories');
-        if (totalHistoriesEl) {
-          totalHistoriesEl.textContent = historiesSnapshot.size;
-        }
-        
-        // عدد شيوخ القبائل
-        const sheikhsSnapshot = await getDocs(collection(db, "sheikhs"));
-        const totalSheikhsEl = document.getElementById('totalSheikhs');
-        if (totalSheikhsEl) {
-          totalSheikhsEl.textContent = sheikhsSnapshot.size;
-        }
-        
-        // تحميل إحصائيات الزوار
-        loadVisitorStats();
-      } catch (error) {
-        console.error("خطأ في تحميل بيانات لوحة المعلومات: ", error);
-      }
-    }
-    
-    // جلب عدد الزوار الإجمالي للقائمة الجانبية
-    async function fetchTotalVisitorCountForSidebar() {
-      const countSpanSidebar = document.getElementById("siteVisitorCountSidebar");
-      if (!countSpanSidebar) return;
-      
-      countSpanSidebar.textContent = "...";
-      
-      try {
-        const totalRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
-        const docSnap = await getDoc(totalRef);
-        
-        if (docSnap.exists()) {
-          countSpanSidebar.textContent = docSnap.data().count || 0;
-        } else {
-          await setDoc(totalRef, { count: 0, firstVisitTimestamp: serverTimestamp(), lastVisitTimestamp: serverTimestamp() });
-          countSpanSidebar.textContent = "0";
-        }
-      } catch (error) {
-        console.error("Error fetching total visitor count for sidebar: ", error);
-        countSpanSidebar.textContent = "خطأ";
-      }
-    }
-    
-    // تنسيق التاريخ
-    function getFormattedDate(date) {
-      const year = date.getFullYear();
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const day = date.getDate().toString().padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    }
-    
-    // عرض إحصائيات الزوار
-    window.displayVisitorStats = async function(period) {
-      const statPeriodEl = document.getElementById("visitorStatPeriod");
-      const statCountEl = document.getElementById("visitorStatCount");
-      const statMessageEl = document.getElementById("visitorStatMessage");
-      
-      if (!statPeriodEl || !statCountEl || !statMessageEl) return;
-      
-      statCountEl.textContent = "جاري التحميل...";
-      statMessageEl.textContent = ""; // مسح الرسائل السابقة
-      
-      let count = 0;
-      let periodText = "";
-      let siteStartDate = null;
-      
-      try {
-        // الحصول على تاريخ بدء الموقع للرسائل
-        const totalInfoRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
-        const totalInfoSnap = await getDoc(totalInfoRef);
-        
-        if (totalInfoSnap.exists() && totalInfoSnap.data().firstVisitTimestamp) {
-          siteStartDate = totalInfoSnap.data().firstVisitTimestamp.toDate();
-        }
-        
-        const today = new Date();
-        const todayDateString = getFormattedDate(today);
-        
-        if (period === 'total') {
-          periodText = "الإجمالي";
-          const totalRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
-          const docSnap = await getDoc(totalRef);
-          
-          if (docSnap.exists()) {
-            count = docSnap.data().count || 0;
-          } else {
-            await setDoc(totalRef, { count: 0, firstVisitTimestamp: serverTimestamp(), lastVisitTimestamp: serverTimestamp() });
-            count = 0;
-          }
-        } else if (period === 'today') {
-          periodText = "اليوم";
-          const dailyDocRef = doc(db, "siteAnalyticsByDay", todayDateString);
-          const docSnap = await getDoc(dailyDocRef);
-          
-          if (docSnap.exists()) {
-            count = docSnap.data().count || 0;
-          }
-        } else if (period === 'yesterday') {
-          periodText = "الأمس";
-          const yesterday = new Date(today);
-          yesterday.setDate(today.getDate() - 1);
-          const yesterdayDateString = getFormattedDate(yesterday);
-          const dailyDocRef = doc(db, "siteAnalyticsByDay", yesterdayDateString);
-          const docSnap = await getDoc(dailyDocRef);
-          
-          if (docSnap.exists()) {
-            count = docSnap.data().count || 0;
-          } else if (siteStartDate && yesterday < siteStartDate && getFormattedDate(yesterday) !== getFormattedDate(siteStartDate)) {
-            statMessageEl.textContent = "الموقع لم يكن متاحًا بالأمس.";
-          }
-        } else if (period === 'week') {
-          periodText = "هذا الأسبوع (آخر 7 أيام)";
-          let weekStartDate = new Date(today);
-          weekStartDate.setDate(today.getDate() - 6);
-          let daysInPeriod = 0;
-          
-          for (let i = 0; i < 7; i++) {
-            const day = new Date(today);
-            day.setDate(today.getDate() - i);
-            
-            if (siteStartDate && day < siteStartDate && getFormattedDate(day) !== getFormattedDate(siteStartDate)) {
-              continue; // تخطي الأيام قبل بدء الموقع
+    // إزالة عنصر تاريخي
+    historyDetailsContainer.addEventListener(\'click\', (e) => {
+        if (e.target.classList.contains(\'remove-detail-btn\')) {
+            if (historyDetailsContainer.children.length > 1) { // Prevent removing the last item
+                e.target.closest(\'.history-detail-item\').remove();
+                // Optional: Renumber labels if needed
+            } else {
+                alert(\'يجب ترك عنصر واحد على الأقل.\');
             }
-            
-            daysInPeriod++;
-            const dayDateString = getFormattedDate(day);
-            const dailyDocRef = doc(db, "siteAnalyticsByDay", dayDateString);
-            const docSnap = await getDoc(dailyDocRef);
-            
-            if (docSnap.exists()) {
-              count += (docSnap.data().count || 0);
-            }
-          }
-          
-          if (siteStartDate && weekStartDate < siteStartDate && daysInPeriod < 7) {
-            statMessageEl.textContent = ` يتم عرض بيانات ${daysInPeriod} يومًا فقط (منذ بداية الموقع).`;
-          }
-          
-          if (daysInPeriod === 0 && siteStartDate > today) {
-            statMessageEl.textContent = "الموقع لم يكن متاحًا خلال هذا الأسبوع.";
-          }
-        } else if (period === 'month') {
-          periodText = "هذا الشهر";
-          const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-          let daysInPeriod = 0;
-          
-          for (let i = 0; i < today.getDate(); i++) {
-            const day = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i);
-            
-            if (siteStartDate && day < siteStartDate && getFormattedDate(day) !== getFormattedDate(siteStartDate)) {
-              continue; // تخطي الأيام قبل بدء الموقع
-            }
-            
-            daysInPeriod++;
-            const dayDateString = getFormattedDate(day);
-            const dailyDocRef = doc(db, "siteAnalyticsByDay", dayDateString);
-            const docSnap = await getDoc(dailyDocRef);
-            
-            if (docSnap.exists()) {
-              count += (docSnap.data().count || 0);
-            }
-          }
-          
-          if (siteStartDate && firstDayOfMonth < siteStartDate && daysInPeriod < today.getDate()) {
-            statMessageEl.textContent = ` يتم عرض بيانات ${daysInPeriod} يومًا فقط من هذا الشهر (منذ بداية الموقع).`;
-          }
-          
-          if (daysInPeriod === 0 && siteStartDate > today) {
-            statMessageEl.textContent = "الموقع لم يكن متاحًا خلال هذا الشهر.";
-          }
         }
+    });
+
+    addHistoryForm.addEventListener(\'submit\', async (e) => {
+        e.preventDefault();
+        showProcessingIndicator(true);
+        hideAlerts(\'addHistory\');
         
-        statPeriodEl.textContent = periodText;
-        statCountEl.textContent = count;
-      } catch (error) {
-        console.error(`Error fetching visitor stats for ${period}: `, error);
-        statPeriodEl.textContent = periodText;
-        statCountEl.textContent = "خطأ في جلب البيانات";
-        statMessageEl.textContent = "حدث خطأ أثناء تحميل الإحصائيات.";
-      }
-    }
-    
-    // مسح جميع بيانات الزوار
-    window.clearAllVisitorData = async function() {
-      const clearButton = document.getElementById('clearVisitorsBtn');
-      if (!clearButton) return;
-      
-      const confirmation = confirm("هل أنت متأكد أنك تريد مسح جميع بيانات زوار الموقع؟ هذا الإجراء لا يمكن التراجع عنه وسيعيد جميع العدادات إلى الصفر.");
-      if (!confirmation) return;
-      
-      // إظهار مؤشر "جار المعالجة"
-      processingIndicator.style.display = 'flex';
-      processingIndicator.querySelector('p').textContent = 'جارٍ مسح بيانات الزوار...';
-      clearButton.disabled = true;
-      
-      try {
-        const dailyCollectionRef = collection(db, "siteAnalyticsByDay");
-        const dailySnapshot = await getDocs(dailyCollectionRef);
-        const batch = writeBatch(db);
-        
-        dailySnapshot.docs.forEach(doc => {
-          batch.delete(doc.ref);
+        const tribeName = document.getElementById(\'historyTribeName\').value.trim();
+        const detailItems = historyDetailsContainer.querySelectorAll(".history-detail-item");
+        const details = [];
+        let isValid = true;
+
+        detailItems.forEach(item => {
+            const keyInput = item.querySelector(".history-key");
+            const valueInput = item.querySelector(".history-value");
+            const key = keyInput.value.trim();
+            const value = valueInput.value.trim();
+            if (key && value) {
+                details.push({ key, value });
+            } else {
+                isValid = false;
+                keyInput.style.borderColor = key ? \'#D2B48C\' : \'red\';
+                valueInput.style.borderColor = value ? \'#D2B48C\' : \'red\';
+            }
         });
+
+        if (!tribeName || !isValid || details.length === 0) {
+            showAlert(\'addHistoryError\', \'الرجاء ملء اسم القبيلة وجميع حقول العناصر بشكل صحيح.\');
+            showProcessingIndicator(false);
+            return;
+        }
+
+        try {
+            // التحقق من وجود القبيلة أولاً
+            const tribesRef = collection(db, "tribes");
+            const qTribe = query(tribesRef, where("name", "==", tribeName));
+            const tribeSnapshot = await getDocs(qTribe);
+            if (tribeSnapshot.empty) {
+                showAlert(\'addHistoryError\', `لم يتم العثور على قبيلة باسم \'${tribeName}\'. يرجى إضافتها أولاً.`);
+                showProcessingIndicator(false);
+                return;
+            }
+            
+            // التحقق مما إذا كانت هناك معلومات تاريخية موجودة بالفعل لهذه القبيلة
+            const historyRef = collection(db, "tribeHistory");
+            const qHistory = query(historyRef, where("tribeName", "==", tribeName));
+            const historySnapshot = await getDocs(qHistory);
+
+            if (!historySnapshot.empty) {
+                // تحديث المستند الموجود
+                const docRef = historySnapshot.docs[0].ref;
+                await setDoc(docRef, { tribeName, details, lastUpdatedAt: serverTimestamp() }, { merge: true });
+                showAlert(\'addHistorySuccess\', \'تم تحديث المعلومات التاريخية للقبيلة بنجاح!\');
+            } else {
+                // إضافة مستند جديد
+                await addDoc(historyRef, {
+                    tribeName: tribeName,
+                    details: details,
+                    addedAt: serverTimestamp()
+                });
+                showAlert(\'addHistorySuccess\', \'تمت إضافة المعلومات التاريخية بنجاح!\');
+            }
+            
+            addHistoryForm.reset();
+            // Reset dynamic fields
+            historyDetailsContainer.innerHTML = `
+                <div class="form-group history-detail-item">
+                    <label>العنصر 1</label>
+                    <input type="text" class="form-control history-key" placeholder="مثال: أبرز المعارك" required>
+                    <textarea class="form-control history-value" placeholder="تفاصيل العنصر..." required></textarea>
+                </div>
+            `;
+            detailCounter = 1;
+            // Reset border colors
+            detailItems.forEach(item => {
+                item.querySelector(".history-key").style.borderColor = \'#D2B48C\';
+                item.querySelector(".history-value").style.borderColor = \'#D2B48C\';
+            });
+
+        } catch (error) {
+            console.error("خطأ في إضافة/تحديث المعلومات التاريخية: ", error);
+            showAlert(\'addHistoryError\', \'حدث خطأ أثناء حفظ المعلومات التاريخية.\');
+        } finally {
+            showProcessingIndicator(false);
+        }
+    });
+    
+    // حذف معلومات تاريخية
+    const deleteHistoryForm = document.getElementById(\'deleteHistoryForm\');
+    deleteHistoryForm.addEventListener(\'submit\', async (e) => {
+        e.preventDefault();
+        showProcessingIndicator(true);
+        hideAlerts(\'deleteHistory\');
         
-        await batch.commit();
-        console.log("All daily visitor data cleared.");
+        const tribeName = document.getElementById(\'tribeNameDeleteHistory\').value.trim();
+        if (!tribeName) {
+            showAlert(\'deleteHistoryError\', \'الرجاء إدخال اسم القبيلة لحذف معلوماتها.\');
+            showProcessingIndicator(false);
+            return;
+        }
         
-        const totalRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
-        await setDoc(totalRef, { count: 0, firstVisitTimestamp: serverTimestamp(), lastVisitTimestamp: serverTimestamp() });
-        console.log("Total unique visitors count reset.");
+        if (!confirm(`هل أنت متأكد من رغبتك في حذف جميع المعلومات التاريخية لقبيلة \'${tribeName}\'؟`)) {
+            showProcessingIndicator(false);
+            return;
+        }
         
-        alert("تم مسح جميع بيانات الزوار بنجاح.");
-        fetchTotalVisitorCountForSidebar();
-        displayVisitorStats('total');
-        loadVisitorStats();
-      } catch (error) {
-        console.error("Error clearing visitor data: ", error);
-        alert("حدث خطأ أثناء محاولة مسح بيانات الزوار. يرجى مراجعة الكونسول.");
-      } finally {
-        // إخفاء مؤشر "جار المعالجة"
-        processingIndicator.style.display = 'none';
-        clearButton.disabled = false;
-      }
+        try {
+            const historyRef = collection(db, "tribeHistory");
+            const q = query(historyRef, where("tribeName", "==", tribeName));
+            const querySnapshot = await getDocs(q);
+            
+            if (querySnapshot.empty) {
+                showAlert(\'deleteHistoryError\', \'لا توجد معلومات تاريخية مسجلة لهذه القبيلة.\');
+            } else {
+                const batch = writeBatch(db);
+                querySnapshot.forEach(doc => {
+                    batch.delete(doc.ref);
+                });
+                await batch.commit();
+                showAlert(\'deleteHistorySuccess\', \'تم حذف المعلومات التاريخية للقبيلة بنجاح!\');
+                deleteHistoryForm.reset();
+            }
+        } catch (error) {
+            console.error("خطأ في حذف المعلومات التاريخية: ", error);
+            showAlert(\'deleteHistoryError\', \'حدث خطأ أثناء حذف المعلومات التاريخية.\');
+        } finally {
+            showProcessingIndicator(false);
+        }
+    });
+
+    // وظائف المساعدة للرسائل
+    function showAlert(elementId, message) {
+      const alertElement = document.getElementById(elementId);
+      alertElement.textContent = message;
+      alertElement.style.display = \'block\';
+    }
+
+    function hideAlerts(prefix) {
+      document.getElementById(prefix + \'Success\').style.display = \'none\';
+      document.getElementById(prefix + \'Error\').style.display = \'none\';
     }
     
-    // تحميل إحصائيات الزوار
-    async function loadVisitorStats() {
-      try {
-        // الحصول على بيانات الزوار
-        const now = new Date();
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const oneDay = 24 * 60 * 60 * 1000;
-        const oneWeek = 7 * oneDay;
-        const oneMonth = 30 * oneDay;
-        
-        // الحصول على إجمالي الزوار
-        const totalRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
-        const totalSnap = await getDoc(totalRef);
-        let totalCount = 0;
-        
-        if (totalSnap.exists()) {
-          totalCount = totalSnap.data().count || 0;
+    // تحميل بيانات لوحة المعلومات (العدادات)
+    async function fetchDashboardCounts() {
+        try {
+            const tribesSnap = await getDocs(collection(db, "tribes"));
+            const sheikhsSnap = await getDocs(collection(db, "sheikhs"));
+            const totalVisitorsSnap = await getDoc(doc(db, "siteAnalytics", "totalVisitors"));
+            const todayDateString = getFormattedDate(new Date());
+            const todayVisitorsSnap = await getDoc(doc(db, "siteAnalyticsByDay", todayDateString));
+
+            document.getElementById(\'totalTribes\').textContent = tribesSnap.size;
+            document.getElementById(\'totalSheikhs\').textContent = sheikhsSnap.size;
+            document.getElementById(\'totalVisitors\').textContent = totalVisitorsSnap.exists() ? totalVisitorsSnap.data().count : 0;
+            document.getElementById(\'todayVisitors\').textContent = todayVisitorsSnap.exists() ? todayVisitorsSnap.data().count : 0;
+            
+        } catch (error) {
+            console.error("Error fetching dashboard counts: ", error);
+            // Optionally display an error message on the dashboard
         }
-        
-        // تحديث عناصر واجهة المستخدم
-        const totalVisitorsEl = document.getElementById('totalVisitors');
-        const totalVisitorsStatsEl = document.getElementById('totalVisitorsStats');
-        
-        if (totalVisitorsEl) totalVisitorsEl.textContent = totalCount;
-        if (totalVisitorsStatsEl) totalVisitorsStatsEl.textContent = totalCount;
-        
-        // الحصول على زوار اليوم
-        const todayDateString = getFormattedDate(today);
-        const todayRef = doc(db, "siteAnalyticsByDay", todayDateString);
-        const todaySnap = await getDoc(todayRef);
-        let todayCount = 0;
-        
-        if (todaySnap.exists()) {
-          todayCount = todaySnap.data().count || 0;
-        }
-        
-        const todayVisitorsEl = document.getElementById('todayVisitors');
-        const todayVisitorsStatsEl = document.getElementById('todayVisitorsStats');
-        
-        if (todayVisitorsEl) todayVisitorsEl.textContent = todayCount;
-        if (todayVisitorsStatsEl) todayVisitorsStatsEl.textContent = todayCount;
-        
-        // حساب زوار الأسبوع
-        let weekCount = 0;
-        for (let i = 0; i < 7; i++) {
-          const day = new Date(now);
-          day.setDate(day.getDate() - i);
-          const dayDateString = getFormattedDate(day);
-          const dayRef = doc(db, "siteAnalyticsByDay", dayDateString);
-          const daySnap = await getDoc(dayRef);
-          
-          if (daySnap.exists()) {
-            weekCount += (daySnap.data().count || 0);
-          }
-        }
-        
-        const weekVisitorsEl = document.getElementById('weekVisitors');
-        const weekVisitorsStatsEl = document.getElementById('weekVisitorsStats');
-        
-        if (weekVisitorsEl) weekVisitorsEl.textContent = weekCount;
-        if (weekVisitorsStatsEl) weekVisitorsStatsEl.textContent = weekCount;
-        
-        // حساب زوار الشهر
-        let monthCount = 0;
-        for (let i = 0; i < 30; i++) {
-          const day = new Date(now);
-          day.setDate(day.getDate() - i);
-          const dayDateString = getFormattedDate(day);
-          const dayRef = doc(db, "siteAnalyticsByDay", dayDateString);
-          const daySnap = await getDoc(dayRef);
-          
-          if (daySnap.exists()) {
-            monthCount += (daySnap.data().count || 0);
-          }
-        }
-        
-        const monthVisitorsEl = document.getElementById('monthVisitors');
-        const monthVisitorsStatsEl = document.getElementById('monthVisitorsStats');
-        
-        if (monthVisitorsEl) monthVisitorsEl.textContent = monthCount;
-        if (monthVisitorsStatsEl) monthVisitorsStatsEl.textContent = monthCount;
-      } catch (error) {
-        console.error("خطأ في تحميل إحصائيات الزوار: ", error);
-      }
     }
+    
+    // تحميل إجمالي الزوار للشريط الجانبي
+    async function fetchTotalVisitorCountForSidebar() {
+        try {
+            const totalVisitorsRef = doc(db, "siteAnalytics", "totalVisitors");
+            const docSnap = await getDoc(totalVisitorsRef);
+            const count = docSnap.exists() ? docSnap.data().count : 0;
+            document.getElementById(\'sidebarVisitorCount\').textContent = `إجمالي الزوار: ${count}`;
+        } catch (error) {
+            console.error("Error fetching total visitor count for sidebar: ", error);
+            document.getElementById(\'sidebarVisitorCount\').textContent = "خطأ في تحميل الزوار";
+        }
+    }
+
+    // تحميل بيانات لوحة المعلومات عند الحاجة
+    function loadDashboardData() {
+        fetchDashboardCounts();
+        // Add logic here later to load recent additions if needed
+    }
+    
+    // --- قسم إحصائيات الزوار --- 
+    
+    // تنسيق التاريخ (YYYY-MM-DD)
+    function getFormattedDate(date) {
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, \'0\')}-${String(date.getDate()).padStart(2, \'0\')}`;
+    }
+    
+    // عرض إحصائيات الزوار حسب الفترة
+    window.displayVisitorStats = async function(period) {
+        const countEl = document.getElementById(\'visitorStatCount\');
+        const periodEl = document.getElementById(\'visitorStatPeriod\');
+        const messageEl = document.getElementById(\'visitorStatMessage\');
+        countEl.textContent = \'جاري التحميل...\';
+        messageEl.textContent = \'\';
+        let count = 0;
+        let periodText = \'\';
+        const now = new Date();
+
+        try {
+            if (period === \'total\') {
+                periodText = \'الإجمالي\';
+                const totalSnap = await getDoc(doc(db, "siteAnalytics", "totalVisitors"));
+                count = totalSnap.exists() ? totalSnap.data().count : 0;
+            } else if (period === \'today\') {
+                periodText = \'اليوم\';
+                const todayStr = getFormattedDate(now);
+                const todaySnap = await getDoc(doc(db, "siteAnalyticsByDay", todayStr));
+                count = todaySnap.exists() ? todaySnap.data().count : 0;
+            } else if (period === \'yesterday\') {
+                periodText = \'الأمس\';
+                const yesterday = new Date(now);
+                yesterday.setDate(now.getDate() - 1);
+                const yesterdayStr = getFormattedDate(yesterday);
+                const yesterdaySnap = await getDoc(doc(db, "siteAnalyticsByDay", yesterdayStr));
+                count = yesterdaySnap.exists() ? yesterdaySnap.data().count : 0;
+            } else if (period === \'week\') {
+                periodText = \'هذا الأسبوع\';
+                for (let i = 0; i < 7; i++) {
+                    const day = new Date(now);
+                    day.setDate(now.getDate() - i);
+                    const dayStr = getFormattedDate(day);
+                    const daySnap = await getDoc(doc(db, "siteAnalyticsByDay", dayStr));
+                    if (daySnap.exists()) {
+                        count += daySnap.data().count || 0;
+                    }
+                }
+            } else if (period === \'month\') {
+                periodText = \'هذا الشهر\';
+                 for (let i = 0; i < 30; i++) { // Approximation for month
+                    const day = new Date(now);
+                    day.setDate(now.getDate() - i);
+                    const dayStr = getFormattedDate(day);
+                    const daySnap = await getDoc(doc(db, "siteAnalyticsByDay", dayStr));
+                    if (daySnap.exists()) {
+                        count += daySnap.data().count || 0;
+                    }
+                }
+            }
+            
+            periodEl.textContent = periodText;
+            countEl.textContent = count;
+            
+            // تحديث الكروت الإحصائية أيضاً
+            if (period === \'total\') document.getElementById(\'totalVisitorsStats\').textContent = count;
+            if (period === \'today\') document.getElementById(\'todayVisitorsStats\').textContent = count;
+            if (period === \'week\') document.getElementById(\'weekVisitorsStats\').textContent = count;
+            if (period === \'month\') document.getElementById(\'monthVisitorsStats\').textContent = count;
+            
+        } catch (error) {
+            console.error(`Error fetching ${period} visitor stats: `, error);
+            countEl.textContent = \'خطأ\';
+            messageEl.textContent = \'حدث خطأ أثناء تحميل الإحصائيات.\';
+        }
+        
+        // تحميل جميع الإحصائيات للكروت عند عرض القسم لأول مرة
+        if (!document.getElementById(\'totalVisitorsStats\').textContent || document.getElementById(\'totalVisitorsStats\').textContent === \'0\') {
+            loadAllStatsForCards();
+        }
+    }
+    
+    // تحميل جميع الإحصائيات للكروت المنفصلة
+    async function loadAllStatsForCards() {
+        try {
+            const totalSnap = await getDoc(doc(db, "siteAnalytics", "totalVisitors"));
+            document.getElementById(\'totalVisitorsStats\').textContent = totalSnap.exists() ? totalSnap.data().count : 0;
+
+            const todayStr = getFormattedDate(new Date());
+            const todaySnap = await getDoc(doc(db, "siteAnalyticsByDay", todayStr));
+            document.getElementById(\'todayVisitorsStats\').textContent = todaySnap.exists() ? todaySnap.data().count : 0;
+
+            let weekCount = 0;
+            const now = new Date();
+            for (let i = 0; i < 7; i++) {
+                const day = new Date(now);
+                day.setDate(now.getDate() - i);
+                const dayStr = getFormattedDate(day);
+                const daySnap = await getDoc(doc(db, "siteAnalyticsByDay", dayStr));
+                if (daySnap.exists()) weekCount += (daySnap.data().count || 0);
+            }
+            document.getElementById(\'weekVisitorsStats\').textContent = weekCount;
+
+            let monthCount = 0;
+            for (let i = 0; i < 30; i++) {
+                const day = new Date(now);
+                day.setDate(now.getDate() - i);
+                const dayStr = getFormattedDate(day);
+                const daySnap = await getDoc(doc(db, "siteAnalyticsByDay", dayStr));
+                if (daySnap.exists()) monthCount += (daySnap.data().count || 0);
+            }
+            document.getElementById(\'monthVisitorsStats\').textContent = monthCount;
+
+        } catch (error) {
+            console.error("Error loading stats for cards: ", error);
+        }
+    }
+    
+    // مسح جميع بيانات الزوار (لأغراض الاختبار أو إعادة الضبط)
+    window.clearAllVisitorData = async function() {
+        if (!confirm("تحذير: سيؤدي هذا إلى حذف جميع سجلات إحصائيات الزوار اليومية والإجمالية بشكل دائم. هل أنت متأكد من المتابعة؟")) {
+            return;
+        }
+        
+        showProcessingIndicator(true);
+        const clearBtn = document.getElementById(\'clearVisitorsBtn\');
+        clearBtn.disabled = true;
+        clearBtn.textContent = \'جاري المسح...\';
+        
+        try {
+            const batch = writeBatch(db);
+            
+            // حذف السجل الإجمالي
+            const totalRef = doc(db, "siteAnalytics", "totalVisitors");
+            batch.delete(totalRef);
+            
+            // حذف السجلات اليومية (قد تحتاج إلى طريقة أكثر فعالية للإنتاج)
+            const dailyCollectionRef = collection(db, "siteAnalyticsByDay");
+            const dailySnapshot = await getDocs(dailyCollectionRef);
+            dailySnapshot.forEach(doc => {
+                batch.delete(doc.ref);
+            });
+            
+            await batch.commit();
+            
+            // مسح التخزين المحلي للمستخدمين الحاليين
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith(\'visitor_\')) {
+                    localStorage.removeItem(key);
+                }
+            });
+            
+            alert(\'تم مسح جميع بيانات الزوار بنجاح.\');
+            // إعادة تحميل الإحصائيات المعروضة
+            displayVisitorStats(\'total\');
+            loadAllStatsForCards();
+            fetchTotalVisitorCountForSidebar();
+            
+        } catch (error) {
+            console.error("Error clearing visitor data: ", error);
+            alert(\'حدث خطأ أثناء مسح بيانات الزوار.\');
+        } finally {
+            showProcessingIndicator(false);
+            clearBtn.disabled = false;
+            clearBtn.innerHTML = \'<i class="bx bx-trash"></i> مسح جميع بيانات الزوار\';
+        }
+    }
+
+    // --- نهاية قسم إحصائيات الزوار ---
     
     // التحقق من حالة تسجيل الدخول عند تحميل الصفحة
     checkLoginStatus();
     
-    // إضافة مستمع لتغيير حجم النافذة
-    window.addEventListener('resize', function() {
-      if (window.innerWidth <= 768) {
-        document.querySelector('.mobile-header').style.display = 'flex';
-        fixedHeader.style.display = 'none';
-      } else {
-        document.querySelector('.mobile-header').style.display = 'none';
-        if (mainContent.style.display !== 'none') {
-          fixedHeader.style.display = 'flex';
-        }
+    // إضافة مستمع لتغيير حجم النافذة لضبط عرض الهيدر
+    window.addEventListener(\'resize\', function() {
+      if (loginScreen.style.display === \'none\') { // Only adjust if logged in
+          if (window.innerWidth <= 768) {
+            mobileHeader.style.display = \'flex\';
+            fixedHeader.style.display = \'none\';
+            sidebarOverlay.style.display = sidebar.classList.contains(\'active\') ? \'block\' : \'none\'; // Show overlay if sidebar is active
+          } else {
+            mobileHeader.style.display = \'none\';
+            fixedHeader.style.display = \'flex\';
+            sidebarOverlay.style.display = \'none\'; // Hide overlay on desktop
+            // Ensure sidebar state is correct on resize
+            if (sidebar.classList.contains(\'active\')) {
+                // If sidebar was active (mobile), collapse it on desktop resize
+                toggleSidebar(); 
+            }
+          }
       }
     });
+
   </script>
 </body>
 </html>
