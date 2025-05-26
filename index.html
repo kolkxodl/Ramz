@@ -631,6 +631,38 @@
     .popup-btn:hover {
       background: linear-gradient(90deg, #D2B48C, #CD853F);
     }
+    
+    /* Styles for Image Lightbox */
+    .image-lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none; /* Hidden by default */
+      align-items: center;
+      justify-content: center;
+      z-index: 1000; /* Ensure it's on top */
+      cursor: pointer; /* Indicate it can be clicked to close */
+    }
+    .image-lightbox img {
+      max-width: 90%;
+      max-height: 85%;
+      border-radius: 5px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .image-lightbox .close-lightbox {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      color: #fff;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    /* End Styles for Image Lightbox */
+    
   </style>
 </head>
 <body>
@@ -746,6 +778,13 @@
     </div>
   </div>
   <!-- End TikTok Follow Popup Modal -->
+
+  <!-- Image Lightbox Modal -->
+  <div id="imageLightbox" class="image-lightbox">
+    <span class="close-lightbox" id="closeLightboxBtn">&times;</span>
+    <img src="" alt="صورة مكبرة" id="lightboxImage">
+  </div>
+  <!-- End Image Lightbox Modal -->
 
   <footer>
     <p>تم تصميمه بواسطة المبرمج <a href="https://wa.me/967738889982">سهم الحميقاني</a></p>
@@ -894,6 +933,11 @@
     const contactPopupBtn = document.getElementById("contactBtn");
     const faqQuestions = document.querySelectorAll(".faq-question");
 
+    // Image Lightbox Elements
+    const imageLightbox = document.getElementById("imageLightbox");
+    const lightboxImage = document.getElementById("lightboxImage");
+    const closeLightboxBtn = document.getElementById("closeLightboxBtn");
+
     // TikTok Popup Elements and Variables
     const tiktokPopupModal = document.getElementById("tiktokPopupModal");
     const tiktokFollowBtn = document.getElementById("tiktokFollowBtn");
@@ -942,6 +986,21 @@
     if (cancelPopupBtn) cancelPopupBtn.addEventListener("click", function() { document.getElementById("popupModal").style.display = "none"; });
     if (adTelegramBtn) adTelegramBtn.addEventListener("click", function() { window.location.href = "https://wa.me/967738889982"; });
     faqQuestions.forEach((question) => { question.addEventListener("click", function () { const answer = this.nextElementSibling; const icon = this.querySelector(".faq-icon"); const isActive = this.classList.contains("active"); faqQuestions.forEach(q => { if (q !== this && q.classList.contains("active")) { q.classList.remove("active"); q.nextElementSibling.style.display = "none"; const otherIcon = q.querySelector(".faq-icon"); if (otherIcon) otherIcon.classList.replace("bx-chevron-up", "bx-chevron-down"); } }); if (isActive) { answer.style.display = "none"; this.classList.remove("active"); if (icon) icon.classList.replace("bx-chevron-up", "bx-chevron-down"); } else { answer.style.display = "block"; this.classList.add("active"); if (icon) icon.classList.replace("bx-chevron-down", "bx-chevron-up"); } }); });
+
+    // Image Lightbox Close Logic
+    if (closeLightboxBtn) {
+        closeLightboxBtn.addEventListener("click", () => {
+            if (imageLightbox) imageLightbox.style.display = "none";
+        });
+    }
+    if (imageLightbox) {
+        imageLightbox.addEventListener("click", (event) => {
+            // Close if the click is on the background itself, not the image
+            if (event.target === imageLightbox) {
+                imageLightbox.style.display = "none";
+            }
+        });
+    }
 
     // TikTok Follow Button Logic
     if (tiktokFollowBtn) {
@@ -1067,6 +1126,14 @@
                     sheikhImage.onerror = function() {
                         this.src = "https://via.placeholder.com/300x200?text=صورة+غير+متوفرة";
                     };
+                    // Add click listener to open lightbox
+                    sheikhImage.style.cursor = "pointer"; // Indicate it's clickable
+                    sheikhImage.addEventListener("click", () => {
+                        if (lightboxImage && imageLightbox) {
+                            lightboxImage.src = sheikhImage.src;
+                            imageLightbox.style.display = "flex";
+                        }
+                    });
                     imageContainer.appendChild(sheikhImage);
                     sheikhBox.appendChild(imageContainer);
                     
