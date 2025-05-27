@@ -80,6 +80,10 @@
     body.fade-out {
       opacity: 0;
     }
+    /* منع التمرير عند ظهور النافذة المنبثقة */
+    body.no-scroll {
+      overflow: hidden;
+    }
     * {
       margin: 0;
       padding: 0;
@@ -575,6 +579,25 @@
       .result .sheikh-box .sheikh-name {
         font-size: 16px;
       }
+      /* Adjust welcome popup for smaller screens */
+      .welcome-popup-content {
+          max-width: 90%;
+          padding: 15px;
+      }
+      .welcome-popup-content p {
+          font-size: 14px; /* Slightly smaller text */
+          line-height: 1.7;
+      }
+      .welcome-popup-content h4 {
+          font-size: 16px; /* Smaller heading */
+      }
+      .welcome-popup-content ul {
+          padding-right: 15px; /* Adjust list padding */
+      }
+      .welcome-popup-content li {
+          font-size: 13px; /* Smaller list items */
+          margin-bottom: 8px;
+      }
     }
     .popup-modal {
       position: fixed;
@@ -602,6 +625,46 @@
     /* Specific styling for TikTok popup content if needed, otherwise it inherits from .popup-content */
     .tiktok-popup-content {
         max-width: 420px; /* Slightly wider for the message */
+    }
+    /* Welcome Popup Specific Styles */
+    .welcome-popup-content {
+        max-width: 480px; /* تصغير حجم النافذة */
+        text-align: right; /* Align text to the right */
+        line-height: 1.8;
+        color: #3E2723;
+        margin: 20px; /* إضافة مسافة من حواف الشاشة */
+    }
+    .welcome-popup-content h4 {
+        color: #CD853F; /* Golden color for heading */
+        margin-bottom: 15px;
+        font-size: 18px;
+        text-align: center; /* Center the heading */
+    }
+    .welcome-popup-content p {
+        margin-bottom: 12px;
+        font-size: 15px;
+    }
+    .welcome-popup-content ul {
+        list-style: none; /* Remove default bullets */
+        padding-right: 20px; /* Indent list */
+        margin-bottom: 15px;
+    }
+    .welcome-popup-content li {
+        margin-bottom: 10px;
+        font-size: 14px;
+        position: relative;
+        padding-right: 25px; /* Space for custom bullet */
+    }
+    .welcome-popup-content li::before {
+        content: "\25AA"; /* Unicode for small square or use a bullet */
+        color: #CD853F; /* Golden color for bullet */
+        font-size: 18px; /* Adjust bullet size */
+        position: absolute;
+        right: 0;
+        top: -2px; /* Adjust vertical alignment */
+    }
+    .welcome-popup-content .popup-buttons {
+        margin-top: 20px; /* More space before button */
     }
 
     @keyframes popupAnimation {
@@ -766,18 +829,50 @@
   </div>
 
   <!-- TikTok Follow Popup Modal -->
-  <div id="tiktokPopupModal" class="popup-modal" style="z-index: 35;"> <!-- Ensure z-index is high enough -->
+  <div id="tiktokPopupModal" class="popup-modal" style="z-index: 35;"> 
     <div class="popup-content tiktok-popup-content">
       <p id="tiktokPopupMessageText" style="margin-bottom: 20px; color: #3E2723; font-size: 17px; line-height: 1.8;">
         لمتابعة البحث واستكشاف المزيد من رموز القبائل،<br>يرجى دعمنا بمتابعة حسابنا على تيك توك أولاً.
       </p>
       <button id="tiktokFollowBtn" class="popup-btn" style="padding: 12px 25px; font-size: 17px;">
-        <i class='bx bxl-tiktok' style="font-size: 22px; vertical-align: middle; margin-left: 8px;"></i> <!-- Adjusted margin for RTL -->
+        <i class='bx bxl-tiktok' style="font-size: 22px; vertical-align: middle; margin-left: 8px;"></i> 
         اضغط هنا لمتابعتنا
       </button>
     </div>
   </div>
   <!-- End TikTok Follow Popup Modal -->
+
+  <!-- ********** START: Welcome Popup Modal ********** -->
+  <div id="welcomePopupModal" class="popup-modal" style="z-index: 40;"> 
+    <div class="popup-content welcome-popup-content">
+      <h4>مرحبا بكم في موقع الباحث في رموز القبائل!</h4>
+      <p>الموقع يساعدك بالبحث عن رموز القبائل بسهوله. وتوجد فيه ايضا عده مزايا ومميزات ومنها:</p>
+      <ul>
+        <li>
+          <strong>البحث عن رموز القبائل:</strong><br>
+          يمكنك البحث عن رمز قبيلتك عبر طريقتين وهما:<br>
+          - عبر اسم القبيله<br>
+          - او عبر رمزها
+        </li>
+        <li>
+          <strong>البحث في معلومات وتواريخ القبائل:</strong><br>
+          يمكنك البحث عن تاريخ القبائل عبر طريقتين وهما:<br>
+          - تاريخ « اسم القبيله » ، مثل « تاريخ ال حميقان »<br>
+          - معلومات « اسم القبيله » ، مثل « معلومات ال حميقان »
+        </li>
+        <li>
+          <strong>البحث عن شيوخ القبائل:</strong><br>
+          يمكنك البحث عن شيوخ القبائل عبر:<br>
+          - كتابه ( شيخ « اسم القبيله» )، مثل « شيخ ال حميقان »
+        </li>
+      </ul>
+      <p>لاضافه المزيد من المزايا تواصلوا معنا!</p>
+      <div class="popup-buttons">
+        <button id="welcomeUnderstandBtn" class="popup-btn">فهمت!</button>
+      </div>
+    </div>
+  </div>
+  <!-- ********** END: Welcome Popup Modal ********** -->
 
   <!-- Image Lightbox Modal -->
   <div id="imageLightbox" class="image-lightbox">
@@ -841,12 +936,8 @@
             }
 
             // Increment total unique visitors (optional, if you still want a simple total)
-            // This part can be removed if daily tracking is sufficient for "total"
             const totalUniqueVisitorsRef = doc(db, "siteAnalytics", "totalUniqueVisitors");
             try {
-                // Check if a general unique visitor marker exists for this user (e.g., using localStorage for longer persistence)
-                // For simplicity, we'll just increment a general counter here, but a more robust unique visitor system might use localStorage or cookies.
-                // This example will increment total on each new session, which is a common way to track "total visits" rather than strictly unique users over all time.
                 await updateDoc(totalUniqueVisitorsRef, {
                     count: increment(1),
                     lastVisitTimestamp: serverTimestamp()
@@ -944,6 +1035,11 @@
     const TIKTOK_ACCOUNT_URL = "https://www.tiktok.com/@designer_co?_r=1&_d=ed0h27ak1gi5h5&sec_uid=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&share_author_id=7411089680148710408&sharer_language=ar&source=h5_m&u_code=eg4363i2jmk0je&timestamp=1744307461&user_id=7411089680148710408&sec_user_id=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7489355090459346709&share_link_id=c5287d92-5f28-43a4-a565-c07bf819151f&share_app_id=1233&ugbiz_name=ACCOUNT&ug_btm=b8727%2Cb7360&social_share_type=5&enable_checksum=1";
     let currentSearchQuery = null; 
 
+    // Welcome Popup Elements
+    const welcomePopupModal = document.getElementById("welcomePopupModal");
+    const welcomeUnderstandBtn = document.getElementById("welcomeUnderstandBtn");
+    const WELCOME_POPUP_KEY = "welcomePopupShown_v3"; // Use a new key
+
     function fadeOutAndRedirect(url) {
       document.body.classList.add("fade-out");
       setTimeout(function() { window.location.href = url; }, 500);
@@ -1013,6 +1109,16 @@
           initiateSearchProcess(currentSearchQuery);
         }
       });
+    }
+
+    // Welcome Popup Button Logic
+    if (welcomeUnderstandBtn && welcomePopupModal) {
+        welcomeUnderstandBtn.addEventListener("click", () => {
+            welcomePopupModal.style.display = "none";
+            localStorage.setItem(WELCOME_POPUP_KEY, "true");
+            // إزالة فئة no-scroll من الجسم عند إغلاق النافذة المنبثقة
+            document.body.classList.remove("no-scroll");
+        });
     }
 
     function displayNotFoundMessage(messageContent) {
@@ -1287,6 +1393,13 @@
     window.addEventListener("DOMContentLoaded", async () => {
         await loadAndMergeData();
         await trackVisitor(); // Call the function to track visitor on page load
+
+        // Show Welcome Popup Logic - MODIFIED
+        if (welcomePopupModal) { // Always show if the element exists
+            welcomePopupModal.style.display = "flex";
+            // إضافة فئة no-scroll إلى الجسم لمنع التمرير
+            document.body.classList.add("no-scroll");
+        }
     });
   </script>
 </body>
