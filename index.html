@@ -1391,15 +1391,18 @@
     }
 
     window.addEventListener("DOMContentLoaded", async () => {
-        await loadAndMergeData();
-        await trackVisitor(); // Call the function to track visitor on page load
-
-        // Show Welcome Popup Logic - MODIFIED
-        if (welcomePopupModal) { // Always show if the element exists
+        // Show Welcome Popup Logic - MOVED FOR SPEED
+        if (welcomePopupModal && !localStorage.getItem(WELCOME_POPUP_KEY)) { // Check localStorage first
             welcomePopupModal.style.display = "flex";
             // إضافة فئة no-scroll إلى الجسم لمنع التمرير
             document.body.classList.add("no-scroll");
         }
+
+        // Now load data and track visitor
+        await loadAndMergeData();
+        await trackVisitor(); // Call the function to track visitor on page load
+
+        // Original position of popup logic (now removed from here)
     });
   </script>
 </body>
