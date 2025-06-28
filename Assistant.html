@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>لوحة تحكم المساعد - رموز القبائل</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+      background: linear-gradient(135deg, #FAF3E0, #F2E8D5);
+      color: #5C4033;
+      min-height: 100vh;
+      display: flex;
+    }
+    
+    /* تصميم صفحة تسجيل الدخول */
+    #login-screen {
+      background: rgba(255, 255, 255, 0.7);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      margin: 150px auto;
+      max-width: 320px;
+      width: 90%;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    
+    #login-screen h2 {
+      margin-bottom: 20px;
+      color: #3E2723;
+    }
+    
+    #login-screen input, #login-screen button {
+      width: 100%;
+      margin: 12px 0;
+      padding: 12px;
+      border-radius: 30px;
+      border: 1px solid #D2B48C;
+      box-sizing: border-box;
+      border-color: #CD853F;
+      box-shadow: 0 0 8px rgba(205, 133, 63, 0.2);
+      background-color: #fff;
+      color: #3E2723;
+      text-align: center;
+      font-size: 16px;
+    }
+    
+    #login-screen input:focus, #login-screen button:focus {
+      transition: border-color 0.3s, box-shadow 0.3s;
+      border-color: #b87333; 
+      box-shadow: 0 0 10px rgba(184, 115, 51, 0.5);
+    }
+
+    /* تطبيق الخط على placeholder في شاشة تسجيل الدخول */
+    #login-screen input::placeholder {
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+      color: #A08C7D; /* لون placeholder مقترح */
+    }
+    
+    #login-screen button {
+      background: linear-gradient(90deg, #CD853F, #D2B48C);
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background 0.3s;
+      border: none;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
+    
+    #login-screen button:hover {
+      background: linear-gradient(90deg, #b87333, #c8a070);
+    }
+    
+    .input-icon-container {
+      position: relative;
+    }
+    
+    .input-icon {
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      font-size: 20px;
+      pointer-events: none;
+      color: #D2B48C;
+    }
+    
+    /* القائمة الجانبية */
+    .sidebar {
+      width: 250px;
+      background: rgba(139, 69, 19, 0.9);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      height: 100vh;
+      position: fixed;
+      right: 0;
+      top: 0;
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .sidebar.collapsed {
+      transform: translateX(250px);
+    }
+    
+    .sidebar-header {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .sidebar-header h2 {
+      color: #fff;
+      margin: 0;
+      font-size: 1.2rem;
+    }
+    
+    .toggle-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    
+    .toggle-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .toggle-btn.active {
+      transform: rotate(180deg);
+    }
+    
+    .sidebar-menu {
+      padding: 20px 0;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+    
+    .sidebar-menu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .sidebar-menu li {
+      margin-bottom: 5px;
+    }
+    
+    .sidebar-menu a {
+      display: block;
+      padding: 12px 20px;
+      color: #fff;
+      text-decoration: none;
+      transition: background 0.3s;
+      border-radius: 4px;
+      margin: 0 10px;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .sidebar-menu a i {
+      margin-left: 10px;
+      font-size: 1.2rem;
+      vertical-align: middle;
+    }
+    
+    .sidebar-footer {
+      padding: 15px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.8rem;
+    }
+    
+    /* المحتوى الرئيسي */
+    .main-content {
+      flex: 1;
+      padding: 20px;
+      margin-right: 250px;
+      transition: margin 0.3s ease;
+      margin-top: 70px; /* تم تعديل الهامش العلوي لإفساح المجال للهيدر */
+    }
+    
+    .main-content.expanded {
+      margin-right: 0;
+    }
+    
+    .mobile-header {
+      display: none;
+      padding: 15px;
+      background: rgba(139, 69, 19, 0.9);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 999;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    .mobile-toggle {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: #fff;
+      font-size: 24px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .mobile-toggle:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    
+    /* الهيدر الثابت */
+    .fixed-header {
+      padding: 15px;
+      background: rgba(139, 69, 19, 0.9);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      position: fixed;
+      top: 0;
+      right: 250px;
+      left: 0;
+      z-index: 999;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: right 0.3s ease;
+    }
+    
+    .fixed-header.expanded {
+      right: 0;
+    }
+    
+    .header-title {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+    
+    .header-actions {
+      display: flex;
+      align-items: center;
+    }
+    
+    .header-actions .btn {
+      margin-left: 10px;
+      padding: 8px 15px;
+      font-size: 0.9rem;
+    }
+    
+    /* الأقسام */
+    .section {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+    
+    .section.active {
+      display: block;
+    }
+    
+    .section h3 {
+      margin-top: 0;
+      color: #3E2723;
+      border-bottom: 2px solid #D2B48C;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+    }
+    
+    /* النماذج */
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #5C4033;
+      font-weight: bold;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+    }
+    
+    .form-group label.label-highlight {
+      color: #CD853F; /* Golden color */
+    }
+    
+    .form-control {
+      width: 95%; /* تم تقصير العرض قليلاً */
+      padding: 10px;
+      border: 1px solid #D2B48C;
+      border-radius: 5px;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+      color: #3E2723;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    
+    .form-control:focus {
+      border-color: #CD853F;
+      box-shadow: 0 0 5px rgba(205, 133, 63, 0.3); 
+      outline: none;
+    }
+    
+    textarea.form-control {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(90deg, #CD853F, #D2B48C);
+      color: #fff;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(90deg, #D2B48C, #CD853F);
+    }
+    
+    .btn-danger {
+      background: linear-gradient(90deg, #d9534f, #c9302c);
+      color: #fff;
+    }
+    
+    .btn-danger:hover {
+      background: linear-gradient(90deg, #c9302c, #d9534f);
+    }
+    
+    .btn-secondary {
+      background: linear-gradient(90deg, #6c757d, #5a6268);
+      color: #fff;
+    }
+    
+    .btn-secondary:hover {
+      background: linear-gradient(90deg, #5a6268, #6c757d);
+    }
+    
+    /* تحميل الصور */
+    .image-upload {
+      border: 2px dashed #D2B48C;
+      border-radius: 5px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 15px;
+      position: relative;
+      transition: border-color 0.3s;
+    }
+    
+    .image-upload:hover {
+      border-color: #CD853F;
+    }
+    
+    .image-upload input[type="file"] {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+    
+    .image-upload i {
+      font-size: 40px;
+      color: #D2B48C;
+      margin-bottom: 10px;
+    }
+    
+    .image-upload p {
+      margin: 0;
+      color: #5C4033;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+    }
+    
+    .image-preview {
+      max-width: 100%;
+      margin-top: 15px;
+      border-radius: 5px;
+      display: none;
+      max-height: 300px;
+    }
+    
+    /* رسائل النجاح والخطأ */
+    .alert {
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      display: none;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+    }
+    
+    .alert-success {
+      background-color: #dff0d8;
+      border: 1px solid #d6e9c6;
+      color: #3c763d;
+    }
+    
+    .alert-danger {
+      background-color: #f2dede;
+      border: 1px solid #ebccd1;
+      color: #a94442;
+    }
+    
+    .alert-info {
+      background-color: #d9edf7;
+      border: 1px solid #bce8f1;
+      color: #31708f;
+    }
+    
+    /* تصميم متجاوب */
+    @media (max-width: 768px) {
+      .sidebar {
+        transform: translateX(250px);
+        width: 250px;
+      }
+      
+      .sidebar.active {
+        transform: translateX(0);
+      }
+      
+      .main-content {
+        margin-right: 0;
+        padding-top: 70px;
+      }
+      
+      .mobile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .mobile-header h2 {
+        margin: 0;
+        font-size: 1.2rem;
+        font-family: "IBM Plex Sans Arabic", sans-serif;
+      }
+      
+      .fixed-header {
+        display: none;
+      }
+      
+      .stats-container {
+        flex-direction: column;
+      }
+      
+      .stat-card {
+        margin-bottom: 10px;
+      }
+    }
+    
+    /* تنسيق إضافي لقسم إدارة شيوخ القبائل */
+    #sheikhManagementSection .image-preview-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    #sheikhManagementSection .image-preview {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    /* تنسيق لرسائل النجاح والفشل */
+    .result-message {
+      padding: 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+      display: none;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+    }
+    
+    .success-message {
+      background-color: #dff0d8;
+      border: 1px solid #d6e9c6;
+      color: #3c763d;
+    }
+    
+    .error-message {
+      background-color: #f2dede;
+      border: 1px solid #ebccd1;
+      color: #a94442;
+    }
+    
+    /* تنسيق للمؤشر أثناء التحميل */
+    .loading-spinner {
+      display: none;
+      text-align: center;
+      margin: 15px 0;
+    }
+    
+    .loading-spinner i {
+      font-size: 24px;
+      color: #CD853F;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* تنسيق للمؤشر "جار المعالجة" */
+    .processing-indicator {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    
+    .processing-indicator .spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #CD853F;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+    
+    .processing-indicator p {
+      color: #fff;
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-align: center;
+      margin: 0;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+    }
+    
+    /* تنسيق لقسم التنبيهات */
+    .notifications-container {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .notification-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 15px;
+    }
+    
+    .tab-btn {
+      padding: 8px 15px;
+      border: none;
+      border-radius: 20px;
+      background: #f5f5f5;
+      color: #5C4033;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.3s;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+    }
+    
+    .tab-btn.active {
+      background: linear-gradient(90deg, #CD853F, #D2B48C);
+      color: #fff;
+    }
+    
+    .tab-btn:hover {
+      background: #e0e0e0;
+    }
+    
+    .tab-btn.active:hover {
+      background: linear-gradient(90deg, #b87333, #c8a070);
+    }
+    
+    .notification-item {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-left: 4px solid #CD853F;
+      transition: transform 0.2s;
+    }
+    
+    .notification-item:hover {
+      transform: translateX(-5px);
+    }
+    
+    .notification-item.approved {
+      border-left-color: #5cb85c;
+      background: #f0f8f0;
+    }
+    
+    .notification-item.rejected {
+      border-left-color: #d9534f;
+      background: #fdf2f2;
+    }
+    
+    .notification-item.pending {
+      border-left-color: #f0ad4e;
+      background: #fdf8f0;
+    }
+    
+    .notification-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .notification-status {
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    
+    .notification-status.approved {
+      background: #5cb85c;
+      color: #fff;
+    }
+    
+    .notification-status.rejected {
+      background: #d9534f;
+      color: #fff;
+    }
+    
+    .notification-status.pending {
+      background: #f0ad4e;
+      color: #fff;
+    }
+    
+    .notification-content {
+      color: #5C4033;
+      line-height: 1.5;
+    }
+    
+    .notification-time {
+      font-size: 12px;
+      color: #999;
+      margin-top: 10px;
+    }
+    
+    .no-notifications {
+      text-align: center;
+      color: #999;
+      padding: 40px;
+      font-style: italic;
+    }
+    
+    /* تنسيق خاص للحقول الإلزامية */
+    .required-field {
+      border-left: 3px solid #d9534f;
+      padding-left: 10px;
+    }
+    
+    .required-field label::after {
+      content: " *";
+      color: #d9534f;
+    }
+    
+    *:not(i),
+    *:not(i)::before,
+    *:not(i)::after,
+    input::placeholder,
+    textarea::placeholder {
+      font-family: "IBM Plex Sans Arabic", sans-serif !important;
+    }
+
+    body.login-active .fixed-header,
+    body.login-active .mobile-header {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- مؤشر "جار المعالجة" -->
+  <div class="processing-indicator" id="processingIndicator">
+    <div class="spinner"></div>
+    <p>جار المعالجة...</p>
+  </div>
+
+  <!-- صفحة تسجيل الدخول -->
+  <div id="login-screen">
+    <h2>تسجيل الدخول - الوايلي</h2>
+    <div class="input-icon-container">
+      <i class="bx bx-user input-icon"></i>
+      <input type="text" id="username" placeholder="اسم المستخدم">
+    </div>
+    <div class="input-icon-container">
+      <i class="bx bx-lock input-icon"></i>
+      <input type="password" id="password" placeholder="كلمة المرور" enterkeyhint="go">
+    </div>
+    <button id="loginButton"><i class="bx bx-log-in-circle"></i> دخول</button>
+  </div>
+
+  <!-- القائمة الجانبية -->
+  <div class="sidebar collapsed" id="sidebar" style="display: none;">
+    <div class="sidebar-header">
+      <h2>لوحة الوايلي</h2>
+      <button class="toggle-btn" id="sidebarToggle">
+        <i class="bx bx-x"></i>
+      </button>
+    </div>
+    <div class="sidebar-menu">
+      <ul>
+        <li><a href="#" data-section="dashboardSection"><i class="bx bx-home"></i> الرئيسية</a></li>
+        <li><a href="#" data-section="notificationsSection"><i class="bx bx-bell"></i> التنبيهات (<span id="notificationCount">0</span>)</a></li>
+        <li><a href="#" data-section="tribeCodeSection"><i class="bx bx-hash"></i> إضافة رمز قبيلة</a></li>
+        <li><a href="#" data-section="tribeHistorySection"><i class="bx bx-book-open"></i> إضافة معلومات قبيلة</a></li>
+        <li><a href="#" data-section="sheikhManagementSection"><i class="bx bx-user"></i> إضافة شيخ قبيلة</a></li>
+        <li><a href="#" data-section="deleteSheikhSection"><i class="bx bx-user-x"></i> حذف شيخ قبيلة</a></li>
+        <li><a href="#" data-section="deleteCodeSection"><i class="bx bx-trash"></i> حذف رمز قبيلة</a></li>
+        <li><a href="#" data-section="deleteHistorySection"><i class="bx bx-trash-alt"></i> حذف معلومات قبيلة</a></li>
+        <li><a href="#" id="logoutLink"><i class="bx bx-log-out"></i> تسجيل الخروج</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-footer">
+      تم تطويرها بواسطه سهم الحميقاني   </div>
+  </div>
+  
+  <!-- رأس الصفحة للجوال -->
+  <div class="mobile-header" style="display: none;">
+    <h2>لوحة تحكم الوايلي</h2>
+    <button class="mobile-toggle" id="mobileToggle">
+      <i class="bx bx-menu"></i>
+    </button>
+  </div>
+  
+  <!-- الهيدر الثابت -->
+  <div class="fixed-header" id="fixedHeader" style="display: none;">
+    <h2 class="header-title">لوحة تحكم المساعد - رموز القبائل</h2>
+    <div class="header-actions">
+      <button class="btn btn-secondary" id="logoutHeaderBtn">
+        <i class="bx bx-log-out"></i> تسجيل الخروج
+      </button>
+    </div>
+  </div>
+  
+  <!-- المحتوى الرئيسي -->
+  <div class="main-content expanded" id="mainContent" style="display: none;">
+    <!-- قسم الرئيسية -->
+    <div class="section active" id="dashboardSection">
+      <h3>لوحة المعلومات الرئيسية</h3>
+      
+      <div class="alert alert-info">
+        <strong>مرحباً بك في لوحة تحكم المساعد!</strong><br>
+        يمكنك من خلال هذه اللوحة إرسال طلبات إضافة أو حذف أو تعديل البيانات للمالك للموافقة عليها.
+        جميع الطلبات تحتاج موافقة المالك قبل التنفيذ.
+      </div>
+      
+      <div class="notifications-container">
+        <h4>آخر التنبيهات</h4>
+        <div id="recentNotifications">
+          <div class="no-notifications">لا توجد تنبيهات حديثة</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- قسم التنبيهات -->
+    <div class="section" id="notificationsSection">
+      <h3>التنبيهات</h3>
+      
+      <div class="notification-tabs">
+        <button class="tab-btn active" data-filter="all">الكل</button>
+        <button class="tab-btn" data-filter="approved">الموافق عليها</button>
+        <button class="tab-btn" data-filter="rejected">المرفوضة</button>
+        <button class="tab-btn" data-filter="pending">المعلقة</button>
+      </div>
+      
+      <div id="notificationsList">
+        <div class="no-notifications">لا توجد تنبيهات</div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 20px;">
+        <button class="btn btn-danger" id="deleteAllNotificationsBtn" onclick="confirmDeleteAllNotifications()">
+          <i class="bx bx-trash"></i> حذف جميع التنبيهات
+        </button>
+      </div>
+    </div>
+    
+    <!-- قسم طلب إضافة رمز قبيلة -->
+    <div class="section" id="tribeCodeSection">
+      <h3>طلب إضافة رمز قبيلة</h3>
+      <div class="alert alert-success" id="tribeCodeSuccess">تم إرسال طلبك للمالك، وستصلك نتيجة المراجعة قريباً.</div>
+      <div class="alert alert-danger" id="tribeCodeError">حدث خطأ أثناء إرسال الطلب.</div>
+      <form id="tribeCodeForm">
+        <div class="form-group">
+          <label for="tribeCode">رمز القبيلة</label>
+          <input type="text" class="form-control" id="tribeCode" placeholder="مثال: 711" required>
+        </div>
+        <div class="form-group">
+          <label for="tribeName">اسم القبيلة</label>
+          <input type="text" class="form-control" id="tribeName" placeholder="مثال: دهم" required>
+        </div>
+        <div class="form-group required-field">
+          <label for="proofOfOwnership">أرفق إثبات ملكيتك للرمز</label>
+          <div class="image-upload">
+            <i class="bx bx-image-add"></i>
+            <p>انقر لاختيار صورة إثبات الملكية أو اسحب الصورة هنا</p>
+            <input type="file" id="proofOfOwnership" accept="image/jpeg, image/png, image/webp" required>
+          </div>
+          <div class="image-preview-container">
+            <img id="proofPreview" class="image-preview" alt="معاينة إثبات الملكية">
+          </div>
+          <p class="text-muted" id="proofInfo"></p>
+        </div>
+        <button type="submit" class="btn btn-primary">إرسال الطلب</button>
+      </form>
+    </div>
+    
+    <!-- قسم طلب إضافة معلومات قبيلة -->
+    <div class="section" id="tribeHistorySection">
+      <h3>طلب إضافة معلومات قبيلة</h3>
+      <div class="alert alert-success" id="tribeHistorySuccess">تم إرسال طلبك للمالك، وستصلك نتيجة المراجعة قريباً.</div>
+      <div class="alert alert-danger" id="tribeHistoryError">حدث خطأ أثناء إرسال الطلب.</div>
+      <form id="tribeHistoryForm">
+        <div class="form-group">
+          <label for="historyTribeName">اسم القبيلة</label>
+          <input type="text" class="form-control" id="historyTribeName" placeholder="مثال: دهم" required>
+        </div>
+        <div class="form-group">
+          <label for="tribeHistory">معلومات وتاريخ القبيلة</label>
+          <textarea class="form-control" id="tribeHistory" placeholder="أدخل معلومات وتاريخ القبيلة هنا..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">إرسال الطلب</button>
+      </form>
+    </div>
+    
+    <!-- قسم طلب إضافة شيخ قبيلة -->
+    <div class="section" id="sheikhManagementSection">
+      <h3>طلب إضافة شيخ قبيلة</h3>
+      
+      <!-- رسائل النجاح والفشل -->
+      <div class="result-message success-message" id="sheikhSuccessMessage">تم إرسال طلبك للمالك، وستصلك نتيجة المراجعة قريباً.</div>
+      <div class="result-message error-message" id="sheikhErrorMessage">حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.</div>
+      
+      <!-- مؤشر التحميل -->
+      <div class="loading-spinner" id="sheikhLoadingSpinner">
+        <i class="bx bx-loader-alt"></i>
+        <p>جار إرسال الطلب...</p>
+      </div>
+      
+      <form id="sheikhForm">
+        <div class="form-group">
+          <label for="sheikhTribeName">اسم القبيلة</label>
+          <input type="text" class="form-control" id="sheikhTribeName" placeholder="مثال: آل حميقان" required>
+        </div>
+        <div class="form-group">
+          <label for="sheikhName">اسم الشيخ</label>
+          <input type="text" class="form-control" id="sheikhName" placeholder="مثال: الشيخ محمد بن ناصر" required>
+        </div>
+        <div class="form-group">
+          <label>صورة الشيخ</label>
+          <div class="image-upload">
+            <i class="bx bx-image-add"></i>
+            <p>انقر لاختيار صورة أو اسحب الصورة هنا</p>
+            <input type="file" id="sheikhImage" accept="image/jpeg, image/png, image/webp" required>
+          </div>
+          <div class="image-preview-container">
+            <img id="sheikhImagePreview" class="image-preview" alt="معاينة صورة الشيخ">
+          </div>
+          <p class="text-muted" id="imageInfo"></p>
+        </div>
+        <button type="submit" class="btn btn-primary" id="addSheikhBtn">إرسال الطلب</button>
+      </form>
+    </div>
+    
+    <!-- قسم طلب حذف شيخ قبيلة -->
+    <div class="section" id="deleteSheikhSection">
+      <h3>طلب حذف شيخ قبيلة</h3>
+      <div class="alert alert-success" id="deleteSheikhSuccess">تم إرسال طلبك للمالك، وستصلك نتيجة المراجعة قريباً.</div>
+      <div class="alert alert-danger" id="deleteSheikhError">حدث خطأ أثناء إرسال الطلب.</div>
+      <form id="deleteSheikhForm">
+        <div class="form-group">
+          <label for="deleteSheikhTribeName">اسم القبيلة</label>
+          <input type="text" class="form-control" id="deleteSheikhTribeName" placeholder="أدخل اسم القبيلة لحذف شيخها" required>
+        </div>
+        <div class="form-group required-field">
+          <label for="deleteSheikhReason">سبب طلب الحذف</label>
+          <textarea class="form-control" id="deleteSheikhReason" placeholder="يرجى توضيح سبب طلب حذف شيخ القبيلة..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-danger">إرسال طلب الحذف</button>
+      </form>
+    </div>
+    
+    <!-- قسم طلب حذف رمز قبيلة -->
+    <div class="section" id="deleteCodeSection">
+      <h3>طلب حذف رمز قبيلة</h3>
+      <div class="alert alert-success" id="deleteCodeSuccess">تم إرسال طلبك للمالك، وستصلك نتيجة المراجعة قريباً.</div>
+      <div class="alert alert-danger" id="deleteCodeError">حدث خطأ أثناء إرسال الطلب.</div>
+      <form id="deleteCodeForm">
+        <div class="form-group">
+          <label for="deleteCode">رمز القبيلة</label>
+          <input type="text" class="form-control" id="deleteCode" placeholder="أدخل رمز القبيلة للحذف" required>
+        </div>
+        <div class="form-group">
+          <label for="deleteCodeTribeName">اسم القبيلة</label>
+          <input type="text" class="form-control" id="deleteCodeTribeName" placeholder="أدخل اسم القبيلة للتأكيد" required>
+        </div>
+        <div class="form-group required-field">
+          <label for="deleteCodeReason">سبب طلب الحذف</label>
+          <textarea class="form-control" id="deleteCodeReason" placeholder="يرجى توضيح سبب طلب حذف رمز القبيلة..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-danger">إرسال طلب الحذف</button>
+      </form>
+    </div>
+    
+    <!-- قسم طلب حذف معلومات قبيلة -->
+    <div class="section" id="deleteHistorySection">
+      <h3>طلب حذف معلومات قبيلة</h3>
+      <div class="alert alert-success" id="deleteHistorySuccess">تم إرسال طلبك للمالك، وستصلك نتيجة المراجعة قريباً.</div>
+      <div class="alert alert-danger" id="deleteHistoryError">حدث خطأ أثناء إرسال الطلب.</div>
+      <form id="deleteHistoryForm">
+        <div class="form-group">
+          <label for="tribeNameDeleteHistory">اسم القبيلة</label>
+          <input type="text" class="form-control" id="tribeNameDeleteHistory" placeholder="أدخل اسم القبيلة لحذف معلوماتها" required>
+        </div>
+        <div class="form-group required-field">
+          <label for="deleteHistoryReason">سبب طلب الحذف</label>
+          <textarea class="form-control" id="deleteHistoryReason" placeholder="يرجى توضيح سبب طلب حذف معلومات القبيلة..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-danger">إرسال طلب الحذف</button>
+      </form>
+    </div>
+  </div>
+  
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where, doc, serverTimestamp, orderBy, onSnapshot, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // تكوين Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDGLwl69D9W5c03G5WsfU8pahvVHL4zKzs",
+      authDomain: "tribes-project-18d2b.firebaseapp.com",
+      projectId: "tribes-project-18d2b",
+      messagingSenderId: "375771927234",
+      appId: "1:375771927234:web:5fa0ec96fd9c80fce7615b"
+    };
+
+    // تهيئة Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // معرف المساعد الحالي (يجب أن يكون فريد لكل مساعد)
+    const ASSISTANT_ID = "assistant_001"; // يمكن تغييره حسب المساعد المسجل
+
+    // عناصر القائمة الجانبية
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mainContent = document.getElementById('mainContent');
+    const fixedHeader = document.getElementById('fixedHeader');
+
+    window.addEventListener('DOMContentLoaded', () => {
+      fixedHeader.style.display = 'none';
+      fixedHeader.classList.remove('expanded');
+    });
+
+    const menuLinks = document.querySelectorAll('.sidebar-menu a');
+    const sections = document.querySelectorAll('.section');
+    const processingIndicator = document.getElementById('processingIndicator');
+    const loginScreen = document.getElementById('login-screen');
+    
+    // عناصر تسجيل الدخول
+    const loginButton = document.getElementById('loginButton');
+    const logoutLink = document.getElementById('logoutLink');
+    const logoutHeaderBtn = document.getElementById('logoutHeaderBtn');
+
+    // التحقق من حالة تسجيل الدخول
+    function checkLoginStatus() {
+      // دائماً عرض شاشة تسجيل الدخول عند تحميل الصفحة
+      showLoginForm();
+    }
+    
+    // عرض نموذج تسجيل الدخول
+    function showLoginForm() {
+      fixedHeader.style.display = 'none';
+      fixedHeader.classList.remove('expanded');
+      loginScreen.style.display = 'block';
+      mainContent.style.display = 'none';
+      sidebar.style.display = 'none';
+      document.body.classList.add('login-active');
+      fixedHeader.style.display = 'none';
+      document.querySelector('.mobile-header').style.display = 'none';
+    }
+    
+    // عرض لوحة التحكم
+    function showDashboard() {
+      document.body.classList.remove('login-active');
+      loginScreen.style.display = 'none';
+      mainContent.style.display = 'block';
+      sidebar.style.display = 'flex';
+      fixedHeader.style.display = 'flex';
+      fixedHeader.classList.add('expanded');
+      if (window.innerWidth <= 768) {
+        document.querySelector('.mobile-header').style.display = 'flex';
+      }
+      loadNotifications();
+      setupNotificationListener();
+    }
+    
+    // معالجة تسجيل الدخول
+    loginButton.addEventListener('click', function() {
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+      
+      // بيانات تسجيل الدخول للمساعد
+      if (username === "saleh" && password === "alwaily") {
+        showDashboard();
+      } else {
+        alert("بيانات الدخول غير صحيحة!");
+      }
+    });
+    
+    // إضافة مستمع للضغط على Enter في حقل كلمة المرور
+    const passwordInput = document.getElementById("password");
+    if (passwordInput) {
+      passwordInput.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+          loginButton.click();
+        }
+      });
+    }
+    
+    // تسجيل الخروج
+    function handleLogout() {
+      showLoginForm();
+    }
+    
+    logoutLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      handleLogout();
+    });
+    
+    logoutHeaderBtn.addEventListener('click', handleLogout);
+
+    // تبديل القائمة الجانبية
+    sidebarToggle.addEventListener('click', toggleSidebar);
+    mobileToggle.addEventListener('click', toggleSidebar);
+
+    function toggleSidebar() {
+      sidebar.classList.toggle('collapsed');
+      sidebar.classList.toggle('active');
+      mainContent.classList.toggle('expanded');
+      fixedHeader.classList.toggle('expanded');
+      
+      // تبديل أيقونة الزر
+      const icon = sidebarToggle.querySelector('i');
+      if (sidebar.classList.contains('collapsed')) {
+        icon.className = 'bx bx-menu';
+      } else {
+        icon.className = 'bx bx-x';
+      }
+      
+      // تبديل أيقونة الزر في الهاتف
+      const mobileIcon = mobileToggle.querySelector('i');
+      if (sidebar.classList.contains('active')) {
+        mobileIcon.className = 'bx bx-x';
+      } else {
+        mobileIcon.className = 'bx bx-menu';
+      }
+    }
+
+    // التنقل بين الأقسام
+    menuLinks.forEach(link => {
+      if (link.id !== 'logoutLink') {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // إزالة الفئة النشطة من جميع الروابط
+          menuLinks.forEach(item => item.classList.remove('active'));
+          
+          // إضافة الفئة النشطة للرابط المحدد
+          this.classList.add('active');
+          
+          // إخفاء جميع الأقسام
+          sections.forEach(section => section.classList.remove('active'));
+          
+          // إظهار القسم المحدد
+          const targetSection = document.getElementById(this.getAttribute('data-section'));
+          if (targetSection) {
+            targetSection.classList.add('active');
+            
+            // إذا كان القسم هو التنبيهات، قم بتحديث البيانات
+            if (targetSection.id === 'notificationsSection') {
+              loadNotifications();
+            }
+          }
+          
+          // إغلاق القائمة الجانبية تلقائياً بعد اختيار قسم (خاصة في الجوال)
+          if (window.innerWidth <= 768 && !sidebar.classList.contains('collapsed')) {
+            toggleSidebar();
+          }
+        });
+      }
+    });
+
+    // إضافة مستمع لإغلاق القائمة عند النقر خارجها
+    document.addEventListener('click', function(event) {
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnMobileToggle = mobileToggle.contains(event.target);
+      const isSidebarActive = sidebar.classList.contains('active');
+
+      if (!isClickInsideSidebar && !isClickOnMobileToggle && isSidebarActive) {
+        toggleSidebar();
+      }
+    });
+
+    // معاينة الصور
+    function setupImagePreview(inputId, previewId, infoId) {
+      const imageInput = document.getElementById(inputId);
+      const imagePreview = document.getElementById(previewId);
+      const imageInfo = document.getElementById(infoId);
+      const MAX_IMAGE_SIZE_MB = 5;
+      let selectedImageBase64 = null;
+
+      imageInput.addEventListener('change', function() {
+        const file = this.files[0];
+        selectedImageBase64 = null;
+        imagePreview.style.display = 'none';
+        imageInfo.textContent = '';
+
+        if (file) {
+          // التحقق من نوع الملف
+          const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+          if (!allowedTypes.includes(file.type)) {
+            imageInfo.textContent = 'صيغة الصورة غير مدعومة. يرجى اختيار JPEG, PNG, أو WebP.';
+            imageInfo.style.color = 'red';
+            this.value = '';
+            return;
+          }
+
+          // التحقق من حجم الملف
+          const fileSizeMB = file.size / 1024 / 1024;
+          if (fileSizeMB > MAX_IMAGE_SIZE_MB) {
+            imageInfo.textContent = `حجم الصورة كبير جداً (${fileSizeMB.toFixed(2)} MB). الحد الأقصى هو ${MAX_IMAGE_SIZE_MB} MB.`;
+            imageInfo.style.color = 'red';
+            this.value = '';
+            return;
+          }
+
+          // عرض معاينة الصورة وقراءة Base64
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            imagePreview.src = e.target.result;
+            imagePreview.style.display = 'block';
+            imageInfo.textContent = `حجم الصورة: ${fileSizeMB.toFixed(2)} MB`;
+            imageInfo.style.color = '#5C4033';
+            selectedImageBase64 = e.target.result;
+            // حفظ Base64 في عنصر مخفي للوصول إليه لاحقاً
+            imageInput.dataset.base64 = selectedImageBase64;
+          };
+          reader.onerror = function(error) {
+            console.error("خطأ في قراءة الملف:", error);
+            imageInfo.textContent = 'حدث خطأ أثناء قراءة الصورة.';
+            imageInfo.style.color = 'red';
+            selectedImageBase64 = null;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    // إعداد معاينة الصور
+    setupImagePreview('sheikhImage', 'sheikhImagePreview', 'imageInfo');
+    setupImagePreview('proofOfOwnership', 'proofPreview', 'proofInfo');
+
+    // دالة إرسال الطلبات
+    async function sendRequest(requestType, details) {
+      try {
+        const requestData = {
+          assistantId: ASSISTANT_ID,
+          requestType: requestType,
+          status: 'pending',
+          timestamp: serverTimestamp(),
+          details: details
+        };
+
+        await addDoc(collection(db, "requests"), requestData);
+        return true;
+      } catch (error) {
+        console.error("خطأ في إرسال الطلب: ", error);
+        return false;
+      }
+    }
+
+    // نموذج طلب إضافة رمز قبيلة
+    const tribeCodeForm = document.getElementById('tribeCodeForm');
+    const tribeCodeSuccess = document.getElementById('tribeCodeSuccess');
+    const tribeCodeError = document.getElementById('tribeCodeError');
+
+    tribeCodeForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const code = document.getElementById('tribeCode').value.trim();
+      const name = document.getElementById('tribeName').value.trim();
+      const proofInput = document.getElementById('proofOfOwnership');
+      const proofBase64 = proofInput.dataset.base64;
+      
+      tribeCodeSuccess.style.display = 'none';
+      tribeCodeError.style.display = 'none';
+      
+      if (!proofBase64) {
+        tribeCodeError.textContent = 'يرجى إرفاق إثبات ملكية الرمز.';
+        tribeCodeError.style.display = 'block';
+        return;
+      }
+      
+      // إظهار مؤشر "جار المعالجة"
+      processingIndicator.style.display = 'flex';
+      
+      const details = {
+        tribeName: name,
+        tribeCode: code,
+        proofOfOwnershipUrl: proofBase64
+      };
+      
+      const success = await sendRequest('add_tribe_code', details);
+      
+      if (success) {
+        tribeCodeSuccess.style.display = 'block';
+        tribeCodeForm.reset();
+        document.getElementById('proofPreview').style.display = 'none';
+        document.getElementById('proofInfo').textContent = '';
+        setTimeout(() => { tribeCodeSuccess.style.display = 'none'; }, 5000);
+      } else {
+        tribeCodeError.style.display = 'block';
+        setTimeout(() => { tribeCodeError.style.display = 'none'; }, 5000);
+      }
+      
+      // إخفاء مؤشر "جار المعالجة"
+      processingIndicator.style.display = 'none';
+    });
+
+    // نموذج طلب إضافة معلومات قبيلة
+    const tribeHistoryForm = document.getElementById('tribeHistoryForm');
+    const tribeHistorySuccess = document.getElementById('tribeHistorySuccess');
+    const tribeHistoryError = document.getElementById('tribeHistoryError');
+
+    tribeHistoryForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('historyTribeName').value.trim();
+      const history = document.getElementById('tribeHistory').value.trim();
+      
+      tribeHistorySuccess.style.display = 'none';
+      tribeHistoryError.style.display = 'none';
+      
+      // إظهار مؤشر "جار المعالجة"
+      processingIndicator.style.display = 'flex';
+      
+      const details = {
+        tribeName: name,
+        informationContent: history
+      };
+      
+      const success = await sendRequest('add_information', details);
+      
+      if (success) {
+        tribeHistorySuccess.style.display = 'block';
+        tribeHistoryForm.reset();
+        setTimeout(() => { tribeHistorySuccess.style.display = 'none'; }, 5000);
+      } else {
+        tribeHistoryError.style.display = 'block';
+        setTimeout(() => { tribeHistoryError.style.display = 'none'; }, 5000);
+      }
+      
+      // إخفاء مؤشر "جار المعالجة"
+      processingIndicator.style.display = 'none';
+    });
+
+    // نموذج طلب إضافة شيخ قبيلة
+    const sheikhForm = document.getElementById('sheikhForm');
+    const sheikhSuccessMessage = document.getElementById('sheikhSuccessMessage');
+    const sheikhErrorMessage = document.getElementById('sheikhErrorMessage');
+    const sheikhLoadingSpinner = document.getElementById('sheikhLoadingSpinner');
+    const addSheikhBtn = document.getElementById('addSheikhBtn');
+
+    sheikhForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const tribeName = document.getElementById('sheikhTribeName').value.trim();
+      const sheikhName = document.getElementById('sheikhName').value.trim();
+      const imageInput = document.getElementById('sheikhImage');
+      const imageBase64 = imageInput.dataset.base64;
+      
+      // إخفاء الرسائل وإظهار مؤشر التحميل
+      sheikhSuccessMessage.style.display = 'none';
+      sheikhErrorMessage.style.display = 'none';
+      sheikhLoadingSpinner.style.display = 'block';
+      addSheikhBtn.disabled = true;
+      
+      if (!imageBase64) {
+        sheikhErrorMessage.textContent = "يرجى اختيار صورة للشيخ أولاً.";
+        sheikhErrorMessage.style.display = 'block';
+        sheikhLoadingSpinner.style.display = 'none';
+        addSheikhBtn.disabled = false;
+        return;
+      }
+      
+      try {
+        // إظهار مؤشر المعالجة العام
+        processingIndicator.style.display = 'flex'; 
+        processingIndicator.querySelector('p').textContent = 'جارٍ إرسال الطلب...';
+
+        const details = {
+          tribeName: tribeName,
+          chiefName: sheikhName,
+          chiefImageUrl: imageBase64
+        };
+        
+        const success = await sendRequest('add_chief', details);
+        
+        if (success) {
+          sheikhSuccessMessage.style.display = 'block';
+          sheikhForm.reset();
+          document.getElementById('sheikhImagePreview').style.display = 'none';
+          document.getElementById('imageInfo').textContent = '';
+          setTimeout(() => { sheikhSuccessMessage.style.display = 'none'; }, 10000);
+        } else {
+          sheikhErrorMessage.textContent = 'حدث خطأ أثناء إرسال الطلب.';
+          sheikhErrorMessage.style.display = 'block';
+        }
+
+      } catch (error) {
+        console.error("خطأ في إرسال طلب إضافة شيخ القبيلة: ", error);
+        sheikhErrorMessage.textContent = `حدث خطأ أثناء إرسال الطلب: ${error.message}`;
+        sheikhErrorMessage.style.display = 'block';
+      } finally {
+        sheikhLoadingSpinner.style.display = 'none';
+        processingIndicator.style.display = 'none';
+        addSheikhBtn.disabled = false;
+      }
+    });
+
+    // نموذج طلب حذف شيخ قبيلة
+    const deleteSheikhForm = document.getElementById('deleteSheikhForm');
+    const deleteSheikhSuccess = document.getElementById('deleteSheikhSuccess');
+    const deleteSheikhError = document.getElementById('deleteSheikhError');
+
+    deleteSheikhForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const tribeName = document.getElementById('deleteSheikhTribeName').value.trim();
+      const reason = document.getElementById('deleteSheikhReason').value.trim();
+      
+      deleteSheikhSuccess.style.display = 'none';
+      deleteSheikhError.style.display = 'none';
+      
+      // إظهار مؤشر "جار المعالجة"
+      processingIndicator.style.display = 'flex';
+      processingIndicator.querySelector('p').textContent = 'جارٍ إرسال طلب الحذف...';
+      
+      const details = {
+        tribeName: tribeName,
+        reason: reason
+      };
+      
+      const success = await sendRequest('delete_chief', details);
+      
+      if (success) {
+        deleteSheikhSuccess.style.display = 'block';
+        deleteSheikhForm.reset();
+        setTimeout(() => { deleteSheikhSuccess.style.display = 'none'; }, 5000);
+      } else {
+        deleteSheikhError.style.display = 'block';
+        setTimeout(() => { deleteSheikhError.style.display = 'none'; }, 5000);
+      }
+      
+      // إخفاء مؤشر "جار المعالجة"
+      processingIndicator.style.display = 'none';
+    });
+
+    // نموذج طلب حذف رمز قبيلة
+    const deleteCodeForm = document.getElementById('deleteCodeForm');
+    const deleteCodeSuccess = document.getElementById('deleteCodeSuccess');
+    const deleteCodeError = document.getElementById('deleteCodeError');
+
+    deleteCodeForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const code = document.getElementById('deleteCode').value.trim();
+      const tribeName = document.getElementById('deleteCodeTribeName').value.trim();
+      const reason = document.getElementById('deleteCodeReason').value.trim();
+      
+      deleteCodeSuccess.style.display = 'none';
+      deleteCodeError.style.display = 'none';
+      
+      // إظهار مؤشر "جار المعالجة"
+      processingIndicator.style.display = 'flex';
+      processingIndicator.querySelector('p').textContent = 'جارٍ إرسال طلب الحذف...';
+      
+      const details = {
+        tribeName: tribeName,
+        tribeCode: code,
+        reason: reason
+      };
+      
+      const success = await sendRequest('delete_tribe_code', details);
+      
+      if (success) {
+        deleteCodeSuccess.style.display = 'block';
+        deleteCodeForm.reset();
+        setTimeout(() => { deleteCodeSuccess.style.display = 'none'; }, 5000);
+      } else {
+        deleteCodeError.style.display = 'block';
+        setTimeout(() => { deleteCodeError.style.display = 'none'; }, 5000);
+      }
+      
+      // إخفاء مؤشر "جار المعالجة"
+      processingIndicator.style.display = 'none';
+    });
+
+    // نموذج طلب حذف معلومات قبيلة
+    const deleteHistoryForm = document.getElementById('deleteHistoryForm');
+    const deleteHistorySuccess = document.getElementById('deleteHistorySuccess');
+    const deleteHistoryError = document.getElementById('deleteHistoryError');
+
+    deleteHistoryForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('tribeNameDeleteHistory').value.trim();
+      const reason = document.getElementById('deleteHistoryReason').value.trim();
+      
+      deleteHistorySuccess.style.display = 'none';
+      deleteHistoryError.style.display = 'none';
+      
+      // إظهار مؤشر "جار المعالجة"
+      processingIndicator.style.display = 'flex';
+      processingIndicator.querySelector('p').textContent = 'جارٍ إرسال طلب الحذف...';
+      
+      const details = {
+        tribeName: name,
+        reason: reason
+      };
+      
+      const success = await sendRequest('delete_information', details);
+      
+      if (success) {
+        deleteHistorySuccess.style.display = 'block';
+        deleteHistoryForm.reset();
+        setTimeout(() => { deleteHistorySuccess.style.display = 'none'; }, 5000);
+      } else {
+        deleteHistoryError.style.display = 'block';
+        setTimeout(() => { deleteHistoryError.style.display = 'none'; }, 5000);
+      }
+      
+      // إخفاء مؤشر "جار المعالجة"
+      processingIndicator.style.display = 'none';
+    });
+
+    // تحميل التنبيهات
+    async function loadNotifications() {
+      try {
+        const q = query(
+          collection(db, "notifications"), 
+          where("assistantId", "==", ASSISTANT_ID)
+        );
+        const snapshot = await getDocs(q);
+        
+        const notifications = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          notifications.push({
+            id: doc.id,
+            ...data,
+            timestamp: data.timestamp?.toDate() || new Date()
+          });
+        });
+        
+        // ترتيب التنبيهات حسب التاريخ (الأحدث أولاً)
+        notifications.sort((a, b) => b.timestamp - a.timestamp);
+        
+        displayNotifications(notifications);
+        updateNotificationCount(notifications.length);
+        displayRecentNotifications(notifications.slice(0, 3)); // أحدث 3 تنبيهات
+        
+      } catch (error) {
+        console.error("خطأ في تحميل التنبيهات: ", error);
+      }
+    }
+
+    // عرض التنبيهات
+    function displayNotifications(notifications, filter = 'all') {
+      const notificationsList = document.getElementById('notificationsList');
+      
+      let filteredNotifications = notifications;
+      if (filter !== 'all') {
+        filteredNotifications = notifications.filter(n => n.status === filter);
+      }
+      
+      if (filteredNotifications.length === 0) {
+        notificationsList.innerHTML = '<div class="no-notifications">لا توجد تنبيهات</div>';
+        return;
+      }
+      
+      notificationsList.innerHTML = filteredNotifications.map(notification => {
+        const statusText = getStatusText(notification.status);
+        const content = formatNotificationContent(notification);
+        const timeText = formatTime(notification.timestamp);
+        
+        return `
+          <div class="notification-item ${notification.status}">
+            <div class="notification-header">
+              <span class="notification-status ${notification.status}">${statusText}</span>
+              <span class="notification-time">${timeText}</span>
+            </div>
+            <div class="notification-content">${content}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // عرض التنبيهات الحديثة في الصفحة الرئيسية
+    function displayRecentNotifications(notifications) {
+      const recentNotifications = document.getElementById('recentNotifications');
+      
+      if (notifications.length === 0) {
+        recentNotifications.innerHTML = '<div class="no-notifications">لا توجد تنبيهات حديثة</div>';
+        return;
+      }
+      
+      recentNotifications.innerHTML = notifications.map(notification => {
+        const statusText = getStatusText(notification.status);
+        const content = formatNotificationContent(notification);
+        const timeText = formatTime(notification.timestamp);
+        
+        return `
+          <div class="notification-item ${notification.status}">
+            <div class="notification-header">
+              <span class="notification-status ${notification.status}">${statusText}</span>
+              <span class="notification-time">${timeText}</span>
+            </div>
+            <div class="notification-content">${content}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // تحديث عداد التنبيهات
+    function updateNotificationCount(count) {
+      const notificationCount = document.getElementById('notificationCount');
+      if (notificationCount) {
+        notificationCount.textContent = count;
+      }
+    }
+
+    // تنسيق محتوى التنبيه
+    function formatNotificationContent(notification) {
+      const details = notification.details || {};
+      let content = '';
+      
+      if (notification.status === 'approved') {
+        // التمييز بين طلبات الإضافة والحذف
+        const isDeleteRequest = notification.requestType && notification.requestType.startsWith('delete_');
+        
+        if (isDeleteRequest) {
+          content += '✅ تمت الموافقة على طلب الحذف<br>';
+          
+          switch (notification.notificationType) {
+            case 'tribe_code':
+              content += `حذف رمز القبيلة<br>القبيلة: ${details.tribeName}<br>الرمز: ${details.tribeCode}`;
+              break;
+            case 'chief':
+              content += `حذف شيخ قبيلة<br>القبيلة: ${details.tribeName}`;
+              break;
+            case 'information':
+              content += `حذف معلومات<br>القبيلة: ${details.tribeName}`;
+              break;
+          }
+        } else {
+          content += '✅ تمت الموافقة على طلبك ';
+          
+          switch (notification.notificationType) {
+            case 'tribe_code':
+              content += `بإضافة رمز القبيلة<br>القبيلة: ${details.tribeName}<br>الرمز: ${details.tribeCode}`;
+              break;
+            case 'chief':
+              content += `بإضافة شيخ قبيلة<br>القبيلة: ${details.tribeName}<br>اسم الشيخ: ${details.chiefName}`;
+              break;
+            case 'information':
+              content += `بإضافة معلومات<br>القبيلة: ${details.tribeName}`;
+              break;
+          }
+        }
+      } else if (notification.status === 'rejected') {
+        content += '❌ تم رفض طلبك<br>';
+        content += `القبيلة: ${details.tribeName || 'غير محدد'}<br>`;
+        if (details.rejectionReason) {
+          content += `السبب: ${details.rejectionReason}`;
+        }
+      }
+      
+      return content;
+    }
+
+    // تنسيق الوقت
+    function formatTime(date) {
+      if (!date) return '';
+      
+      const now = new Date();
+      const diff = now - date;
+      const minutes = Math.floor(diff / 60000);
+      const hours = Math.floor(diff / 3600000);
+      const days = Math.floor(diff / 86400000);
+      
+      if (minutes < 1) return 'الآن';
+      if (minutes < 60) return `منذ ${minutes} دقيقة`;
+      if (hours < 24) return `منذ ${hours} ساعة`;
+      return `منذ ${days} يوم`;
+    }
+
+    // الحصول على نص الحالة
+    function getStatusText(status) {
+      switch (status) {
+        case 'approved': return 'موافق عليه';
+        case 'rejected': return 'مرفوض';
+        case 'pending': return 'معلق';
+        default: return 'غير محدد';
+      }
+    }
+
+    // إعداد مستمع التنبيهات المباشر
+    function setupNotificationListener() {
+      const q = query(
+        collection(db, "notifications"), 
+        where("assistantId", "==", ASSISTANT_ID)
+      );
+      
+      onSnapshot(q, (snapshot) => {
+        const notifications = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          notifications.push({
+            id: doc.id,
+            ...data,
+            timestamp: data.timestamp?.toDate() || new Date()
+          });
+        });
+        
+        // ترتيب التنبيهات حسب التاريخ (الأحدث أولاً)
+        notifications.sort((a, b) => b.timestamp - a.timestamp);
+        
+        displayNotifications(notifications);
+        updateNotificationCount(notifications.length);
+        displayRecentNotifications(notifications.slice(0, 3));
+      });
+    }
+
+    // إعداد تبويبات التنبيهات
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      
+      tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          // إزالة الفئة النشطة من جميع الأزرار
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          
+          // إضافة الفئة النشطة للزر المحدد
+          this.classList.add('active');
+          
+          // تحديث عرض التنبيهات
+          const filter = this.dataset.filter;
+          loadNotifications().then(() => {
+            // إعادة تطبيق الفلتر بعد تحميل البيانات
+            const q = query(
+              collection(db, "notifications"), 
+              where("assistantId", "==", ASSISTANT_ID)
+            );
+            getDocs(q).then(snapshot => {
+              const notifications = [];
+              snapshot.forEach(doc => {
+                const data = doc.data();
+                notifications.push({
+                  id: doc.id,
+                  ...data,
+                  timestamp: data.timestamp?.toDate() || new Date()
+                });
+              });
+              
+              notifications.sort((a, b) => b.timestamp - a.timestamp);
+              displayNotifications(notifications, filter);
+            });
+          });
+        });
+      });
+    });
+
+    // التحقق من حالة تسجيل الدخول عند تحميل الصفحة
+    checkLoginStatus();
+    
+    // دالة تأكيد حذف جميع التنبيهات
+    window.confirmDeleteAllNotifications = function() {
+      if (confirm('هل أنت متأكد من حذف جميع التنبيهات؟ لا يمكن التراجع عن هذا الإجراء.')) {
+        deleteAllNotifications();
+      }
+    };
+    
+    // دالة حذف جميع التنبيهات
+    async function deleteAllNotifications() {
+      try {
+        processingIndicator.style.display = 'flex';
+        processingIndicator.querySelector('p').textContent = 'جارٍ حذف جميع التنبيهات...';
+        
+        // الحصول على جميع التنبيهات للمساعد
+        const q = query(
+          collection(db, "notifications"), 
+          where("assistantId", "==", ASSISTANT_ID)
+        );
+        
+        const snapshot = await getDocs(q);
+        
+        if (snapshot.empty) {
+          alert('لا توجد تنبيهات للحذف');
+          return;
+        }
+        
+        // حذف جميع التنبيهات
+        const batch = writeBatch(db);
+        snapshot.forEach(doc => {
+          batch.delete(doc.ref);
+        });
+        
+        await batch.commit();
+        
+        alert(`تم حذف ${snapshot.size} تنبيه بنجاح`);
+        
+        // تحديث العرض
+        loadNotifications();
+        
+      } catch (error) {
+        console.error("خطأ في حذف التنبيهات: ", error);
+        alert(`حدث خطأ أثناء حذف التنبيهات: ${error.message}`);
+      } finally {
+        processingIndicator.style.display = 'none';
+      }
+    }
+    
+    // إضافة مستمع لتغيير حجم النافذة
+    window.addEventListener('resize', function() {
+      if (window.innerWidth <= 768) {
+        document.querySelector('.mobile-header').style.display = 'flex';
+        fixedHeader.style.display = 'none';
+      } else {
+        document.querySelector('.mobile-header').style.display = 'none';
+        if (mainContent.style.display !== 'none') {
+          fixedHeader.style.display = 'flex';
+          fixedHeader.classList.add('expanded');
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+
