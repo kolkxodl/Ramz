@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>لوحة تحكم رموز القبائل</title>
+  <title>لوحة تحكم رموز القبائل - المالك</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet" />
@@ -378,6 +378,15 @@
       background: linear-gradient(90deg, #5a6268, #6c757d);
     }
     
+    .btn-success {
+      background: linear-gradient(90deg, #5cb85c, #449d44);
+      color: #fff;
+    }
+    
+    .btn-success:hover {
+      background: linear-gradient(90deg, #449d44, #5cb85c);
+    }
+    
     /* تحميل الصور */
     .image-upload {
       border: 2px dashed #D2B48C;
@@ -442,6 +451,12 @@
       background-color: #f2dede;
       border: 1px solid #ebccd1;
       color: #a94442;
+    }
+    
+    .alert-info {
+      background-color: #d9edf7;
+      border: 1px solid #bce8f1;
+      color: #31708f;
     }
     
     /* تصميم متجاوب */
@@ -733,6 +748,255 @@
       font-family: "IBM Plex Sans Arabic", sans-serif;
     }
     
+    /* تنسيق محسن لقسم الطلبات */
+    .requests-container {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .request-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 15px;
+    }
+    
+    .tab-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 25px;
+      background: #f5f5f5;
+      color: #5C4033;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+      font-weight: 500;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .tab-btn.active {
+      background: linear-gradient(90deg, #CD853F, #D2B48C);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(205, 133, 63, 0.3);
+    }
+    
+    .tab-btn:hover:not(.active) {
+      background: #e8e8e8;
+      transform: translateY(-1px);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* تحسين عرض الطلبات */
+    #requestsList {
+      min-height: 200px;
+    }
+    
+    .request-item {
+      background: #f9f9f9;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 15px;
+      border-right: 5px solid #CD853F;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .request-item:hover {
+      transform: translateX(-5px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+    
+    .request-item.pending {
+      border-right-color: #f0ad4e;
+      background: linear-gradient(135deg, #fdf8f0, #fcf4e8);
+    }
+    
+    .request-item.approved {
+      border-right-color: #5cb85c;
+      background: linear-gradient(135deg, #f0f8f0, #e8f5e8);
+    }
+    
+    .request-item.rejected {
+      border-right-color: #d9534f;
+      background: linear-gradient(135deg, #fdf2f2, #fae8e8);
+    }
+    
+    .request-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .request-type {
+      font-weight: bold;
+      color: #3E2723;
+      font-size: 1.1rem;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+    }
+    
+    .request-status {
+      padding: 6px 12px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .request-status.pending {
+      background: #f0ad4e;
+      color: #fff;
+    }
+    
+    .request-status.approved {
+      background: #5cb85c;
+      color: #fff;
+    }
+    
+    .request-status.rejected {
+      background: #d9534f;
+      color: #fff;
+    }
+    
+    .request-details {
+      color: #5C4033;
+      line-height: 1.6;
+      margin-bottom: 15px;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+    }
+    
+    .request-details strong {
+      color: #3E2723;
+      font-weight: 600;
+    }
+    
+    .request-details .detail-item {
+      margin-bottom: 8px;
+      padding: 5px 0;
+    }
+    
+    .request-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .request-actions button {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+    }
+    
+    .request-actions button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .request-time {
+      font-size: 12px;
+      color: #999;
+      margin-top: 15px;
+      font-style: italic;
+      text-align: left;
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+    }
+    
+    .no-requests {
+      text-align: center;
+      color: #999;
+      padding: 60px 20px;
+      font-style: italic;
+      font-size: 1.1rem;
+      background: #f8f9fa;
+      border-radius: 10px;
+      border: 2px dashed #ddd;
+    }
+    
+    .proof-image {
+      max-width: 200px;
+      max-height: 150px;
+      border-radius: 8px;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .proof-image:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .chief-image {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-top: 10px;
+      border: 3px solid #CD853F;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* نافذة الرفض */
+    .rejection-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 10000;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .rejection-modal-content {
+      background: #fff;
+      border-radius: 10px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .rejection-modal h4 {
+      margin-top: 0;
+      color: #3E2723;
+      margin-bottom: 20px;
+    }
+    
+    .rejection-modal textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 10px;
+      border: 1px solid #D2B48C;
+      border-radius: 5px;
+      font-family: "IBM Plex Sans Arabic", sans-serif;
+      resize: vertical;
+      box-sizing: border-box;
+    }
+    
+    .rejection-modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      justify-content: flex-end;
+    }
+    
     /* تعديلات إضافية للجوال */
     @media (max-width: 768px) {
       .mobile-toggle {
@@ -764,6 +1028,24 @@
         width: 40px;
         height: 40px;
       }
+      
+      .request-actions {
+        flex-direction: column;
+      }
+      
+      .request-actions button {
+        width: 100%;
+      }
+      
+      .request-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .tab-btn {
+        flex: 1;
+        min-width: calc(50% - 5px);
+      }
     }
     
     /* مؤشر التقدم للرفع */
@@ -792,7 +1074,6 @@
       font-family: "IBM Plex Sans Arabic", sans-serif !important;
     }
 
-  
     body.login-active .fixed-header,
     body.login-active .mobile-header {
       display: none !important;
@@ -804,6 +1085,18 @@
   <div class="processing-indicator" id="processingIndicator">
     <div class="spinner"></div>
     <p>جار المعالجة...</p>
+  </div>
+
+  <!-- نافذة الرفض -->
+  <div class="rejection-modal" id="rejectionModal">
+    <div class="rejection-modal-content">
+      <h4>سبب رفض الطلب</h4>
+      <textarea id="rejectionReason" placeholder="يرجى كتابة سبب رفض الطلب..."></textarea>
+      <div class="rejection-modal-actions">
+        <button class="btn btn-secondary" onclick="closeRejectionModal()">إلغاء</button>
+        <button class="btn btn-danger" onclick="confirmRejection()">تأكيد الرفض</button>
+      </div>
+    </div>
   </div>
 
   <!-- صفحة تسجيل الدخول -->
@@ -831,6 +1124,7 @@
     <div class="sidebar-menu">
       <ul>
         <li><a href="#" data-section="dashboardSection"><i class="bx bx-home"></i> الرئيسية</a></li>
+        <li><a href="#" data-section="requestsSection"><i class="bx bx-list-check"></i> الطلبات (<span id="pendingRequestsCount">0</span>)</a></li>
         <li><a href="#" data-section="tribeCodeSection"><i class="bx bx-hash"></i> إدارة رموز القبائل</a></li>
         <li><a href="#" data-section="tribeHistorySection"><i class="bx bx-book-open"></i> إدارة معلومات القبائل</a></li>
         <li><a href="#" data-section="sheikhManagementSection"><i class="bx bx-user"></i> إدارة شيوخ القبائل</a></li>
@@ -906,6 +1200,32 @@
           <h4>عدد شيوخ القبائل</h4>
           <div class="stat-value" id="totalSheikhs">0</div>
         </div>
+        <div class="stat-card">
+          <h4>الطلبات المعلقة</h4>
+          <div class="stat-value" id="pendingRequests">0</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- قسم الطلبات -->
+    <div class="section" id="requestsSection">
+      <h3>إدارة الطلبات</h3>
+      
+      <div class="request-tabs">
+        <button class="tab-btn active" data-filter="all">الكل</button>
+        <button class="tab-btn" data-filter="pending">المعلقة</button>
+        <button class="tab-btn" data-filter="approved">الموافق عليها</button>
+        <button class="tab-btn" data-filter="rejected">المرفوضة</button>
+      </div>
+      
+      <div id="requestsList">
+        <div class="no-requests">لا توجد طلبات</div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 20px;">
+        <button class="btn btn-danger" id="deleteAllRequestsBtn" onclick="confirmDeleteAllRequests()">
+          <i class="bx bx-trash"></i> حذف جميع الطلبات
+        </button>
       </div>
     </div>
     
@@ -979,12 +1299,6 @@
             <img id="sheikhImagePreview" class="image-preview" alt="معاينة صورة الشيخ">
           </div>
           <p class="text-muted" id="imageInfo"></p>
-          <!-- مؤشر التقدم للرفع (تم إزالته لأنه لا يوجد رفع) -->
-          <!-- 
-          <div class="upload-progress" id="uploadProgress">
-            <div class="upload-progress-bar" id="uploadProgressBar"></div>
-          </div>
-          -->
         </div>
         <button type="submit" class="btn btn-primary" id="addSheikhBtn">إضافة الشيخ</button>
       </form>
@@ -1086,17 +1400,13 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, where, writeBatch, doc, deleteDoc, serverTimestamp, orderBy, limit, getDoc, setDoc, Timestamp, increment } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-    // إزالة استيراد Firebase Storage
-    // import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
+    import { getFirestore, collection, addDoc, getDocs, query, where, writeBatch, doc, deleteDoc, serverTimestamp, orderBy, limit, getDoc, setDoc, Timestamp, increment, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
     // تكوين Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyDGLwl69D9W5c03G5WsfU8pahvVHL4zKzs",
       authDomain: "tribes-project-18d2b.firebaseapp.com",
       projectId: "tribes-project-18d2b",
-      // إزالة storageBucket لأنه لم يعد مستخدماً
-      // storageBucket: "tribes-project-18d2b.appspot.com",
       messagingSenderId: "375771927234",
       appId: "1:375771927234:web:5fa0ec96fd9c80fce7615b"
     };
@@ -1104,8 +1414,6 @@
     // تهيئة Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    // إزالة تهيئة Storage
-    // const storage = getStorage(app);
 
     // عناصر القائمة الجانبية
     const sidebar = document.getElementById('sidebar');
@@ -1114,10 +1422,10 @@
     const mainContent = document.getElementById('mainContent');
     const fixedHeader = document.getElementById('fixedHeader');
 
-window.addEventListener('DOMContentLoaded', () => {
-  fixedHeader.style.display = 'none';
-  fixedHeader.classList.remove('expanded');
-});
+    window.addEventListener('DOMContentLoaded', () => {
+      fixedHeader.style.display = 'none';
+      fixedHeader.classList.remove('expanded');
+    });
 
     const menuLinks = document.querySelectorAll('.sidebar-menu a');
     const sections = document.querySelectorAll('.section');
@@ -1129,8 +1437,11 @@ window.addEventListener('DOMContentLoaded', () => {
     const logoutLink = document.getElementById('logoutLink');
     const logoutHeaderBtn = document.getElementById('logoutHeaderBtn');
 
+    // متغيرات للطلب المحدد للرفض
+    let currentRequestForRejection = null;
+    let currentActiveFilter = 'all';
+    let allRequests = []; // متغير لحفظ جميع الطلبات
 
-    
     // التحقق من حالة تسجيل الدخول
     function checkLoginStatus() {
       // دائماً عرض شاشة تسجيل الدخول عند تحميل الصفحة
@@ -1144,14 +1455,14 @@ window.addEventListener('DOMContentLoaded', () => {
       loginScreen.style.display = 'block';
       mainContent.style.display = 'none';
       sidebar.style.display = 'none';
-      document.body.classList.add('login-active'); // Add body class
+      document.body.classList.add('login-active');
       fixedHeader.style.display = 'none';
       document.querySelector('.mobile-header').style.display = 'none';
     }
     
     // عرض لوحة التحكم
     function showDashboard() {
-      document.body.classList.remove('login-active'); // Remove body class
+      document.body.classList.remove('login-active');
       loginScreen.style.display = 'none';
       mainContent.style.display = 'block';
       sidebar.style.display = 'flex';
@@ -1162,6 +1473,8 @@ window.addEventListener('DOMContentLoaded', () => {
       }
       loadDashboardData();
       fetchTotalVisitorCountForSidebar();
+      loadRequests();
+      setupRequestsListener();
     }
     
     // معالجة تسجيل الدخول
@@ -1250,10 +1563,11 @@ window.addEventListener('DOMContentLoaded', () => {
             if (targetSection.id === 'visitorStatsSection') {
               loadVisitorStats();
               displayVisitorStats('total');
+            } else if (targetSection.id === 'requestsSection') {
+              loadRequests();
             }
           }
           
-          // لا تغلق القائمة الجانبية في الأجهزة المحمولة عند التنقل بين الأقسام
           // إغلاق القائمة الجانبية تلقائياً بعد اختيار قسم (خاصة في الجوال)
           if (window.innerWidth <= 768 && !sidebar.classList.contains('collapsed')) {
             toggleSidebar();
@@ -1266,7 +1580,7 @@ window.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', function(event) {
       const isClickInsideSidebar = sidebar.contains(event.target);
       const isClickOnMobileToggle = mobileToggle.contains(event.target);
-      const isSidebarActive = sidebar.classList.contains('active'); // أو !sidebar.classList.contains('collapsed')
+      const isSidebarActive = sidebar.classList.contains('active');
 
       if (!isClickInsideSidebar && !isClickOnMobileToggle && isSidebarActive) {
         toggleSidebar();
@@ -1277,14 +1591,14 @@ window.addEventListener('DOMContentLoaded', () => {
     const sheikhImageInput = document.getElementById('sheikhImage');
     const sheikhImagePreview = document.getElementById('sheikhImagePreview');
     const imageInfo = document.getElementById('imageInfo');
-    const MAX_IMAGE_SIZE_MB = 5; // تحديد الحد الأقصى لحجم الصورة بالميجابايت
+    const MAX_IMAGE_SIZE_MB = 5;
     let selectedImageFile = null;
-    let selectedImageBase64 = null; // لتخزين Base64
+    let selectedImageBase64 = null;
 
     sheikhImageInput.addEventListener('change', function() {
       const file = this.files[0];
-      selectedImageFile = null; // إعادة التعيين
-      selectedImageBase64 = null; // إعادة التعيين
+      selectedImageFile = null;
+      selectedImageBase64 = null;
       sheikhImagePreview.style.display = 'none';
       imageInfo.textContent = '';
 
@@ -1294,7 +1608,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (!allowedTypes.includes(file.type)) {
           imageInfo.textContent = 'صيغة الصورة غير مدعومة. يرجى اختيار JPEG, PNG, أو WebP.';
           imageInfo.style.color = 'red';
-          this.value = ''; // مسح الملف المختار
+          this.value = '';
           return;
         }
 
@@ -1303,7 +1617,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (fileSizeMB > MAX_IMAGE_SIZE_MB) {
           imageInfo.textContent = `حجم الصورة كبير جداً (${fileSizeMB.toFixed(2)} MB). الحد الأقصى هو ${MAX_IMAGE_SIZE_MB} MB.`;
           imageInfo.style.color = 'red';
-          this.value = ''; // مسح الملف المختار
+          this.value = '';
           return;
         }
 
@@ -1313,9 +1627,9 @@ window.addEventListener('DOMContentLoaded', () => {
           sheikhImagePreview.src = e.target.result;
           sheikhImagePreview.style.display = 'block';
           imageInfo.textContent = `حجم الصورة: ${fileSizeMB.toFixed(2)} MB`;
-          imageInfo.style.color = '#5C4033'; // اللون الافتراضي
-          selectedImageFile = file; // تخزين الملف (قد لا يكون ضرورياً الآن)
-          selectedImageBase64 = e.target.result; // تخزين Base64
+          imageInfo.style.color = '#5C4033';
+          selectedImageFile = file;
+          selectedImageBase64 = e.target.result;
         };
         reader.onerror = function(error) {
             console.error("خطأ في قراءة الملف:", error);
@@ -1323,10 +1637,459 @@ window.addEventListener('DOMContentLoaded', () => {
             imageInfo.style.color = 'red';
             selectedImageBase64 = null;
         };
-        reader.readAsDataURL(file); // قراءة الملف كـ Base64
+        reader.readAsDataURL(file);
       }
     });
 
+    // تحميل الطلبات
+    async function loadRequests() {
+      try {
+        const q = query(collection(db, "requests"));
+        const snapshot = await getDocs(q);
+        
+        const requests = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          requests.push({
+            id: doc.id,
+            ...data,
+            timestamp: data.timestamp?.toDate() || new Date()
+          });
+        });
+        
+        // ترتيب الطلبات حسب التاريخ (الأحدث أولاً)
+        requests.sort((a, b) => b.timestamp - a.timestamp);
+        
+        // حفظ جميع الطلبات
+        allRequests = requests;
+        
+        displayRequests(requests, currentActiveFilter);
+        updatePendingRequestsCount(requests.filter(r => r.status === 'pending').length);
+        
+      } catch (error) {
+        console.error("خطأ في تحميل الطلبات: ", error);
+      }
+    }
+
+    // عرض الطلبات مع تحسينات
+    function displayRequests(requests, filter = 'all') {
+      const requestsList = document.getElementById('requestsList');
+      
+      let filteredRequests = requests;
+      if (filter !== 'all') {
+        filteredRequests = requests.filter(r => r.status === filter);
+      }
+      
+      if (filteredRequests.length === 0) {
+        requestsList.innerHTML = '<div class="no-requests">لا توجد طلبات في هذا التصنيف</div>';
+        return;
+      }
+      
+      requestsList.innerHTML = filteredRequests.map(request => {
+        const statusText = getStatusText(request.status);
+        const content = formatRequestContent(request);
+        const timeText = formatTime(request.timestamp);
+        const actions = request.status === 'pending' ? getRequestActions(request.id) : '';
+        
+        return `
+          <div class="request-item ${request.status}">
+            <div class="request-header">
+              <span class="request-type">${getRequestTypeText(request.requestType)}</span>
+              <span class="request-status ${request.status}">${statusText}</span>
+            </div>
+            <div class="request-details">${content}</div>
+            ${actions}
+            <div class="request-time">${timeText}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // تحديث عداد الطلبات المعلقة
+    function updatePendingRequestsCount(count) {
+      const pendingRequestsCount = document.getElementById('pendingRequestsCount');
+      const pendingRequests = document.getElementById('pendingRequests');
+      
+      if (pendingRequestsCount) {
+        pendingRequestsCount.textContent = count;
+      }
+      if (pendingRequests) {
+        pendingRequests.textContent = count;
+      }
+    }
+
+    // تنسيق محتوى الطلب مع تحسينات (مطابق لبنية المساعد)
+    function formatRequestContent(request) {
+      const details = request.details || {};
+      let content = '';
+      
+      switch (request.requestType) {
+        case 'add_tribe_code':
+          content = `
+            <div class="detail-item"><strong>اسم القبيلة:</strong> ${details.tribeName || 'غير محدد'}</div>
+            <div class="detail-item"><strong>رمز القبيلة:</strong> ${details.tribeCode || 'غير محدد'}</div>
+          `;
+          if (details.proofOfOwnershipUrl) {
+            content += `
+              <div class="detail-item">
+                <strong>إثبات الملكية:</strong><br>
+                <img src="${details.proofOfOwnershipUrl}" class="proof-image" onclick="window.open('${details.proofOfOwnershipUrl}', '_blank')" alt="إثبات الملكية">
+              </div>
+            `;
+          }
+          break;
+          
+        case 'add_chief':
+          content = `
+            <div class="detail-item"><strong>اسم القبيلة:</strong> ${details.tribeName || 'غير محدد'}</div>
+            <div class="detail-item"><strong>اسم الشيخ:</strong> ${details.chiefName || 'غير محدد'}</div>
+          `;
+          if (details.chiefImageUrl) {
+            content += `
+              <div class="detail-item">
+                <strong>صورة الشيخ:</strong><br>
+                <img src="${details.chiefImageUrl}" class="chief-image" alt="صورة الشيخ">
+              </div>
+            `;
+          }
+          break;
+          
+        case 'add_information':
+          content = `
+            <div class="detail-item"><strong>اسم القبيلة:</strong> ${details.tribeName || 'غير محدد'}</div>
+            <div class="detail-item"><strong>المعلومات:</strong><br><div style="background: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 5px; white-space: pre-wrap;">${details.informationContent || 'غير محدد'}</div></div>
+          `;
+          break;
+          
+        case 'delete_tribe_code':
+          content = `
+            <div class="detail-item"><strong>اسم القبيلة:</strong> ${details.tribeName || 'غير محدد'}</div>
+            <div class="detail-item"><strong>رمز القبيلة:</strong> ${details.tribeCode || 'غير محدد'}</div>
+            <div class="detail-item"><strong>سبب الحذف:</strong> ${details.reason || 'غير محدد'}</div>
+          `;
+          break;
+          
+        case 'delete_chief':
+          content = `
+            <div class="detail-item"><strong>اسم القبيلة:</strong> ${details.tribeName || 'غير محدد'}</div>
+            <div class="detail-item"><strong>سبب الحذف:</strong> ${details.reason || 'غير محدد'}</div>
+          `;
+          break;
+          
+        case 'delete_information':
+          content = `
+            <div class="detail-item"><strong>اسم القبيلة:</strong> ${details.tribeName || 'غير محدد'}</div>
+            <div class="detail-item"><strong>سبب الحذف:</strong> ${details.reason || 'غير محدد'}</div>
+          `;
+          break;
+          
+        default:
+          content = `
+            <div class="detail-item"><strong>نوع الطلب:</strong> ${request.requestType || 'غير محدد'}</div>
+            <div class="detail-item"><strong>التفاصيل:</strong> ${JSON.stringify(details) || 'لا توجد تفاصيل'}</div>
+          `;
+          break;
+      }
+      
+      if (request.status === 'rejected' && request.rejectionReason) {
+        content += `<div class="detail-item" style="margin-top: 15px; padding: 10px; background: #fdf2f2; border-radius: 5px;"><strong style="color: #d9534f;">سبب الرفض:</strong> ${request.rejectionReason}</div>`;
+      }
+      
+      return content;
+    }
+
+    // الحصول على نص نوع الطلب
+    function getRequestTypeText(requestType) {
+      switch (requestType) {
+        case 'add_tribe_code': return 'طلب إضافة رمز قبيلة';
+        case 'add_chief': return 'طلب إضافة شيخ قبيلة';
+        case 'add_information': return 'طلب إضافة معلومات قبيلة';
+        case 'delete_tribe_code': return 'طلب حذف رمز قبيلة';
+        case 'delete_chief': return 'طلب حذف شيخ قبيلة';
+        case 'delete_information': return 'طلب حذف معلومات قبيلة';
+        default: return 'طلب غير محدد';
+      }
+    }
+
+    // الحصول على أزرار الإجراءات
+    function getRequestActions(requestId) {
+      return `
+        <div class="request-actions">
+          <button class="btn btn-success" onclick="approveRequest('${requestId}')">
+            <i class="bx bx-check"></i> موافقة
+          </button>
+          <button class="btn btn-danger" onclick="showRejectionModal('${requestId}')">
+            <i class="bx bx-x"></i> رفض
+          </button>
+        </div>
+      `;
+    }
+
+    // تنسيق الوقت
+    function formatTime(date) {
+      if (!date) return '';
+      
+      const now = new Date();
+      const diff = now - date;
+      const minutes = Math.floor(diff / 60000);
+      const hours = Math.floor(diff / 3600000);
+      const days = Math.floor(diff / 86400000);
+      
+      if (minutes < 1) return 'الآن';
+      if (minutes < 60) return `منذ ${minutes} دقيقة`;
+      if (hours < 24) return `منذ ${hours} ساعة`;
+      return `منذ ${days} يوم`;
+    }
+
+    // الحصول على نص الحالة
+    function getStatusText(status) {
+      switch (status) {
+        case 'approved': return 'موافق عليه';
+        case 'rejected': return 'مرفوض';
+        case 'pending': return 'معلق';
+        default: return 'غير محدد';
+      }
+    }
+
+    // الموافقة على الطلب
+    window.approveRequest = async function(requestId) {
+      try {
+        processingIndicator.style.display = 'flex';
+        processingIndicator.querySelector('p').textContent = 'جارٍ معالجة الطلب...';
+        
+        // الحصول على تفاصيل الطلب
+        const requestDoc = await getDoc(doc(db, "requests", requestId));
+        if (!requestDoc.exists()) {
+          throw new Error('الطلب غير موجود');
+        }
+        
+        const requestData = requestDoc.data();
+        
+        // تنفيذ العملية المطلوبة
+        await executeRequest(requestData);
+        
+        // تحديث حالة الطلب
+        await updateDoc(doc(db, "requests", requestId), {
+          status: 'approved',
+          ownerDecisionTimestamp: serverTimestamp()
+        });
+        
+        // إرسال تنبيه للمساعد
+        await sendNotificationToAssistant(requestData, 'approved');
+        
+        alert('تم قبول الطلب وتنفيذه بنجاح!');
+        loadRequests();
+        loadDashboardData();
+        
+      } catch (error) {
+        console.error("خطأ في الموافقة على الطلب: ", error);
+        alert(`حدث خطأ أثناء معالجة الطلب: ${error.message}`);
+      } finally {
+        processingIndicator.style.display = 'none';
+      }
+    };
+
+    // تنفيذ الطلب
+    async function executeRequest(requestData) {
+      const { requestType, details } = requestData;
+      
+      switch (requestType) {
+        case 'add_tribe_code':
+          await addDoc(collection(db, "tribes"), {
+            code: details.tribeCode,
+            name: details.tribeName,
+            timestamp: serverTimestamp()
+          });
+          break;
+          
+        case 'add_chief':
+          await addDoc(collection(db, "sheikhs"), {
+            tribeName: details.tribeName,
+            sheikhName: details.chiefName,
+            imageUrl: details.chiefImageUrl,
+            timestamp: serverTimestamp()
+          });
+          break;
+          
+        case 'add_information':
+          await addDoc(collection(db, "histories"), {
+            name: details.tribeName,
+            history: details.informationContent.replace(/\n/g, "<br>"),
+            timestamp: serverTimestamp()
+          });
+          break;
+          
+        case 'delete_tribe_code':
+          const tribesRef = collection(db, "tribes");
+          const tribeQuery = query(tribesRef, where("code", "==", details.tribeCode), where("name", "==", details.tribeName));
+          const tribeSnapshot = await getDocs(tribeQuery);
+          const batch1 = writeBatch(db);
+          tribeSnapshot.forEach(doc => {
+            batch1.delete(doc.ref);
+          });
+          await batch1.commit();
+          break;
+          
+        case 'delete_chief':
+          const sheikhsRef = collection(db, "sheikhs");
+          const sheikhQuery = query(sheikhsRef, where("tribeName", "==", details.tribeName));
+          const sheikhSnapshot = await getDocs(sheikhQuery);
+          const batch2 = writeBatch(db);
+          sheikhSnapshot.forEach(doc => {
+            batch2.delete(doc.ref);
+          });
+          await batch2.commit();
+          break;
+          
+        case 'delete_information':
+          const historiesRef = collection(db, "histories");
+          const historyQuery = query(historiesRef, where("name", "==", details.tribeName));
+          const historySnapshot = await getDocs(historyQuery);
+          const batch3 = writeBatch(db);
+          historySnapshot.forEach(doc => {
+            batch3.delete(doc.ref);
+          });
+          await batch3.commit();
+          break;
+      }
+    }
+
+    // إرسال تنبيه للمساعد
+    async function sendNotificationToAssistant(requestData, status, rejectionReason = null) {
+      const notificationData = {
+        assistantId: requestData.assistantId,
+        requestId: requestData.requestId || 'unknown',
+        status: status,
+        notificationType: getNotificationType(requestData.requestType),
+        requestType: requestData.requestType, // إضافة نوع الطلب للتمييز بين الإضافة والحذف
+        timestamp: serverTimestamp(),
+        read: false,
+        details: {
+          ...requestData.details,
+          rejectionReason: rejectionReason
+        }
+      };
+      
+      await addDoc(collection(db, "notifications"), notificationData);
+    }
+
+    // الحصول على نوع التنبيه
+    function getNotificationType(requestType) {
+      if (requestType.includes('tribe_code')) return 'tribe_code';
+      if (requestType.includes('chief')) return 'chief';
+      if (requestType.includes('information')) return 'information';
+      return 'general';
+    }
+
+    // عرض نافذة الرفض
+    window.showRejectionModal = function(requestId) {
+      currentRequestForRejection = requestId;
+      document.getElementById('rejectionModal').style.display = 'flex';
+      document.getElementById('rejectionReason').value = '';
+    };
+
+    // إغلاق نافذة الرفض
+    window.closeRejectionModal = function() {
+      document.getElementById('rejectionModal').style.display = 'none';
+      currentRequestForRejection = null;
+    };
+
+    // تأكيد الرفض
+    window.confirmRejection = async function() {
+      const reason = document.getElementById('rejectionReason').value.trim();
+      
+      if (!reason) {
+        alert('يرجى كتابة سبب الرفض');
+        return;
+      }
+      
+      if (!currentRequestForRejection) {
+        alert('خطأ: لم يتم تحديد الطلب');
+        return;
+      }
+      
+      try {
+        processingIndicator.style.display = 'flex';
+        processingIndicator.querySelector('p').textContent = 'جارٍ رفض الطلب...';
+        
+        // الحصول على تفاصيل الطلب
+        const requestDoc = await getDoc(doc(db, "requests", currentRequestForRejection));
+        if (!requestDoc.exists()) {
+          throw new Error('الطلب غير موجود');
+        }
+        
+        const requestData = requestDoc.data();
+        
+        // تحديث حالة الطلب
+        await updateDoc(doc(db, "requests", currentRequestForRejection), {
+          status: 'rejected',
+          rejectionReason: reason,
+          ownerDecisionTimestamp: serverTimestamp()
+        });
+        
+        // إرسال تنبيه للمساعد
+        await sendNotificationToAssistant(requestData, 'rejected', reason);
+        
+        closeRejectionModal();
+        alert('تم رفض الطلب وإرسال التنبيه للمساعد');
+        loadRequests();
+        
+      } catch (error) {
+        console.error("خطأ في رفض الطلب: ", error);
+        alert(`حدث خطأ أثناء رفض الطلب: ${error.message}`);
+      } finally {
+        processingIndicator.style.display = 'none';
+      }
+    };
+
+    // إعداد مستمع الطلبات المباشر
+    function setupRequestsListener() {
+      const q = query(collection(db, "requests"));
+      
+      onSnapshot(q, (snapshot) => {
+        const requests = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          requests.push({
+            id: doc.id,
+            ...data,
+            timestamp: data.timestamp?.toDate() || new Date()
+          });
+        });
+        
+        // ترتيب الطلبات حسب التاريخ (الأحدث أولاً)
+        requests.sort((a, b) => b.timestamp - a.timestamp);
+        
+        // حفظ جميع الطلبات
+        allRequests = requests;
+        
+        displayRequests(requests, currentActiveFilter);
+        updatePendingRequestsCount(requests.filter(r => r.status === 'pending').length);
+      });
+    }
+
+    // إعداد تبويبات الطلبات مع إصلاح مشكلة التصميم
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      
+      tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          // إزالة الفئة النشطة من جميع الأزرار
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          
+          // إضافة الفئة النشطة للزر المحدد
+          this.classList.add('active');
+          
+          // تحديث الفلتر النشط
+          currentActiveFilter = this.dataset.filter;
+          
+          // تطبيق الفلتر على البيانات المحفوظة
+          displayRequests(allRequests, currentActiveFilter);
+        });
+      });
+    });
+
+    // باقي الكود الأصلي (نماذج إضافة البيانات مباشرة، إحصائيات الزوار، إلخ)
     // نموذج إضافة رمز قبيلة
     const tribeCodeForm = document.getElementById('tribeCodeForm');
     const tribeCodeSuccess = document.getElementById('tribeCodeSuccess');
@@ -1413,15 +2176,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const sheikhErrorMessage = document.getElementById('sheikhErrorMessage');
     const sheikhLoadingSpinner = document.getElementById('sheikhLoadingSpinner');
     const documentIdSpan = document.getElementById('documentId');
-    // إزالة متغيرات شريط التقدم
-    // const uploadProgress = document.getElementById('uploadProgress');
-    // const uploadProgressBar = document.getElementById('uploadProgressBar');
     const addSheikhBtn = document.getElementById('addSheikhBtn');
-
-    // إزالة دالة ضغط الصورة لأنها لم تعد ضرورية مع Base64 مباشرة
-    /*
-    function compressImage(file, quality = 0.7, maxWidth = 1024) { ... }
-    */
 
     sheikhForm.addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -1433,12 +2188,9 @@ window.addEventListener('DOMContentLoaded', () => {
       sheikhSuccessMessage.style.display = 'none';
       sheikhErrorMessage.style.display = 'none';
       sheikhLoadingSpinner.style.display = 'block';
-      // إزالة التعامل مع شريط التقدم
-      // uploadProgress.style.display = 'none'; 
-      // uploadProgressBar.style.width = '0%';
-      addSheikhBtn.disabled = true; // تعطيل زر الإضافة أثناء المعالجة
+      addSheikhBtn.disabled = true;
       
-      if (!selectedImageBase64) { // التحقق من وجود Base64
+      if (!selectedImageBase64) {
         sheikhErrorMessage.textContent = "يرجى اختيار صورة للشيخ أولاً.";
         sheikhErrorMessage.style.display = 'block';
         sheikhLoadingSpinner.style.display = 'none';
@@ -1455,9 +2207,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const docRef = await addDoc(collection(db, "sheikhs"), {
           tribeName: tribeName,
           sheikhName: sheikhName,
-          imageUrl: selectedImageBase64, // حفظ Base64 مباشرة
-          // إزالة imagePath
-          // imagePath: imageName, 
+          imageUrl: selectedImageBase64,
           timestamp: serverTimestamp()
         });
         
@@ -1468,8 +2218,8 @@ window.addEventListener('DOMContentLoaded', () => {
         sheikhImagePreview.style.display = 'none';
         imageInfo.textContent = '';
         selectedImageFile = null;
-        selectedImageBase64 = null; // إعادة التعيين بعد الحفظ
-        sheikhImageInput.value = ''; // مسح حقل الإدخال
+        selectedImageBase64 = null;
+        sheikhImageInput.value = '';
         
         // إخفاء رسالة النجاح بعد 10 ثوانٍ
         setTimeout(() => { sheikhSuccessMessage.style.display = 'none'; }, 10000);
@@ -1484,14 +2234,12 @@ window.addEventListener('DOMContentLoaded', () => {
         sheikhErrorMessage.style.display = 'block';
       } finally {
         sheikhLoadingSpinner.style.display = 'none';
-        // إزالة التعامل مع شريط التقدم
-        // uploadProgress.style.display = 'none';
         processingIndicator.style.display = 'none';
         addSheikhBtn.disabled = false;
       }
     });
 
-    // نموذج حذف شيخ قبيلة (معدل لإزالة حذف الصورة من Storage)
+    // نموذج حذف شيخ قبيلة
     const deleteSheikhForm = document.getElementById('deleteSheikhForm');
     const deleteSheikhSuccess = document.getElementById('deleteSheikhSuccess');
     const deleteSheikhError = document.getElementById('deleteSheikhError');
@@ -1519,35 +2267,13 @@ window.addEventListener('DOMContentLoaded', () => {
         const q = query(sheikhsRef, where("tribeName", "==", tribeName));
         const snapshot = await getDocs(q);
         
-        // إزالة جمع مسارات الصور
-        // const imagePaths = [];
-        
         snapshot.forEach(doc => {
-          // إزالة الحصول على imagePath
-          // const sheikh = doc.data();
-          // if (sheikh.imagePath) {
-          //   imagePaths.push(sheikh.imagePath);
-          // }
           batch.delete(doc.ref);
           deletedCount++;
         });
         
         if (deletedCount > 0) {
           await batch.commit();
-          
-          // إزالة حذف الصور من Storage
-          /*
-          processingIndicator.querySelector('p').textContent = 'جارٍ حذف الصور...';
-          for (const path of imagePaths) {
-            try {
-              const imageRef = ref(storage, path);
-              await deleteObject(imageRef);
-            } catch (error) {
-              console.error(`خطأ في حذف الصورة ${path}:`, error);
-              // استمر في العملية حتى لو فشل حذف صورة واحدة
-            }
-          }
-          */
           
           deleteSheikhSuccess.textContent = `تم حذف ${deletedCount} من شيوخ القبيلة "${tribeName}" بنجاح.`;
           deleteSheikhSuccess.style.display = 'block';
@@ -1713,6 +2439,13 @@ window.addEventListener('DOMContentLoaded', () => {
           totalSheikhsEl.textContent = sheikhsSnapshot.size;
         }
         
+        // عدد الطلبات المعلقة
+        const requestsSnapshot = await getDocs(query(collection(db, "requests"), where("status", "==", "pending")));
+        const pendingRequestsEl = document.getElementById('pendingRequests');
+        if (pendingRequestsEl) {
+          pendingRequestsEl.textContent = requestsSnapshot.size;
+        }
+        
         // تحميل إحصائيات الزوار
         loadVisitorStats();
       } catch (error) {
@@ -1760,7 +2493,7 @@ window.addEventListener('DOMContentLoaded', () => {
       if (!statPeriodEl || !statCountEl || !statMessageEl) return;
       
       statCountEl.textContent = "جاري التحميل...";
-      statMessageEl.textContent = ""; // مسح الرسائل السابقة
+      statMessageEl.textContent = "";
       
       let count = 0;
       let periodText = "";
@@ -1821,7 +2554,7 @@ window.addEventListener('DOMContentLoaded', () => {
             day.setDate(today.getDate() - i);
             
             if (siteStartDate && day < siteStartDate && getFormattedDate(day) !== getFormattedDate(siteStartDate)) {
-              continue; // تخطي الأيام قبل بدء الموقع
+              continue;
             }
             
             daysInPeriod++;
@@ -1850,7 +2583,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const day = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i);
             
             if (siteStartDate && day < siteStartDate && getFormattedDate(day) !== getFormattedDate(siteStartDate)) {
-              continue; // تخطي الأيام قبل بدء الموقع
+              continue;
             }
             
             daysInPeriod++;
@@ -2014,6 +2747,50 @@ window.addEventListener('DOMContentLoaded', () => {
     // التحقق من حالة تسجيل الدخول عند تحميل الصفحة
     checkLoginStatus();
     
+    // دالة تأكيد حذف جميع الطلبات
+    window.confirmDeleteAllRequests = function() {
+      if (confirm('هل أنت متأكد من حذف جميع الطلبات؟ لا يمكن التراجع عن هذا الإجراء.')) {
+        deleteAllRequests();
+      }
+    };
+    
+    // دالة حذف جميع الطلبات
+    async function deleteAllRequests() {
+      try {
+        processingIndicator.style.display = 'flex';
+        processingIndicator.querySelector('p').textContent = 'جارٍ حذف جميع الطلبات...';
+        
+        // الحصول على جميع الطلبات
+        const q = query(collection(db, "requests"));
+        const snapshot = await getDocs(q);
+        
+        if (snapshot.empty) {
+          alert('لا توجد طلبات للحذف');
+          return;
+        }
+        
+        // حذف جميع الطلبات
+        const batch = writeBatch(db);
+        snapshot.forEach(doc => {
+          batch.delete(doc.ref);
+        });
+        
+        await batch.commit();
+        
+        alert(`تم حذف ${snapshot.size} طلب بنجاح`);
+        
+        // تحديث العرض
+        loadRequests();
+        loadDashboardData();
+        
+      } catch (error) {
+        console.error("خطأ في حذف الطلبات: ", error);
+        alert(`حدث خطأ أثناء حذف الطلبات: ${error.message}`);
+      } finally {
+        processingIndicator.style.display = 'none';
+      }
+    }
+    
     // إضافة مستمع لتغيير حجم النافذة
     window.addEventListener('resize', function() {
       if (window.innerWidth <= 768) {
@@ -2023,10 +2800,11 @@ window.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.mobile-header').style.display = 'none';
         if (mainContent.style.display !== 'none') {
           fixedHeader.style.display = 'flex';
-      fixedHeader.classList.add('expanded');
+          fixedHeader.classList.add('expanded');
         }
       }
     });
   </script>
 </body>
 </html>
+
