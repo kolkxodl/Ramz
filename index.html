@@ -598,6 +598,18 @@
           font-size: 13px; /* Smaller list items */
           margin-bottom: 8px;
       }
+      /* Adjust social media popup for smaller screens */
+      .social-popup-content {
+          max-width: 90%;
+          padding: 15px;
+      }
+      .social-popup-content p {
+          font-size: 14px;
+          line-height: 1.7;
+      }
+      .social-popup-content h4 {
+          font-size: 16px;
+      }
     }
     .popup-modal {
       position: fixed;
@@ -621,10 +633,6 @@
       max-width: 90%;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       animation: popupAnimation 0.5s ease;
-    }
-    /* Specific styling for TikTok popup content if needed, otherwise it inherits from .popup-content */
-    .tiktok-popup-content {
-        max-width: 420px; /* Slightly wider for the message */
     }
     /* Welcome Popup Specific Styles */
     .welcome-popup-content {
@@ -665,6 +673,56 @@
     }
     .welcome-popup-content .popup-buttons {
         margin-top: 20px; /* More space before button */
+    }
+
+    /* Social Media Follow Popup Specific Styles */
+    .social-popup-content {
+        max-width: 450px;
+        text-align: center;
+        line-height: 1.8;
+        color: #3E2723;
+        margin: 20px;
+    }
+    .social-popup-content h4 {
+        color: #CD853F;
+        margin-bottom: 15px;
+        font-size: 18px;
+    }
+    .social-popup-content p {
+        margin-bottom: 20px;
+        font-size: 16px;
+    }
+    .social-popup-content .social-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    .social-popup-content .social-btn {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.3s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        color: #fff;
+        text-decoration: none;
+    }
+    .social-popup-content .instagram-btn {
+        background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    }
+    .social-popup-content .instagram-btn:hover {
+        background: linear-gradient(45deg, #e6683c 0%,#dc2743 25%,#cc2366 50%,#bc1888 75%,#8b0a6b 100%);
+    }
+    .social-popup-content .facebook-btn {
+        background: linear-gradient(90deg, #1877f2, #42a5f5);
+    }
+    .social-popup-content .facebook-btn:hover {
+        background: linear-gradient(90deg, #166fe5, #1976d2);
     }
 
     @keyframes popupAnimation {
@@ -747,10 +805,9 @@
       <li>
         <a id="contactLink" href="#">تواصل معنا</a>
         <div id="socialContainer">
-          <a href="https://www.tiktok.com/@designer_co?_r=1&_d=ed0h27ak1gi5h5&sec_uid=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&share_author_id=7411089680148710408&sharer_language=ar&source=h5_m&u_code=eg4363i2jmk0je&timestamp=1744307461&user_id=7411089680148710408&sec_user_id=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7489355090459346709&share_link_id=c5287d92-5f28-43a4-a565-c07bf819151f&share_app_id=1233&ugbiz_name=ACCOUNT&ug_btm=b8727%2Cb7360&social_share_type=5&enable_checksum=1" target="_blank"><i class="bx bxl-tiktok"></i></a>
           <a href="https://youtube.com/@designer_co2?si=0UkuOB6YMiOg1rDY" target="_blank"><i class="bx bxl-youtube"></i></a>
           <a href="https://wa.me/967738889982" target="_blank"><i class="bx bxl-whatsapp"></i></a>
-          <a href="https://www.facebook.com/share/151kE2vx5T/" target="_blank"><i class="bx bxl-facebook"></i></a>
+          <a href="https://www.facebook.com/share/16v7ZWvJQB/" target="_blank"><i class="bx bxl-facebook"></i></a>
           <a href="https://www.instagram.com/designer_co3?igsh=b3VucWs1cDhqc2c1" target="_blank"><i class="bx bxl-instagram"></i></a>
         </div>
       </li>
@@ -809,10 +866,9 @@
   <div class="contact-container">
     <h3>تابعنا على</h3>
     <div class="social-icons">
-      <a href="https://www.tiktok.com/@designer_co?_r=1&_d=ed0h27ak1gi5h5&sec_uid=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&share_author_id=7411089680148710408&sharer_language=ar&source=h5_m&u_code=eg4363i2jmk0je&timestamp=1744307461&user_id=7411089680148710408&sec_user_id=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7489355090459346709&share_link_id=c5287d92-5f28-43a4-a565-c07bf819151f&share_app_id=1233&ugbiz_name=ACCOUNT&ug_btm=b8727%2Cb7360&social_share_type=5&enable_checksum=1" target="_blank"><i class="bx bxl-tiktok"></i></a>
       <a href="https://youtube.com/@designer_co2?si=0UkuOB6YMiOg1rDY" target="_blank"><i class="bx bxl-youtube"></i></a>
       <a href="https://wa.me/967738889982" target="_blank"><i class="bx bxl-whatsapp"></i></a>
-      <a href="https://www.facebook.com/share/151kE2vx5T/" target="_blank"><i class="bx bxl-facebook"></i></a>
+      <a href="https://www.facebook.com/share/16v7ZWvJQB/" target="_blank"><i class="bx bxl-facebook"></i></a>
       <a href="https://www.instagram.com/designer_co3?igsh=b3VucWs1cDhqc2c1" target="_blank"><i class="bx bxl-instagram"></i></a>
     </div>
   </div>
@@ -828,19 +884,25 @@
     </div>
   </div>
 
-  <!-- TikTok Follow Popup Modal -->
-  <div id="tiktokPopupModal" class="popup-modal" style="z-index: 35;"> 
-    <div class="popup-content tiktok-popup-content">
-      <p id="tiktokPopupMessageText" style="margin-bottom: 20px; color: #3E2723; font-size: 17px; line-height: 1.8;">
-        لمتابعة البحث واستكشاف المزيد من رموز القبائل،<br>يرجى دعمنا بمتابعة حسابنا على تيك توك أولاً.
-      </p>
-      <button id="tiktokFollowBtn" class="popup-btn" style="padding: 12px 25px; font-size: 17px;">
-        <i class='bx bxl-tiktok' style="font-size: 22px; vertical-align: middle; margin-left: 8px;"></i> 
-        اضغط هنا لمتابعتنا
-      </button>
+  <!-- Social Media Follow Popup Modal -->
+  <div id="socialPopupModal" class="popup-modal" style="z-index: 35;"> 
+    <div class="popup-content social-popup-content">
+      <h4>ادعم المحتوى بمتابعتنا!</h4>
+      <p>لمتابعة البحث واستكشاف المزيد من رموز القبائل، يرجى دعمنا بمتابعة حساباتنا على وسائل التواصل الاجتماعي.</p>
+      <div class="social-buttons">
+        <a href="https://www.instagram.com/designer_co3?igsh=b3VucWs1cDhqc2c1" target="_blank" class="social-btn instagram-btn" id="instagramFollowBtn">
+          <i class='bx bxl-instagram' style="font-size: 20px;"></i> 
+          متابعة على Instagram
+        </a>
+        <a href="https://www.facebook.com/share/16v7ZWvJQB/" target="_blank" class="social-btn facebook-btn" id="facebookFollowBtn">
+          <i class='bx bxl-facebook' style="font-size: 20px;"></i> 
+          متابعة على Facebook
+        </a>
+      </div>
+      <p id="followStatus" style="font-size: 14px; color: #CD853F; margin-top: 10px;">يرجى متابعتنا على جميع المنصات أعلاه لمتابعة البحث</p>
     </div>
   </div>
-  <!-- End TikTok Follow Popup Modal -->
+  <!-- End Social Media Follow Popup Modal -->
 
   <!-- ********** START: Welcome Popup Modal ********** -->
   <div id="welcomePopupModal" class="popup-modal" style="z-index: 40;"> 
@@ -1029,11 +1091,14 @@
     const lightboxImage = document.getElementById("lightboxImage");
     const closeLightboxBtn = document.getElementById("closeLightboxBtn");
 
-    // TikTok Popup Elements and Variables
-    const tiktokPopupModal = document.getElementById("tiktokPopupModal");
-    const tiktokFollowBtn = document.getElementById("tiktokFollowBtn");
-    const TIKTOK_ACCOUNT_URL = "https://www.tiktok.com/@designer_co?_r=1&_d=ed0h27ak1gi5h5&sec_uid=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&share_author_id=7411089680148710408&sharer_language=ar&source=h5_m&u_code=eg4363i2jmk0je&timestamp=1744307461&user_id=7411089680148710408&sec_user_id=MS4wLjABAAAAzQTB8Y5lKwVP0tnZH24UTTi4plapbqzx_ugFoOahBXE0CpwvXhFYkrz0jj8xJ0i4&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7489355090459346709&share_link_id=c5287d92-5f28-43a4-a565-c07bf819151f&share_app_id=1233&ugbiz_name=ACCOUNT&ug_btm=b8727%2Cb7360&social_share_type=5&enable_checksum=1";
+    // Social Media Popup Elements and Variables
+    const socialPopupModal = document.getElementById("socialPopupModal");
+    const instagramFollowBtn = document.getElementById("instagramFollowBtn");
+    const facebookFollowBtn = document.getElementById("facebookFollowBtn");
+    const followStatus = document.getElementById("followStatus");
     let currentSearchQuery = null; 
+    let instagramClicked = false;
+    let facebookClicked = false; 
 
     // Welcome Popup Elements
     const welcomePopupModal = document.getElementById("welcomePopupModal");
@@ -1098,17 +1163,47 @@
         });
     }
 
-    // TikTok Follow Button Logic
-    if (tiktokFollowBtn) {
-      tiktokFollowBtn.addEventListener("click", () => {
-        window.open(TIKTOK_ACCOUNT_URL, "_blank");
-        localStorage.setItem("tiktokFollowed", "true");
-        if (tiktokPopupModal) tiktokPopupModal.style.display = "none";
-        
-        if (currentSearchQuery) {
-          initiateSearchProcess(currentSearchQuery);
-        }
+    // Social Media Follow Button Logic
+    if (instagramFollowBtn) {
+      instagramFollowBtn.addEventListener("click", () => {
+        instagramClicked = true;
+        updateFollowStatus();
+        checkBothFollowed();
       });
+    }
+
+    if (facebookFollowBtn) {
+      facebookFollowBtn.addEventListener("click", () => {
+        facebookClicked = true;
+        updateFollowStatus();
+        checkBothFollowed();
+      });
+    }
+
+    function updateFollowStatus() {
+      if (followStatus) {
+        if (instagramClicked && facebookClicked) {
+          followStatus.textContent = "شكراً لك! يمكنك الآن البحث في الموقع";
+          followStatus.style.color = "#28a745"; // Green color for success
+        } else if (instagramClicked && !facebookClicked) {
+          followStatus.textContent = "رائع! الآن تابعنا على Facebook لإكمال المتابعة";
+        } else if (!instagramClicked && facebookClicked) {
+          followStatus.textContent = "رائع! الآن تابعنا على Instagram لإكمال المتابعة";
+        }
+      }
+    }
+
+    function checkBothFollowed() {
+      if (instagramClicked && facebookClicked) {
+        localStorage.setItem("socialFollowed", "true");
+        setTimeout(() => {
+          if (socialPopupModal) socialPopupModal.style.display = "none";
+          
+          if (currentSearchQuery) {
+            initiateSearchProcess(currentSearchQuery);
+          }
+        }, 1500); // Wait 1.5 seconds to show success message
+      }
     }
 
     // Welcome Popup Button Logic
@@ -1140,9 +1235,9 @@
         return;
       }
 
-      if (!localStorage.getItem("tiktokFollowed")) {
-        if (tiktokPopupModal) {
-            tiktokPopupModal.style.display = "flex";
+      if (!localStorage.getItem("socialFollowed")) {
+        if (socialPopupModal) {
+            socialPopupModal.style.display = "flex";
         }
         return; 
       }
@@ -1407,3 +1502,4 @@
   </script>
 </body>
 </html>
+
