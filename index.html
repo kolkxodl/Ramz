@@ -752,6 +752,10 @@
     .popup-btn:hover {
       background: linear-gradient(90deg, #D2B48C, #CD853F);
     }
+    .popup-btn:disabled {
+      background: #cccccc; /* Grey color for disabled state */
+      cursor: not-allowed;
+    }
     
     /* Styles for Image Lightbox */
     .image-lightbox {
@@ -783,6 +787,40 @@
       cursor: pointer;
     }
     /* End Styles for Image Lightbox */
+    
+    /* Success Notification Styles */
+    .success-notification {
+      position: fixed;
+      top: 20px;
+      right: -400px; /* Start off-screen */
+      background: linear-gradient(135deg, #28a745, #20c997);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+      z-index: 1001;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      min-width: 300px;
+      transition: right 0.5s ease-in-out;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .success-notification.show {
+      right: 20px; /* Slide in */
+    }
+    .success-notification .check-icon {
+      font-size: 24px;
+      color: white;
+    }
+    .success-notification .notification-text {
+      flex: 1;
+      text-align: right;
+    }
+    /* End Success Notification Styles */
     
   </style>
 </head>
@@ -890,16 +928,18 @@
       <h4>ادعم المحتوى بمتابعتنا!</h4>
       <p>لمتابعة البحث واستكشاف المزيد من رموز القبائل، يرجى دعمنا بمتابعة حساباتنا على وسائل التواصل الاجتماعي.</p>
       <div class="social-buttons">
-        <a href="https://www.instagram.com/designer_co3?igsh=b3VucWs1cDhqc2c1" target="_blank" class="social-btn instagram-btn" id="instagramFollowBtn">
-          <i class='bx bxl-instagram' style="font-size: 20px;"></i> 
+<a href="https://www.instagram.com/designer_co3?igsh=b3VucWs1cDhqc2c1" target="_blank" class="social-btn instagram-btn" id="instagramLink">
+          <i class=\'bx bxl-instagram\\' style="font-size: 20px;"></i> 
           متابعة على Instagram
         </a>
-        <a href="https://www.facebook.com/share/16v7ZWvJQB/" target="_blank" class="social-btn facebook-btn" id="facebookFollowBtn">
-          <i class='bx bxl-facebook' style="font-size: 20px;"></i> 
+        <a href="https://www.facebook.com/share/16v7ZWvJQB/" target="_blank" class="social-btn facebook-btn" id="facebookLink">
+          <i class=\'bx bxl-facebook\\' style="font-size: 20px;"></i> 
           متابعة على Facebook
         </a>
       </div>
-      <p id="followStatus" style="font-size: 14px; color: #CD853F; margin-top: 10px;">يرجى متابعتنا على جميع المنصات أعلاه لمتابعة البحث</p>
+      <!-- زر التحقق الجديد -->
+      <button id="verifyFollowBtn" class="popup-btn" style="margin-top: 15px;" disabled>لقد تابعت، تحقق الآن</button>
+      <p id="followStatus" style="font-size: 14px; color: #CD853F; margin-top: 10px; min-height: 20px;"></p>
     </div>
   </div>
   <!-- End Social Media Follow Popup Modal -->
@@ -942,6 +982,13 @@
     <img src="" alt="صورة مكبرة" id="lightboxImage">
   </div>
   <!-- End Image Lightbox Modal -->
+
+  <!-- Success Notification -->
+  <div id="successNotification" class="success-notification">
+    <i class="bx bx-check-circle check-icon"></i>
+    <div class="notification-text">شكراً لمتابعتنا! يمكنك الآن البحث في موقعنا</div>
+  </div>
+  <!-- End Success Notification -->
 
   <footer>
     <p>تم تصميمه بواسطة المبرمج <a href="https://wa.me/967738889982">سهم الحميقاني</a></p>
@@ -1093,12 +1140,16 @@
 
     // Social Media Popup Elements and Variables
     const socialPopupModal = document.getElementById("socialPopupModal");
-    const instagramFollowBtn = document.getElementById("instagramFollowBtn");
-    const facebookFollowBtn = document.getElementById("facebookFollowBtn");
+    const instagramLink = document.getElementById("instagramLink");
+    const facebookLink = document.getElementById("facebookLink");
+    const verifyFollowBtn = document.getElementById("verifyFollowBtn"); // الزر الجديد
     const followStatus = document.getElementById("followStatus");
     let currentSearchQuery = null; 
-    let instagramClicked = false;
-    let facebookClicked = false; 
+    let instagramLinkClicked = false;
+    let facebookLinkClicked = false;
+
+    // Success Notification Element
+    const successNotification = document.getElementById("successNotification");
 
     // Welcome Popup Elements
     const welcomePopupModal = document.getElementById("welcomePopupModal");
@@ -1163,47 +1214,87 @@
         });
     }
 
-    // Social Media Follow Button Logic
-    if (instagramFollowBtn) {
-      instagramFollowBtn.addEventListener("click", () => {
-        instagramClicked = true;
-        updateFollowStatus();
-        checkBothFollowed();
-      });
-    }
-
-    if (facebookFollowBtn) {
-      facebookFollowBtn.addEventListener("click", () => {
-        facebookClicked = true;
-        updateFollowStatus();
-        checkBothFollowed();
-      });
-    }
-
-    function updateFollowStatus() {
-      if (followStatus) {
-        if (instagramClicked && facebookClicked) {
-          followStatus.textContent = "شكراً لك! يمكنك الآن البحث في الموقع";
-          followStatus.style.color = "#28a745"; // Green color for success
-        } else if (instagramClicked && !facebookClicked) {
-          followStatus.textContent = "رائع! الآن تابعنا على Facebook لإكمال المتابعة";
-        } else if (!instagramClicked && facebookClicked) {
-          followStatus.textContent = "رائع! الآن تابعنا على Instagram لإكمال المتابعة";
-        }
-      }
-    }
-
-    function checkBothFollowed() {
-      if (instagramClicked && facebookClicked) {
-        localStorage.setItem("socialFollowed", "true");
+    // Function to show success notification
+    function showSuccessNotification() {
+      if (successNotification) {
+        successNotification.classList.add("show");
         setTimeout(() => {
-          if (socialPopupModal) socialPopupModal.style.display = "none";
-          
-          if (currentSearchQuery) {
-            initiateSearchProcess(currentSearchQuery);
-          }
-        }, 1500); // Wait 1.5 seconds to show success message
+          successNotification.classList.remove("show");
+        }, 3000); // Hide after 3 seconds
       }
+    }
+
+    // Social Media Follow Button Logic
+    if (instagramLink) {
+      instagramLink.addEventListener("click", () => {
+        instagramLinkClicked = true;
+        if (instagramLinkClicked && facebookLinkClicked) {
+          verifyFollowBtn.disabled = false;
+          verifyFollowBtn.style.background = "linear-gradient(90deg, #CD853F, #D2B48C)"; // Restore original color
+          followStatus.textContent = "الآن يمكنك الضغط على زر التحقق.";
+          followStatus.style.color = "#28a745";
+        } else if (instagramLinkClicked) {
+          followStatus.textContent = "أحسنت! الآن تابع حسابنا على فيسبوك.";
+          followStatus.style.color = "#CD853F";
+        }
+      });
+    }
+
+    if (facebookLink) {
+      facebookLink.addEventListener("click", () => {
+        facebookLinkClicked = true;
+        if (instagramLinkClicked && facebookLinkClicked) {
+          verifyFollowBtn.disabled = false;
+          verifyFollowBtn.style.background = "linear-gradient(90deg, #CD853F, #D2B48C)"; // Restore original color
+          followStatus.textContent = "الآن يمكنك الضغط على زر التحقق.";
+          followStatus.style.color = "#28a745";
+        } else if (facebookLinkClicked) {
+          followStatus.textContent = "أحسنت! الآن تابع حسابنا على انستغرام.";
+          followStatus.style.color = "#CD853F";
+        }
+      });
+    }
+
+    if (verifyFollowBtn) {
+      verifyFollowBtn.addEventListener("click", () => {
+        const attemptKey = 'followAttempt_v1';
+        let attemptCount = localStorage.getItem(attemptKey);
+
+        verifyFollowBtn.disabled = true;
+        followStatus.innerHTML = 'جاري التحقق... <i class="bx bx-loader-alt bx-spin"></i>';
+        followStatus.style.color = "#CD853F";
+
+        setTimeout(() => {
+          if (attemptCount !== '1') {
+            // First attempt: Show failure message
+            followStatus.innerHTML = '<span style="color: red;">فشل التحقق. يبدو أنك لم تقم بالمتابعة. حاول مجدداً بعد المتابعة.</span>';
+            localStorage.setItem(attemptKey, '1'); // Mark first attempt
+            verifyFollowBtn.disabled = true; // Disable button again
+            verifyFollowBtn.style.background = "#cccccc"; // Set button to grey
+            verifyFollowBtn.textContent = "تحقق مرة أخرى"; // Change button text
+            // Reset click states to require following again
+            instagramLinkClicked = false;
+            facebookLinkClicked = false;
+            followStatus.innerHTML = '<span style="color: red;">فشل التحقق. يبدو أنك لم تقم بالمتابعة. حاول مجدداً بعد المتابعة.</span><br><span style="color: #CD853F; font-size: 14px;">تابع حسابنا على انستغرام للمتابعة.</span>';
+          } else {
+            // Second attempt: Show success message
+            followStatus.innerHTML = '<span style="color: green;">شكراً لدعمك! تم تفعيل البحث.</span>';
+            localStorage.setItem("socialFollowed", "true"); // Grant access
+            localStorage.removeItem(attemptKey); // Clean up attempt counter
+
+            // Show success notification
+            showSuccessNotification();
+
+            // Close popup and perform search
+            setTimeout(() => {
+              if (socialPopupModal) socialPopupModal.style.display = "none";
+              if (currentSearchQuery) {
+                initiateSearchProcess(currentSearchQuery);
+              }
+            }, 1500); // Wait to show success message
+          }
+        }, 5000); // 5-second timer
+      });
     }
 
     // Welcome Popup Button Logic
@@ -1238,6 +1329,14 @@
       if (!localStorage.getItem("socialFollowed")) {
         if (socialPopupModal) {
             socialPopupModal.style.display = "flex";
+            // Reset status for new attempt
+            followStatus.innerHTML = "تابع حسابنا على انستغرام للمتابعة."; // Initial message
+            followStatus.style.color = "#CD853F";
+            verifyFollowBtn.disabled = true; // Disable button initially
+            verifyFollowBtn.textContent = "لقد تابعت، تحقق الآن"; // Reset button text
+            verifyFollowBtn.style.background = "#cccccc"; // Set button to grey
+            instagramLinkClicked = false; // Reset click states
+            facebookLinkClicked = false;
         }
         return; 
       }
