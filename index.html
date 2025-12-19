@@ -719,10 +719,10 @@
         background: linear-gradient(45deg, #e6683c 0%,#dc2743 25%,#cc2366 50%,#bc1888 75%,#8b0a6b 100%);
     }
     .social-popup-content .facebook-btn {
-        background: linear-gradient(90deg, #1877f2, #42a5f5);
+        background: linear-gradient(90deg, #00c262, #00a12a);
     }
     .social-popup-content .facebook-btn:hover {
-        background: linear-gradient(90deg, #166fe5, #1976d2);
+        background: linear-gradient(90deg, #00c262, #00a12a);
     }
 
     @keyframes popupAnimation {
@@ -926,15 +926,15 @@
   <div id="socialPopupModal" class="popup-modal" style="z-index: 35;"> 
     <div class="popup-content social-popup-content">
       <h4>ادعم المحتوى بمتابعتنا!</h4>
-      <p>لمتابعة البحث واستكشاف المزيد من رموز القبائل، يرجى دعمنا بمتابعة حساباتنا على وسائل التواصل الاجتماعي.</p>
+      <p>لمتابعة البحث واستكشاف المزيد من رموز القبائل، يرجى دعمنا بمتابعه قناه الواتساب والتفاعل على اسم ( احمد الحميقاني ).</p>
       <div class="social-buttons">
-<a href="https://www.instagram.com/designer_co3?igsh=b3VucWs1cDhqc2c1" target="_blank" class="social-btn instagram-btn" id="instagramLink">
-          <i class=\'bx bxl-instagram\\' style="font-size: 20px;"></i> 
-          متابعة على Instagram
+<a href="https://whatsapp.com/channel/0029VbCWox5Fy727jnQ7Nq0q" target="_blank" class="social-btn facebook-btn" id="instagramLink">
+          <i class=\'bx bxl-Whatsapp\\' style="font-size: 20px;"></i> 
+          متابعة على قناه الواتساب
         </a>
-        <a href="https://www.facebook.com/share/16v7ZWvJQB/" target="_blank" class="social-btn facebook-btn" id="facebookLink">
+        <a href="https://whatsapp.com/channel/0029VbCWox5Fy727jnQ7Nq0q/140" target="_blank" class="social-btn instagram-btn" id="facebookLink">
           <i class=\'bx bxl-facebook\\' style="font-size: 20px;"></i> 
-          متابعة على Facebook
+        الاعجاب او التفاعل على الرساله باسم <br>( احمد الحميقاني ) 
         </a>
       </div>
       <!-- زر التحقق الجديد -->
@@ -1234,7 +1234,7 @@
           followStatus.textContent = "الآن يمكنك الضغط على زر التحقق.";
           followStatus.style.color = "#28a745";
         } else if (instagramLinkClicked) {
-          followStatus.textContent = "أحسنت! الآن تابع حسابنا على فيسبوك.";
+          followStatus.textContent = "أحسنت! الآن قم بالاعحاب بالتفاعل على اسم ( احمد الحميقاني ) ";
           followStatus.style.color = "#CD853F";
         }
       });
@@ -1249,7 +1249,7 @@
           followStatus.textContent = "الآن يمكنك الضغط على زر التحقق.";
           followStatus.style.color = "#28a745";
         } else if (facebookLinkClicked) {
-          followStatus.textContent = "أحسنت! الآن تابع حسابنا على انستغرام.";
+          followStatus.textContent = "أحسنت! الآن تابع قناتنا على الواتساب.";
           followStatus.style.color = "#CD853F";
         }
       });
@@ -1293,7 +1293,7 @@
               }
             }, 1500); // Wait to show success message
           }
-        }, 5000); // 5-second timer
+        }, 3000); // 3-second timer
       });
     }
 
@@ -1330,7 +1330,7 @@
         if (socialPopupModal) {
             socialPopupModal.style.display = "flex";
             // Reset status for new attempt
-            followStatus.innerHTML = "تابع حسابنا على انستغرام للمتابعة."; // Initial message
+            followStatus.innerHTML = "تابعنا على قناتنا الواتساب للمتابعة."; // Initial message
             followStatus.style.color = "#CD853F";
             verifyFollowBtn.disabled = true; // Disable button initially
             verifyFollowBtn.textContent = "لقد تابعت، تحقق الآن"; // Reset button text
@@ -1601,4 +1601,3 @@
   </script>
 </body>
 </html>
-
